@@ -1,0 +1,53 @@
+<template>
+
+    <div class="card-row">
+
+        <!-- ✅ APPLICATION -->
+        <div class="card">
+            <div class="label">Application</div>
+            <div class="value">
+
+                <template if:true={hasApplicationId}>
+                    <a href={applicationUrl} target="_self" class="link">
+                        {applicationNameWithId}
+                    </a>
+                </template>
+
+                <template if:false={hasApplicationId}>
+                    <a href={applicationUrl} target="_self" class="link">
+                        {applicationName}
+                    </a>
+                </template>
+
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="label">Publication</div>
+            <div class="value">
+
+                <template if:true={hasPublicationId}>
+                    <a href={publicationUrl} target="_self" class="link">
+                        {publicationNameWithId}
+                    </a>
+                </template>
+
+                <template if:false={hasPublicationId}>
+                    <a href={publicationUrl} target="_self" class="link">
+                        {publicationName}
+                    </a>
+                </template>
+
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="label">Purpose Of Use</div>
+            <div class="value text">
+                {purposeOfUse}
+            </div>
+        </div>
+
+    </div>
+
+</template>

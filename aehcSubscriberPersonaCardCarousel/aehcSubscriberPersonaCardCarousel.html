@@ -1,0 +1,32 @@
+<template>
+    <div class="card" style={cardStyle} onclick={handleClick}>
+
+        <!-- ✅ Animated background reveal -->
+        <div class="reveal-bg"></div>
+
+        <!-- Top strip -->
+        <div class="top-strip">
+            <div class="divider" style={topLineStyle}></div>
+        </div>
+
+        <!-- Icon -->
+        <div class="icon-wrapper">
+            <div class="icon-box" style={iconStyle}>
+                <lightning-icon
+                    icon-name={iconName}
+                    size="small"
+                    alternative-text="icon">
+                </lightning-icon>
+            </div>
+        </div>
+
+        <!-- Content -->
+        <div class="card-content">
+            <div class="tag">{applicationName}</div>
+            <div class="title">{publicationName}</div>
+            <div class="cardBody">Scheduled : {schedule}</div>
+            <div class="cardBody"> Last Updated {lastUpdated}</div>
+        </div>
+
+    </div>
+</template>

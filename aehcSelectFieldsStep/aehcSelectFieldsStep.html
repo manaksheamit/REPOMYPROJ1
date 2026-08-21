@@ -1,0 +1,199 @@
+<template>
+    <div class="content-container step-content">
+
+        <!-- Metadata row -->
+        <div class="overview-section">
+
+            <!-- Row 1 -->
+            <div class="overview-row overview-row-main">
+
+                <div class="field">
+                    <label>{uiLabels.appName}</label>
+                    <div class="readonly-value" title={localWizardData.applicationName}>
+                        {localWizardData.applicationName}
+                    </div>
+                </div>
+ 
+                <div class="field">
+                    <label>{uiLabels.pubName}</label>
+                    <div class="readonly-value" title={localWizardData.publicationName}>
+                        {localWizardData.publicationName}
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label>{uiLabels.pubId}</label>
+                    <div class="readonly-value" title={localWizardData.publicationId}>
+                        {localWizardData.publicationId}
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label>{uiLabels.environment}</label>
+                    <div class="readonly-value" title={localWizardData.environment}>
+                        {localWizardData.environment}
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label>{uiLabels.schemaVersion}</label>
+                    <div class="readonly-value" title={localWizardData.schemaVersion}>
+                        {localWizardData.schemaVersion}
+                    </div>
+                </div>
+
+            </div>
+            <!-- Row 2 -->
+            <div class="overview-row overview-row-secondary">
+
+                <div>
+                    <c-aehc-reusable-lookup label={subscriberApplication.label}
+                        object-label={subscriberApplication.objectLabel} placeholder={subscriberApplication.placeholder}
+                        required={subscriberApplication.required} selected-icon-name={subscriberApplication.iconName}
+                        value={localWizardData.subscriberApplicationData}
+                        onchangevalue={handleChange_SearchApplicationField} read-only={isReadOnly}
+                        onvalueselected={handleSelect_SearchApplication}
+                        spinner-on-change={subscriberApplication.spinnerOnChange}
+                        onvaluedeselected={handleDeselect_SearchApplication} onfocus={handleFocus_SearchApplication}>
+                    </c-aehc-reusable-lookup>
+                </div>
+
+                <div class="field">
+                    <label>{uiLabels.purposeUse}</label>
+                    <lightning-input class="purpose-input" value={localWizardData.purposeOfUse} variant="label-hidden"
+                        onchange={handlePurposeOfUseChange}>
+                    </lightning-input>
+                </div>
+
+                <div class="field transformation-field">
+                    <label>{uiLabels.transformReq}</label>
+                    <lightning-input type="toggle" checked={localWizardData.transformationRequired}
+                        onchange={handleTransformationChange} variant="label-hidden" message-toggle-active=""
+                        message-toggle-inactive="">
+                    </lightning-input>
+                </div>
+
+                <!--  UAT TOGGLE -->
+                <template if:true={isPublicationBo}>
+                    <div class="field transformation-field">
+
+                        <label>Enable UAT</label>
+                        <lightning-input type="toggle" checked={localWizardData.uatEnabled} onchange={handleUATToggle}
+                            variant="label-hidden" message-toggle-active="" message-toggle-inactive="">
+                        </lightning-input>
+
+                    </div>
+                </template>
+
+            </div>
+
+        </div>
+
+        <!-- Tables -->
+        <div class="schema-container">
+
+            <!-- Available Fields -->
+            <div class="schema-box">
+                <h3 class="table-title">{uiLabels.availableFields}</h3>
+
+                <lightning-input type="search" label={uiLabels.searchFields} placeholder={uiLabels.searchPlaceholder}
+                    value={searchKey} class="slds-m-bottom_small" onchange={handleSearch} onkeyup={handleSearch}>
+                </lightning-input>
+
+
+                <template if:true={isLoading}>
+                    <div class="schema-loading-container">
+                        <lightning-spinner alternative-text={uiLabels.loadingSchemaFields} size="small" variant="brand">
+                        </lightning-spinner>
+                    </div>
+                </template>
+
+
+                <template if:true={showSchemaError}>
+                    <div class="state-container">
+                        <lightning-icon icon-name="utility:warning" size="small" class="state-icon" aria-hidden="true">
+                        </lightning-icon>
+
+                        <div class="state-title">
+                            {uiLabels.loadSchemaError}
+                        </div>
+                    </div>
+                </template>
+
+
+                <template if:true={noSchemaData}>
+                    <div class="state-container">
+                        <lightning-icon icon-name="utility:info" size="small" class="state-icon" aria-hidden="true">
+                        </lightning-icon>
+
+                        <div class="state-title">
+                            {uiLabels.noFilteredData}
+                        </div>
+
+                        <div class="state-description">
+                            {uiLabels.adjustFilters}
+                        </div>
+                    </div>
+                </template>
+
+                <template if:true={showNoFilteredSchema}>
+                    <div class="state-container">
+                        <lightning-icon icon-name="utility:info" size="small" class="state-icon" aria-hidden="true">
+                        </lightning-icon>
+
+                        <div class="state-title">
+                            {uiLabels.noFilteredData}
+                        </div>
+
+                        <div class="state-description">
+                            {uiLabels.adjustFilters}
+                        </div>
+                    </div>
+                </template>
+
+                <template if:true={showSchemaTable}>
+                    <lightning-datatable key-field="fieldName" data={displayedSchema} columns={availableColumns}
+                        selected-rows={visibleSelectedRowNames} onsort={handleSort} sorted-by={sortedBy}
+                        sorted-direction={sortedDirection} onrowselection={handleRowSelection} class="figma-datatable">
+                    </lightning-datatable>
+                </template> 
+            </div>
+
+            <!-- Selected Fields -->
+            <div class="schema-box">
+                <div class="table-title-row">
+                    <h3 class="table-title">{uiLabels.selectedOrder}</h3>
+                    <span class="badge">{selectedCount}</span>
+                </div>
+
+                <div class="preview-container">
+                    <template for:each={selectedSchemaForDisplay} for:item="row">
+                        <div key={row.fieldName} class={row.rowClass} draggable="true" data-id={row.fieldName}
+                            ondragstart={handleDragStart} ondragover={handleDragOver} ondragleave={handleDragLeave}
+                            ondrop={handleDrop} ondragend={handleDragEnd}>
+
+                            <span class="drag-handle">☰</span>
+
+                            <div class="preview-details">
+                                <div class="preview-name">{row.fieldName}</div>
+                            </div>
+
+                            <lightning-button-icon icon-name="utility:delete" alternative-text={uiLabels.remove}
+                                data-id={row.fieldName} onclick={removeRow}>
+                            </lightning-button-icon>
+                        </div>
+                    </template>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer-actions">
+            <lightning-button label={uiLabels.back} onclick={handleBack}>
+            </lightning-button>
+
+            <lightning-button label={uiLabels.next} variant="brand" onclick={handleNext} disabled={disableNext}>
+            </lightning-button>
+        </div>
+    </div>
+</template>

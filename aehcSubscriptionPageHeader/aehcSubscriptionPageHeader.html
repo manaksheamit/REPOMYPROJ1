@@ -1,0 +1,25 @@
+<template>
+
+    <div class="header slds-card slds-grid slds-grid_align-spread slds-p-around_small">
+
+        <!-- ✅ LEFT: Subscription Name -->
+        <div class="title">
+            <h1 class="slds-text-heading_medium">
+                {subscriptionName}
+            </h1>
+        </div>
+
+        <template if:false={isHideButton}>
+            <div class="slds-button-group" role="group">
+                <lightning-button label={labels.versionhistory} onclick={handleVersionHistory}>
+                </lightning-button>
+
+                <lightning-button label={labels.viewjob} onclick={handleJobHistory}>
+                </lightning-button>
+            </div>
+        </template>
+
+
+    </div>
+
+</template>

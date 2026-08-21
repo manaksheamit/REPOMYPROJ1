@@ -1,0 +1,108 @@
+.schedule-step-content {
+    margin-top: 20px;
+    min-height: 520px;
+    background: #ffffff;
+    font-size: 14px;
+}
+
+/* Publisher guidance banner */
+.publisher-guidance {
+    background-color: #eaf4ff;
+    border-left: 5px solid #0176d3;
+    padding: 12px 14px;
+    margin-bottom: 22px;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.guidance-line {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 4px;
+}
+
+.guidance-line strong {
+    font-size: 14px;
+    font-weight: 700;
+    color: #080707;
+}
+
+.guidance-line span {
+    font-size: 14px;
+    color: #080707;
+}
+
+/* Scheduler dropdown area */
+.scheduler-mode-row {
+    margin-bottom: 28px;
+}
+
+.scheduler-mode-combobox {
+    width: 360px;
+    font-size: 14px;
+}
+
+/* Form layout */
+.schedule-form {
+    margin-left: 8px;
+    font-size: 14px;
+}
+
+.schedule-form-row {
+    display: grid;
+    grid-template-columns: 180px 245px;
+    align-items: center;
+    column-gap: 28px;
+    margin-bottom: 10px;
+}
+
+.schedule-form-row-wide {
+    grid-template-columns: 180px 520px;
+    align-items: start;
+}
+
+.schedule-label {
+    font-size: 14px;
+    font-weight: 400;
+    color: #080707;
+}
+
+.schedule-input {
+    width: 245px;
+    font-size: 14px;
+}
+
+.schedule-dual-list {
+    width: 520px;
+    font-size: 14px;
+}
+
+.schedule-summary {
+    margin-top: 18px;
+    padding: 10px 12px;
+    background: #f3f3f3;
+    border-radius: 4px;
+    font-size: 13px;
+    display: flex;
+    gap: 8px;
+    width: fit-content;
+    max-width: 720px;
+}
+
+.submon-info {
+    margin-top: 12px;
+    padding: 12px 14px;
+    background: #f3f3f3;
+    border-left: 4px solid #747474;
+    font-size: 14px;
+    width: fit-content;
+}
+
+/* Same footer alignment as Step 1 */
+.footer-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 24px;
+}

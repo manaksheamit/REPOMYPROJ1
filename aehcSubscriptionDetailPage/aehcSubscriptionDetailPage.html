@@ -1,0 +1,140 @@
+<template>
+    <template if:false={showEditWizard}>
+        <template if:true={showPage}>
+
+            <c-aehc-subscription-page-header subscription-name={subscriptionName} onjobhistory={handleJobHistory}
+                onversionhistory={handleVersionHistory}>
+            </c-aehc-subscription-page-header>
+
+            <c-aehc-subscription-approval-list></c-aehc-subscription-approval-list>
+
+            <c-aehc-subscription-overview-cards application-name={applicationName} application-id={applicationId}
+                publication-name={publicationName} publication-id={publicationId}
+                publication-record-id={publicationRecordId} purpose-of-use={purposeOfUse}>
+            </c-aehc-subscription-overview-cards>
+
+            <c-aehc-subscription-version-panel subscription-id={subscriptionId}
+                selected-environment={selectedEnvironment} environment-options={environments}
+                selected-version={selectedVersion} version-options={versionOptions} version-data={versionData}
+                is-loading={isLoading} disable-edit={disableEdit} onenvchange={handleEnvChange}
+                onversionchange={handleVersionChange} onfetch={handleFetch} onedit={handleEditClick}
+                onchangehistory={handleApprovalHistory}>
+            </c-aehc-subscription-version-panel>
+
+        </template>
+    </template>
+
+    <template if:true={showEditWizard}>
+
+        <c-aehc-subscription-wizard edit-mode="true" subscription-id={editContext.subscriptionId}
+            selected-environment={editContext.environment} selected-version={editContext.version}
+            is-draft={editContext.isDraft} onclose={handleCloseWizard}>
+        </c-aehc-subscription-wizard>
+
+    </template>
+
+    <!-- Modal -->
+    <template if:true={isChangeHistory}>
+        <section role="dialog" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <!-- Header -->
+                <!-- <header class="slds-modal__header"> -->
+                <lightning-button-icon icon-name="utility:close" alternative-text="close"
+                    onclick={closeChangeHistoryModal} class="slds-modal__close">
+                </lightning-button-icon>
+
+                <!-- <h2 class="slds-text-heading_medium">Subscription Version History</h2> -->
+                <!-- </header> -->
+
+                <!-- Body -->
+                <div class="slds-modal__content slds-p-around_medium">
+                    <!-- Child LWC ---->
+                    <c-aehc-approval-history record-id={getversionId} selected-environment={selectedEnvironment}
+                        selected-version={selectedVersion}>
+                    </c-aehc-approval-history>
+
+                </div>
+
+                <!-- Footer -->
+                <footer class="slds-modal__footer">
+                    <lightning-button label="Close" onclick={closeChangeHistoryModal}>
+                    </lightning-button>
+                </footer>
+
+            </div>
+        </section>
+
+        <!-- Backdrop -->
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+    <!-- Modal -->
+    <template if:true={isJobRunHistory}>
+        <section role="dialog" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <!-- Header -->
+                <!-- <header class="slds-modal__header"> -->
+                <lightning-button-icon icon-name="utility:close" alternative-text="close" onclick={closeJobHistoryModal}
+                    class="slds-modal__close">
+                </lightning-button-icon>
+
+                <!-- <h2 class="slds-text-heading_medium">Subscription Version History</h2> -->
+                <!-- </header> -->
+
+                <!-- Body -->
+                <div class="slds-modal__content slds-p-around_medium">
+                    <!-- Child LWC ---->
+                    <c-aehcapi-view-job-history record-id={subscriptionId} selected-env={selectedEnvironment}
+                        selected-version={selectedVersion}>
+                    </c-aehcapi-view-job-history>
+
+                </div>
+
+                <!-- Footer -->
+                <footer class="slds-modal__footer">
+                    <lightning-button label="Close" onclick={closeJobHistoryModal}>
+                    </lightning-button>
+                </footer>
+
+            </div>
+        </section>
+
+        <!-- Backdrop -->
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+    <!-- Modal -->
+    <template if:true={isVersionHistory}>
+        <section role="dialog" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+
+                <!-- Header -->
+                <!-- <header class="slds-modal__header"> -->
+                <lightning-button-icon icon-name="utility:close" alternative-text="close"
+                    onclick={closeVersionHistoryModal} class="slds-modal__close">
+                </lightning-button-icon>
+
+                <!-- <h2 class="slds-text-heading_medium">Job Run History</h2> -->
+                <!-- </header> -->
+
+                <!-- Body -->
+                <div class="slds-modal__content slds-p-around_medium">
+                    <!-- Child LWC -->
+                    <c-aehcversion-history record-id={subscriptionId}>
+                    </c-aehcversion-history>
+
+                </div>
+
+                <!-- Footer -->
+                <footer class="slds-modal__footer">
+                    <lightning-button label="Close" onclick={closeVersionHistoryModal}>
+                    </lightning-button>
+                </footer>
+
+            </div>
+        </section>
+
+        <!-- Backdrop -->
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+</template>

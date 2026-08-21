@@ -1,0 +1,34 @@
+p {
+    margin: 6px 0;
+}
+.section-title {
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+.table-container {
+    border: 1px solid #d8dde6;
+    border-radius: 6px;
+    background: white;
+}
+
+.table-scroll {
+    max-height: 320px;
+    overflow-y: auto;
+}
+.custom-accordion-section {
+    border: 1px solid #d8dde6;
+    border-radius: 6px;
+    background: #ffffff;
+    padding: 12px;
+    margin-top: 12px;
+}
+
+.fields-table-box {
+    box-shadow: 0 2px 2px rgba(0,0,0,0.05);
+}
+.description-text {
+    white-space: pre-wrap;
+    word-break: break-word;
+    overflow-wrap: break-word;
+}

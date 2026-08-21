@@ -1,0 +1,88 @@
+<template>
+    <div class="container">
+
+        <!-- HEADER -->
+        <div class="header-section">
+            <h2 class="title">{title}</h2>
+            <p class="subtitle">{description}</p>
+        </div>
+
+        <!-- LOADING -->
+        <template if:true={isLoading}>
+            <div class="slider">
+                <template for:each={dummy} for:item="i">
+                    <c-aehc-skeleton-card-carousel key={i}></c-aehc-skeleton-card-carousel>
+                </template>
+            </div>
+        </template>
+
+        <!-- ERROR -->
+        <template if:true={isError}>
+            <div class="state-container error">
+                <lightning-icon icon-name="utility:error"></lightning-icon>
+                <h3>{errorTitle}</h3>
+                <p>{errorDescription}</p>
+            </div>
+        </template>
+
+        <!-- EMPTY -->
+        <template if:true={isEmpty}>
+            <div class="state-container">
+                <lightning-icon icon-name="utility:search"></lightning-icon>
+                <h3>{emptyTitle}</h3>
+                <p>{emptyDescription}</p>
+            </div>
+        </template>
+
+        <!-- DATA -->
+
+        <div class="carousel-wrapper">
+                <button class="nav-arrow left" onclick={handleScrollLeft}>
+                    <span>❮</span>
+                </button>
+
+                <div class="slider" data-id="slider">
+                    <template for:each={publications} for:item="publication">
+                       <c-aehc-subscriber-persona-card-carousel
+                            key={publication.id}
+                            application-name={publication.applicationName}
+                            publication-name={publication.publicationName}
+                            schedule={publication.schedule}
+                            last-updated={publication.lastUpdated}
+                            url={publication.url}>
+                        </c-aehc-subscriber-persona-card-carousel>
+                    </template>
+                </div>
+
+                <button class="nav-arrow right" onclick={handleScrollRight}>
+                    <span>❯</span>
+                </button>
+            </div>
+
+        <!-- <template if:true={isSuccess}>
+            <div class="slider-wrapper">
+                <button class="arrow left" onclick={scrollLeft}>
+            <span class="arrow-icon">❮</span>
+        </button>
+
+<button class="arrow right" onclick={scrollRight}>
+    <span class="arrow-icon">❯</span>
+</button>
+
+                <div class="slider" data-id="slider">
+                    <template for:each={publications} for:item="publication">
+                        <c-aehc-subscriber-persona-card-carousel
+                            key={publication.id}
+                            application-name={publication.applicationName}
+                            publication-name={publication.publicationName}
+                            schedule={publication.schedule}
+                            last-updated={publication.lastUpdated}
+                            url={publication.url}>
+                        </c-aehc-subscriber-persona-card-carousel>
+                    </template>
+                </div> -->
+            <!-- </div>
+        </template> -->
+
+    </div>
+</template>

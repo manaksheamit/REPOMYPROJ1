@@ -1,0 +1,210 @@
+<template>
+    <div class="content-container schedule-step-content">
+
+        <!-- Publisher Scheduling Guidance -->
+        <template if:true={showPublisherGuidance}>
+            <div class="publisher-guidance">
+                <div class="guidance-line">
+                    <strong>{uiLabels.publisherSchedule}</strong>
+                    <span>{publisherSchedule}</span>
+                </div>
+
+                <div class="guidance-line">
+                    <strong>{uiLabels.completionWindow}</strong>
+                    <span>{typicalCompletionWindow}</span>
+                </div>
+
+                <div class="guidance-line">
+                    <strong>{uiLabels.proTip}</strong>
+                    <span>{publisherProTip}</span>
+                </div>
+            </div>
+        </template>
+
+        <!-- Scheduler Mode -->
+
+        <template if:true={showSchedulerMode}>
+            <div class="scheduler-mode-row">
+                <lightning-combobox class="scheduler-mode-combobox" variant="label-hidden"
+                    value={localSchedule.schedulerMode} options={schedulerModeOptions}
+                    onchange={handleSchedulerModeChange}>
+                </lightning-combobox>
+            </div>
+        </template>
+
+
+        <!-- Custom Scheduler Fields -->
+        <template if:true={isTimeBasedScheduler}>
+            <div class="schedule-form">
+
+                <!-- Frequency -->
+                <div class="schedule-form-row">
+                    <label class="schedule-label">{uiLabels.frequency}</label>
+
+                    <lightning-combobox class="schedule-input" variant="label-hidden" value={localSchedule.frequency}
+                        options={filteredFrequencyOptions} onchange={handleFrequencyChange}>
+                    </lightning-combobox>
+                </div>
+
+                <!-- Daily -->
+                <template if:true={isDaily}>
+                    <div class="schedule-form-row">
+                        <label class="schedule-label">{uiLabels.time24}</label>
+
+
+                        <lightning-input class="schedule-input" type="time" variant="label-hidden"
+                            value={localSchedule.scheduleTime} onchange={handleScheduleTimeChange}>
+                        </lightning-input>
+
+                    </div>
+                </template>
+
+                <!-- Weekly -->
+                <template if:true={isWeekly}>
+                    <div class="schedule-form-row schedule-form-row-wide">
+                        <label class="schedule-label">{uiLabels.weekdays}</label>
+
+                        <lightning-dual-listbox class="schedule-dual-list" variant="label-hidden"
+                            source-label="Available" selected-label="Selected" options={weekdayOptions}
+                            value={localSchedule.weekdays} onchange={handleWeekdaysChange}>
+                        </lightning-dual-listbox>
+                    </div>
+
+                    <div class="schedule-form-row">
+                        <label class="schedule-label">{uiLabels.time24}</label>
+
+
+                        <lightning-input class="schedule-input" type="time" variant="label-hidden"
+                            value={localSchedule.scheduleTime} onchange={handleScheduleTimeChange}>
+                        </lightning-input>
+
+                    </div>
+                </template>
+
+                <!-- Multi Week -->
+                <template if:true={isMultiWeek}>
+
+                    <!-- Weeks Dual List -->
+                    <div class="schedule-form-row schedule-form-row-wide">
+                        <label class="schedule-label">{uiLabels.weeks}</label>
+
+                        <lightning-dual-listbox class="schedule-dual-list" variant="label-hidden"
+                            source-label="Available" selected-label="Selected" options={weekOptions}
+                            value={localSchedule.multiWeekWeeks} onchange={handleMultiWeekWeeksChange}>
+                        </lightning-dual-listbox>
+                    </div>
+
+                    <!-- Weekdays Dual List -->
+                    <div class="schedule-form-row schedule-form-row-wide">
+                        <label class="schedule-label">{uiLabels.weekdays}</label>
+
+                        <lightning-dual-listbox class="schedule-dual-list" variant="label-hidden"
+                            source-label="Available" selected-label="Selected" options={weekdayOptions}
+                            value={localSchedule.multiWeekDays} onchange={handleMultiWeekDaysChange}>
+                        </lightning-dual-listbox>
+                    </div>
+
+                    <!-- Salesforce Time Picker -->
+                    <div class="schedule-form-row">
+                        <label class="schedule-label">{uiLabels.time24}</label>
+
+                        <lightning-input class="schedule-input" type="time" variant="label-hidden"
+                            value={localSchedule.scheduleTime} onchange={handleScheduleTimeChange}>
+                        </lightning-input>
+                    </div>
+
+                </template>
+
+                <!-- Monthly -->
+                <template if:true={isMonthly}>
+                    <div class="schedule-form-row">
+                        <label class="schedule-label">{uiLabels.dayOfMonth}</label>
+
+                        <lightning-combobox class="schedule-input" variant="label-hidden"
+                            value={localSchedule.monthlyDay} options={monthDayOptions}
+                            onchange={handleMonthlyDayChange}>
+                        </lightning-combobox>
+                    </div>
+
+                    <div class="schedule-form-row">
+                        <label class="schedule-label">{uiLabels.time24}</label>
+
+                        <lightning-input class="schedule-input" type="time" variant="label-hidden"
+                            value={localSchedule.scheduleTime} onchange={handleScheduleTimeChange}>
+                        </lightning-input>
+                    </div>
+                </template>
+
+                <!-- Annual -->
+
+                <template if:true={isAnnual}>
+
+                    <div class="schedule-form-row">
+                        <label class="schedule-label">Date</label>
+
+                        <lightning-input class="schedule-input" type="date" value={localSchedule.annualDate}
+                            onchange={handleAnnualDateChange} min={todayDate}>
+                        </lightning-input>
+                    </div>
+
+                    <div class="schedule-form-row">
+                        <label class="schedule-label">{uiLabels.time24}</label>
+
+                        <lightning-input type="time" value={localSchedule.scheduleTime}
+                            onchange={handleScheduleTimeChange}>
+                        </lightning-input>
+                    </div>
+
+                </template>
+
+                <!-- One-Time Load -->
+                <template if:true={isOneTime}>
+                    <div class="schedule-form-row">
+                        <label class="schedule-label">{uiLabels.execDate}</label>
+
+                        <lightning-input class="schedule-input" type="date" variant="label-hidden"
+                            value={localSchedule.oneTimeDate} onchange={handleOneTimeDateChange} min={todayDate}>
+                        </lightning-input>
+                    </div>
+
+                    <div class="schedule-form-row">
+                        <label class="schedule-label">{uiLabels.execTime}</label>
+
+
+                        <lightning-input class="schedule-input" type="time" variant="label-hidden"
+                            value={localSchedule.oneTimeTime} onchange={handleOneTimeTimeChange}>
+                        </lightning-input>
+
+                    </div>
+                </template>
+
+                <!-- Human Readable Summary -->
+                <template if:true={scheduleSummary}>
+                    <div class="schedule-summary">
+                        <strong>{uiLabels.scheduleSummary}</strong>
+                        <span>{scheduleSummary}</span>
+                    </div>
+                </template>
+
+            </div>
+        </template>
+
+        <!-- SubMon Information -->
+        <template if:true={isSubmonScheduler}>
+            <div class="submon-info">
+                {uiLabels.submonInfo}
+            </div>
+        </template>
+
+        <!-- Footer -->
+        <template if:true={showFooter}>
+            <div class="footer-actions">
+                <lightning-button label={uiLabels.back} onclick={handleBack}></lightning-button>
+                <lightning-button label={uiLabels.next} variant="brand" onclick={handleNext} disabled={disableNext}>
+                </lightning-button>
+            </div>
+        </template>
+
+
+    </div>
+</template>

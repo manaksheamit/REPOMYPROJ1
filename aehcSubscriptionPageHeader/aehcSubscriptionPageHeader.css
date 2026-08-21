@@ -1,0 +1,42 @@
+.header {
+    
+background: white;
+    border-bottom: 1px solid #d8dde6;
+
+}
+
+.icon-box {
+    background: #0176d3;
+    width: 48px;
+    height: 48px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.text {
+    margin-left: 10px;
+}
+
+.subscription-name {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.application-name {
+    font-size: 18px;
+}
+
+.publication-name {
+    font-size: 14px;
+    color: #cfd8dc;
+}
+
+.right lightning-button {
+    margin-left: 8px;
+}
+
+.title h1 {
+    font-weight: 600;
+}

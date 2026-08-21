@@ -1,0 +1,31 @@
+<template>
+
+    <div class="section-myAPIs">
+        <div class="card__header">
+            <h2 class="card__title">{title}</h2>
+            <div class="card__subTitle">
+                {description}
+            </div>
+        </div>
+
+
+        <!-- Child cards container -->
+        <div class="slds-grid slds-wrap slds-gutters section-cards">
+            <!-- Card 1 -->
+            <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+                <c-aehcapidashboardao></c-aehcapidashboardao>
+
+            </div>
+
+            <!-- Card 2 -->
+            <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+                <c-aehcsubscriptionsummaryaopie></c-aehcsubscriptionsummaryaopie>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+                <c-aehcfeedbackcardao></c-aehcfeedbackcardao>
+            </div>
+        </div>
+    </div>
+</template>

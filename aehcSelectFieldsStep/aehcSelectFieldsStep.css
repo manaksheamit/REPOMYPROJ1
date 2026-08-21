@@ -1,0 +1,206 @@
+/* -------- Overview Formal Layout -------- */
+.overview-section {
+    margin-bottom: 24px;
+}
+
+.overview-row {
+    display: grid;
+    column-gap: 24px;
+    row-gap: 10px;
+}
+
+.overview-row-main {
+    grid-template-columns: repeat(5, 1fr);
+    margin-bottom: 12px;
+}
+
+.overview-row-secondary {
+    grid-template-columns: repeat(5, 1fr);
+}
+
+.field label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: #2e2e2e;
+    margin-bottom: 6px;
+}
+
+.overview-row lightning-input {
+    --slds-c-input-color-background: #f3f3f3;
+    --slds-c-input-color-border: #d8dde6;
+    --slds-c-input-radius-border: 8px;
+    --slds-c-input-spacing-horizontal-start: 0.75rem;
+    --slds-c-input-spacing-horizontal-end: 0.75rem;
+    font-size: 14px;
+}
+
+.transformation-field lightning-input {
+    margin-top: 4px;
+}
+
+/* -------- Tables Layout -------- */
+.schema-container {
+    display: grid;
+    grid-template-columns: 65% 35%;
+    gap: 16px;
+}
+
+.schema-box {
+    border: 1px solid #dcdcdc;
+    border-radius: 4px;
+    background: #fff;
+    padding: 12px;
+    overflow: visible;
+}
+
+.table-title-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.table-title {
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.badge {
+    background: #f3f2f2;
+    color: #444;
+    border-radius: 10px;
+    padding: 2px 8px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.figma-datatable {
+    height: 260px;
+    display: block;
+}
+
+.figma-datatable ::part(header-cell) {
+    background-color: #f3f2f2;
+    font-weight: 600;
+    border-bottom: 1px solid #dcdcdc;
+}
+
+/* -------- Selected Preview -------- */
+.preview-container {
+    max-height: 260px;
+    overflow-y: auto;
+}
+
+.preview-row {
+    display: grid;
+    grid-template-columns: 20px 1fr 30px;
+    gap: 8px;
+    align-items: center;
+    padding: 6px 4px;
+    border-bottom: 1px solid #eee;
+}
+
+.drag-handle {
+    cursor: grab;
+    color: #666;
+}
+
+.preview-name {
+    font-weight: 600;
+    font-size: 13px;
+}
+
+.footer-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.step-content {
+    margin-top: 20px;
+}
+
+.state-container {
+    text-align: center;
+    padding: 24px 12px;
+    color: #4a4a4a;
+}
+
+.state-title {
+    font-weight: 600;
+    margin-top: 8px;
+}
+
+.state-description {
+    font-size: 13px;
+    margin-top: 4px;
+    color: #6b6b6b;
+}
+
+.overview-row .purpose-input {
+    --slds-c-input-color-background: #ffffff;
+    --slds-c-input-color-border: #d8dde6;
+}
+/* -------- Drag and Drop Visual Feedback -------- */
+.preview-row {
+    position: relative;
+    transition: background-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+.preview-row:hover {
+    background-color: #f8fbff;
+}
+
+.preview-row-dragging {
+    opacity: 0.45;
+    background-color: #eef4ff;
+    border: 1px dashed #0176d3;
+    cursor: grabbing;
+}
+
+.preview-row-drop-target {
+    background-color: #f3f8ff;
+    box-shadow: inset 0 2px 0 #0176d3;
+}
+
+/* Blue line showing where dragged field will be placed */
+.preview-row-drop-target::before {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background-color: #0176d3;
+    border-radius: 2px;
+}
+
+.drag-handle {
+    cursor: grab;
+}
+
+.preview-row-dragging .drag-handle {
+    cursor: grabbing;
+}
+.readonly-value {
+    height: 32px;
+    line-height: 30px;
+    padding: 0 0.75rem;
+    border: 1px solid #d8dde6;
+    border-radius: 8px;
+    background-color: #f3f3f3;
+    color: #080707;
+    font-size: 14px;
+    box-sizing: border-box;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: default;
+}
+.schema-loading-container {
+    position: relative;
+    min-height: 260px;
+}

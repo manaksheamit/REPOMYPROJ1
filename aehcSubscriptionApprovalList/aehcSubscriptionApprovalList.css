@@ -1,0 +1,25 @@
+/* ✅ Name wrapping (2 lines max) */
+.name-wrap {
+    max-width: 260px;
+    white-space: normal;
+    word-break: break-word;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+
+    overflow: hidden;
+    line-height: 1.3rem;
+}
+
+/* ✅ Better textarea sizing */
+.remarks-box {
+    min-width: 200px;
+}
+.name-truncate {
+    max-width: 250px;   /* control width */
+    white-space: nowrap; /* ✅ single line */
+    overflow: hidden;
+    text-overflow: ellipsis; /* ✅ ... */
+    font-weight: 600;
+}

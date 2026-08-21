@@ -1,0 +1,3783 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>auto_approve_step_1</name>
+        <label>auto approve step 1</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <actionName>AEHC_AutoApproval</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>check_for_PBO_approval</targetReference>
+        </connector>
+        <flowTransactionModel>Automatic</flowTransactionModel>
+        <inputParameters>
+            <name>recordId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+                <inputConfiguratorMode>Resource</inputConfiguratorMode>
+            </value>
+        </inputParameters>
+        <nameSegment>AEHC_AutoApproval</nameSegment>
+        <offset>0</offset>
+    </actionCalls>
+    <actionCalls>
+        <name>auto_approve_step_2</name>
+        <label>auto approve step 2</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <actionName>AEHC_AutoApproval</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Get_Information_Architech</targetReference>
+        </connector>
+        <flowTransactionModel>Automatic</flowTransactionModel>
+        <inputParameters>
+            <name>recordId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+                <inputConfiguratorMode>Resource</inputConfiguratorMode>
+            </value>
+        </inputParameters>
+        <nameSegment>AEHC_AutoApproval</nameSegment>
+        <offset>0</offset>
+    </actionCalls>
+    <actionCalls>
+        <name>Copy_1_of_Send_Notification_to_Requesting_user</name>
+        <label>Copy 1 of Send Notification to Requesting user</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <actionName>customNotificationAction</actionName>
+        <actionType>customNotificationAction</actionType>
+        <connector>
+            <targetReference>Send_email_alert_to_requesting_user1</targetReference>
+        </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>customNotifTypeId</name>
+            <value>
+                <elementReference>Get_Custom_Notification_type_v2.Id</elementReference>
+                <inputConfiguratorMode>Resource</inputConfiguratorMode>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>recipientIds</name>
+            <value>
+                <elementReference>alluser</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>title</name>
+            <value>
+                <elementReference>SubmitterRequestHeader</elementReference>
+                <inputConfiguratorMode>Resource</inputConfiguratorMode>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>body</name>
+            <value>
+                <elementReference>SubmitterRequestBody</elementReference>
+                <inputConfiguratorMode>Resource</inputConfiguratorMode>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>targetPageRef</name>
+            <value>
+                <formulaDataType>String</formulaDataType>
+                <formulaExpression>&apos;{&quot;type&quot;: &quot;comm__namedPage&quot;, &quot;attributes&quot;: {&quot;pageName&quot;: &quot;data-publication-details&quot;}, &quot;state&quot;: {&quot;id&quot;: &quot;&apos; + {!$Record.AEHC_Publication__c} + 
+&apos;&quot;,&apos;
++IF({!$Record.AEHC_Is_Subscription__c},( &apos;&quot;ver&quot;: &quot;&apos; +{!$Record.AEHC_Schema_Version__c}+&apos;&quot;,&apos;),
+&apos;&apos;) + 
+&apos; &quot;env&quot;: &quot;&apos; + TEXT({!$Record.AEHC_Environment__c}) + &apos;&quot;}}&apos;</formulaExpression>
+                <inputConfiguratorMode>Formula</inputConfiguratorMode>
+            </value>
+        </inputParameters>
+        <nameSegment>customNotificationAction</nameSegment>
+        <offset>0</offset>
+    </actionCalls>
+    <actionCalls>
+        <name>Email_alert_to_Info_Architect</name>
+        <label>Email alert to Info Architect</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <actionName>AEHC_EmailAlertServiceController</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>check_Environment_on_creation</targetReference>
+        </connector>
+        <faultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>check_Environment_on_creation</targetReference>
+        </faultConnector>
+        <flowTransactionModel>Automatic</flowTransactionModel>
+        <inputParameters>
+            <name>approvalStatus</name>
+            <value>
+                <elementReference>$Record.Approval_Status__c</elementReference>
+                <inputConfiguratorMode>Resource</inputConfiguratorMode>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>currentEnv</name>
+            <value>
+                <elementReference>$Record.AEHC_Environment__c</elementReference>
+                <inputConfiguratorMode>Resource</inputConfiguratorMode>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>eventType</name>
+            <value>
+                <inputConfiguratorMode>Custom</inputConfiguratorMode>
+                <stringValue>SUBMITTEDIA</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>isAdl</name>
+            <value>
+                <elementReference>$Record.AEHC_ADL_Review_Required__c</elementReference>
+                <inputConfiguratorMode>Resource</inputConfiguratorMode>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>previousEnv</name>
+            <value>
+                <elementReference>$Record__Prior.AEHC_Environment__c</elementReference>
+                <inputConfiguratorMode>Resource</inputConfiguratorMode>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>recipientUsers</name>
+            <value>
+                <elementReference>AllUserInformationArchitech</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>recordId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+                <inputConfiguratorMode>Resource</inputConfiguratorMode>
+            </value>
+        </inputParameters>
+        <nameSegment>AEHC_EmailAlertServiceController</nameSegment>
+        <offset>0</offset>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </actionCalls>
+    <actionCalls>
+        <name>Email_alert_to_submitter</name>
+        <label>Email alert to submitter</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <actionName>AEHC_EmailAlertServiceController</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Email_alert_to_Info_Architect</targetReference>
+        </connector>
+        <faultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>check_Environment_on_creation</targetReference>
+        </faultConnector>
+        <flowTransactionModel>Automatic</flowTransactionModel>
+        <inputParameters>
+            <name>approvalStatus</name>
+            <value>
+                <elementReference>$Record.Approval_Status__c</elementReference>
+                <inputConfiguratorMode>Resource</inputConfiguratorMode>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>currentEnv</name>
+            <value>
+                <elementReference>$Record.AEHC_Environment__c</elementReference>
+                <inputConfiguratorMode>Resource</inputConfiguratorMode>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>eventType</name>
+            <value>
+                <inputConfiguratorMode>Custom</inputConfiguratorMode>
+                <stringValue>SUBMITTED</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>isAdl</name>
+            <value>
+                <elementReference>$Record.AEHC_ADL_Review_Required__c</elementReference>
+                <inputConfiguratorMode>Resource</inputConfiguratorMode>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>previousEnv</name>
+            <value>
+                <elementReference>$Record__Prior.AEHC_Environment__c</elementReference>
+                <inputConfiguratorMode>Resource</inputConfiguratorMode>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>recipientUsers</name>
+            <value>
+                <elementReference>submitterUserId</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>recordId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+                <inputConfiguratorMode>Resource</inputConfiguratorMode>
+            </value>
+        </inputParameters>
+        <nameSegment>AEHC_EmailAlertServiceController</nameSegment>
+        <offset>0</offset>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </actionCalls>
+    <actionCalls>
+        <name>end_Notification_to_Requesting_user_Suibscriber</name>
+        <label>Send Notification to Requesting user Suibscriber</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <actionName>customNotificationAction</actionName>
+        <actionType>customNotificationAction</actionType>
+        <connector>
+            <targetReference>Send_email_alert_to_requesting_user_subscriber1</targetReference>
+        </connector>
+        <faultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Send_email_alert_to_requesting_user_subscriber1</targetReference>
+        </faultConnector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>customNotifTypeId</name>
+            <value>
+                <elementReference>Get_Custom_Notification_type_v2.Id</elementReference>
+                <inputConfiguratorMode>Resource</inputConfiguratorMode>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>recipientIds</name>
+            <value>
+                <elementReference>alluser</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>title</name>
+            <value>
+                <elementReference>RequestorHeader</elementReference>
+                <inputConfiguratorMode>Resource</inputConfiguratorMode>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>body</name>
+            <value>
+                <elementReference>RequestorNotificationBody</elementReference>
+                <inputConfiguratorMode>Resource</inputConfiguratorMode>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>targetPageRef</name>
+            <value>
+                <formulaDataType>String</formulaDataType>
+                <formulaExpression>&apos;{&quot;type&quot;: &quot;comm__namedPage&quot;, &quot;attributes&quot;: {&quot;pageName&quot;: &quot;manage-subscriptions&quot;}, &quot;state&quot;: {&quot;subscriptionId&quot;: &quot;&apos; + {!$Record.AEHC_Subscription_Request__r.Id}
++&apos;&quot;,&apos;
++IF({!$Record.AEHC_Is_Subscription__c}, &apos;&quot;ver&quot;: &quot;&apos; +{!$Record.AEHC_Schema_Version__c}+&apos;&quot;,&apos;,
+&apos;&apos;)
+ +&apos;&quot;env&quot;: &quot;&apos; + TEXT({!$Record.AEHC_Environment__c}) + &apos;&quot;}}&apos;</formulaExpression>
+                <inputConfiguratorMode>Formula</inputConfiguratorMode>
+            </value>
+        </inputParameters>
+        <nameSegment>customNotificationAction</nameSegment>
+        <offset>0</offset>
+    </actionCalls>
+    <actionCalls>
+        <name>notification_to_subscriber_on_submission</name>
+        <label>notification to subscriber on submission</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <actionName>customNotificationAction</actionName>
+        <actionType>customNotificationAction</actionType>
+        <connector>
+            <targetReference>Email_alert_to_submitter</targetReference>
+        </connector>
+        <faultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>check_Environment_on_creation</targetReference>
+        </faultConnector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>customNotifTypeId</name>
+            <value>
+                <elementReference>Get_Custom_Notification_type_v2.Id</elementReference>
+                <inputConfiguratorMode>Resource</inputConfiguratorMode>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>recipientIds</name>
+            <value>
+                <elementReference>submitterUserId</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>title</name>
+            <value>
+                <elementReference>ApprovalSubmitterHeader</elementReference>
+                <inputConfiguratorMode>Resource</inputConfiguratorMode>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>body</name>
+            <value>
+                <elementReference>ApprovalSubmittedBody</elementReference>
+                <inputConfiguratorMode>Resource</inputConfiguratorMode>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>targetPageRef</name>
+            <value>
+                <formulaDataType>String</formulaDataType>
+                <formulaExpression>&apos;{&quot;type&quot;: &quot;comm__namedPage&quot;, &quot;attributes&quot;: {&quot;pageName&quot;:&quot;&apos;+IF({!$Record.AEHC_Is_Subscription__c}, &apos;manage-subscriptions&apos; ,  &apos;data-publication-details&apos;)+&apos;&quot;}, &quot;state&quot;: {&quot;&apos;+
+
+IF({!$Record.AEHC_Is_Subscription__c},&apos;subscriptionId&quot;: &quot;&apos; + {!$Record.AEHC_Subscription_Request__r.Id},
+&apos;id&quot;: &quot;&apos; + {!$Record.AEHC_Publication__r.Id}
+) 
++&apos;&quot;,&apos;
++IF({!$Record.AEHC_Is_Subscription__c}, &apos;&quot;ver&quot;: &quot;&apos; +{!$Record.AEHC_Schema_Version__c}+&apos;&quot;,&apos;,
+&apos;&apos;)
+ +&apos; &quot;env&quot;: &quot;&apos; + TEXT({!$Record.AEHC_Environment__c}) + &apos;&quot;}}&apos;</formulaExpression>
+                <inputConfiguratorMode>Formula</inputConfiguratorMode>
+            </value>
+        </inputParameters>
+        <nameSegment>customNotificationAction</nameSegment>
+        <offset>0</offset>
+    </actionCalls>
+    <actionCalls>
+        <name>Send_Email_alert_to_Approver</name>
+        <label>Send Email alert to Approver</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <actionName>AEHC_EmailAlertServiceController</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>check_Valid_Information_Architect</targetReference>
+        </connector>
+        <faultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>create_user_log</targetReference>
+        </faultConnector>
+        <flowTransactionModel>Automatic</flowTransactionModel>
+        <inputParameters>
+            <name>approvalStatus</name>
+            <value>
+                <elementReference>$Record.Approval_Status__c</elementReference>
+                <inputConfiguratorMode>Resource</inputConfiguratorMode>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>currentEnv</name>
+            <value>
+                <elementReference>$Record.AEHC_Environment__c</elementReference>
+                <inputConfiguratorMode>Resource</inputConfiguratorMode>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>eventType</name>
+            <value>
+                <inputConfiguratorMode>Custom</inputConfiguratorMode>
+                <stringValue>APPROVAL</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>isAdl</name>
+            <value>
+                <elementReference>$Record.AEHC_ADL_Review_Required__c</elementReference>
+                <inputConfiguratorMode>Resource</inputConfiguratorMode>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>previousEnv</name>
+            <value>
+                <elementReference>$Record__Prior.AEHC_Environment__c</elementReference>
+                <inputConfiguratorMode>Resource</inputConfiguratorMode>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>recipientUsers</name>
+            <value>
+                <elementReference>alluser</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>recordId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+                <inputConfiguratorMode>Resource</inputConfiguratorMode>
+            </value>
+        </inputParameters>
+        <nameSegment>AEHC_EmailAlertServiceController</nameSegment>
+        <offset>0</offset>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </actionCalls>
+    <actionCalls>
+        <name>Send_Email_Alert_to_community_user</name>
+        <label>Send Email Alert to community user</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <actionName>AEHC_EmailAlertServiceController</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Check_Valid_IA_for_Subscription</targetReference>
+        </connector>
+        <faultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>create_user_log_notificationonrecord</targetReference>
+        </faultConnector>
+        <flowTransactionModel>Automatic</flowTransactionModel>
+        <inputParameters>
+            <name>approvalStatus</name>
+            <value>
+                <elementReference>$Record.Approval_Status__c</elementReference>
+                <inputConfiguratorMode>Resource</inputConfiguratorMode>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>currentEnv</name>
+            <value>
+                <elementReference>$Record.AEHC_Environment__c</elementReference>
+                <inputConfiguratorMode>Resource</inputConfiguratorMode>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>eventType</name>
+            <value>
+                <inputConfiguratorMode>Custom</inputConfiguratorMode>
+                <stringValue>APPROVAL</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>isAdl</name>
+            <value>
+                <elementReference>$Record.AEHC_ADL_Review_Required__c</elementReference>
+                <inputConfiguratorMode>Resource</inputConfiguratorMode>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>previousEnv</name>
+            <value>
+                <elementReference>$Record__Prior.AEHC_Environment__c</elementReference>
+                <inputConfiguratorMode>Resource</inputConfiguratorMode>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>recipientUsers</name>
+            <value>
+                <elementReference>alluser</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>recordId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+                <inputConfiguratorMode>Resource</inputConfiguratorMode>
+            </value>
+        </inputParameters>
+        <nameSegment>AEHC_EmailAlertServiceController</nameSegment>
+        <offset>0</offset>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </actionCalls>
+    <actionCalls>
+        <name>send_email_alert_to_requesting_subscriber_user3</name>
+        <label>send email alert to requesting subscriber user</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <actionName>AEHC_EmailAlertServiceController</actionName>
+        <actionType>apex</actionType>
+        <faultConnector>
+            <targetReference>Email_Notification_Failed</targetReference>
+        </faultConnector>
+        <flowTransactionModel>Automatic</flowTransactionModel>
+        <inputParameters>
+            <name>approvalStatus</name>
+            <value>
+                <elementReference>$Record.Approval_Status__c</elementReference>
+                <inputConfiguratorMode>Resource</inputConfiguratorMode>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>currentEnv</name>
+            <value>
+                <elementReference>$Record.AEHC_Environment__c</elementReference>
+                <inputConfiguratorMode>Resource</inputConfiguratorMode>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>eventType</name>
+            <value>
+                <inputConfiguratorMode>Custom</inputConfiguratorMode>
+                <stringValue>APPROVED</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>isAdl</name>
+            <value>
+                <elementReference>$Record.AEHC_ADL_Review_Required__c</elementReference>
+                <inputConfiguratorMode>Resource</inputConfiguratorMode>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>previousEnv</name>
+            <value>
+                <elementReference>$Record__Prior.AEHC_Environment__c</elementReference>
+                <inputConfiguratorMode>Resource</inputConfiguratorMode>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>recipientUsers</name>
+            <value>
+                <elementReference>alluser</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>recordId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+                <inputConfiguratorMode>Resource</inputConfiguratorMode>
+            </value>
+        </inputParameters>
+        <nameSegment>AEHC_EmailAlertServiceController</nameSegment>
+        <offset>0</offset>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </actionCalls>
+    <actionCalls>
+        <name>Send_email_alert_to_requesting_user</name>
+        <label>Send email alert to requesting user</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <actionName>AEHC_EmailAlertServiceController</actionName>
+        <actionType>apex</actionType>
+        <flowTransactionModel>Automatic</flowTransactionModel>
+        <inputParameters>
+            <name>approvalStatus</name>
+            <value>
+                <elementReference>$Record.Approval_Status__c</elementReference>
+                <inputConfiguratorMode>Resource</inputConfiguratorMode>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>currentEnv</name>
+            <value>
+                <elementReference>$Record.AEHC_Environment__c</elementReference>
+                <inputConfiguratorMode>Resource</inputConfiguratorMode>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>eventType</name>
+            <value>
+                <inputConfiguratorMode>Custom</inputConfiguratorMode>
+                <stringValue>REJECTED</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>isAdl</name>
+            <value>
+                <elementReference>$Record.AEHC_ADL_Review_Required__c</elementReference>
+                <inputConfiguratorMode>Resource</inputConfiguratorMode>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>previousEnv</name>
+            <value>
+                <elementReference>$Record__Prior.AEHC_Environment__c</elementReference>
+                <inputConfiguratorMode>Resource</inputConfiguratorMode>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>recipientUsers</name>
+            <value>
+                <elementReference>alluser</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>recordId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+                <inputConfiguratorMode>Resource</inputConfiguratorMode>
+            </value>
+        </inputParameters>
+        <nameSegment>AEHC_EmailAlertServiceController</nameSegment>
+        <offset>0</offset>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </actionCalls>
+    <actionCalls>
+        <name>Send_email_alert_to_requesting_user1</name>
+        <label>Send email alert to requesting user</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <actionName>AEHC_EmailAlertServiceController</actionName>
+        <actionType>apex</actionType>
+        <flowTransactionModel>Automatic</flowTransactionModel>
+        <inputParameters>
+            <name>approvalStatus</name>
+            <value>
+                <elementReference>$Record.Approval_Status__c</elementReference>
+                <inputConfiguratorMode>Resource</inputConfiguratorMode>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>currentEnv</name>
+            <value>
+                <elementReference>$Record.AEHC_Environment__c</elementReference>
+                <inputConfiguratorMode>Resource</inputConfiguratorMode>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>eventType</name>
+            <value>
+                <inputConfiguratorMode>Custom</inputConfiguratorMode>
+                <stringValue>APPROVED</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>isAdl</name>
+            <value>
+                <elementReference>$Record.AEHC_ADL_Review_Required__c</elementReference>
+                <inputConfiguratorMode>Resource</inputConfiguratorMode>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>previousEnv</name>
+            <value>
+                <elementReference>$Record__Prior.AEHC_Environment__c</elementReference>
+                <inputConfiguratorMode>Resource</inputConfiguratorMode>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>recipientUsers</name>
+            <value>
+                <elementReference>alluser</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>recordId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+                <inputConfiguratorMode>Resource</inputConfiguratorMode>
+            </value>
+        </inputParameters>
+        <nameSegment>AEHC_EmailAlertServiceController</nameSegment>
+        <offset>0</offset>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </actionCalls>
+    <actionCalls>
+        <name>Send_Email_Alert_to_requesting_user_subscriber</name>
+        <label>Send Email Alert to requesting user subscriber</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <actionName>AEHC_EmailAlertServiceController</actionName>
+        <actionType>apex</actionType>
+        <flowTransactionModel>Automatic</flowTransactionModel>
+        <inputParameters>
+            <name>approvalStatus</name>
+            <value>
+                <elementReference>$Record.Approval_Status__c</elementReference>
+                <inputConfiguratorMode>Resource</inputConfiguratorMode>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>currentEnv</name>
+            <value>
+                <elementReference>$Record.AEHC_Environment__c</elementReference>
+                <inputConfiguratorMode>Resource</inputConfiguratorMode>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>eventType</name>
+            <value>
+                <inputConfiguratorMode>Custom</inputConfiguratorMode>
+                <stringValue>REJECTED</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>isAdl</name>
+            <value>
+                <elementReference>$Record.AEHC_ADL_Review_Required__c</elementReference>
+                <inputConfiguratorMode>Resource</inputConfiguratorMode>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>previousEnv</name>
+            <value>
+                <elementReference>$Record__Prior.AEHC_Environment__c</elementReference>
+                <inputConfiguratorMode>Resource</inputConfiguratorMode>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>recipientUsers</name>
+            <value>
+                <elementReference>alluser</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>recordId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+                <inputConfiguratorMode>Resource</inputConfiguratorMode>
+            </value>
+        </inputParameters>
+        <nameSegment>AEHC_EmailAlertServiceController</nameSegment>
+        <offset>0</offset>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </actionCalls>
+    <actionCalls>
+        <name>Send_email_alert_to_requesting_user_subscriber1</name>
+        <label>Send email alert to requesting user subscriber</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <actionName>AEHC_EmailAlertServiceController</actionName>
+        <actionType>apex</actionType>
+        <flowTransactionModel>Automatic</flowTransactionModel>
+        <inputParameters>
+            <name>approvalStatus</name>
+            <value>
+                <elementReference>$Record.Approval_Status__c</elementReference>
+                <inputConfiguratorMode>Resource</inputConfiguratorMode>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>currentEnv</name>
+            <value>
+                <elementReference>$Record.AEHC_Environment__c</elementReference>
+                <inputConfiguratorMode>Resource</inputConfiguratorMode>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>eventType</name>
+            <value>
+                <inputConfiguratorMode>Custom</inputConfiguratorMode>
+                <stringValue>APPROVED</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>isAdl</name>
+            <value>
+                <elementReference>$Record.AEHC_ADL_Review_Required__c</elementReference>
+                <inputConfiguratorMode>Resource</inputConfiguratorMode>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>previousEnv</name>
+            <value>
+                <elementReference>$Record__Prior.AEHC_Environment__c</elementReference>
+                <inputConfiguratorMode>Resource</inputConfiguratorMode>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>recipientUsers</name>
+            <value>
+                <elementReference>alluser</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>recordId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+                <inputConfiguratorMode>Resource</inputConfiguratorMode>
+            </value>
+        </inputParameters>
+        <nameSegment>AEHC_EmailAlertServiceController</nameSegment>
+        <offset>0</offset>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </actionCalls>
+    <actionCalls>
+        <name>Send_Email_to_IA_Publication</name>
+        <label>Send Email to IA (Publication)</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <actionName>AEHC_email_msg_helper</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Requestor_notification_check</targetReference>
+        </connector>
+        <faultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>create_user_log</targetReference>
+        </faultConnector>
+        <flowTransactionModel>Automatic</flowTransactionModel>
+        <inputParameters>
+            <name>contactIds</name>
+            <value>
+                <elementReference>AllUserInformationArchitech</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>emailTemplateId</name>
+            <value>
+                <elementReference>Get_IA_publication_Email_Template.Id</elementReference>
+                <inputConfiguratorMode>Resource</inputConfiguratorMode>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>orgWideEmailAddressId</name>
+            <value>
+                <elementReference>Get_Org_Wide_Email_Address.Id</elementReference>
+                <inputConfiguratorMode>Resource</inputConfiguratorMode>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>recordId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+                <inputConfiguratorMode>Resource</inputConfiguratorMode>
+            </value>
+        </inputParameters>
+        <nameSegment>AEHC_email_msg_helper</nameSegment>
+        <offset>0</offset>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </actionCalls>
+    <actionCalls>
+        <name>Send_Email_to_IA_Subscription</name>
+        <label>Send Email to IA Subscription</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <actionName>AEHC_email_msg_helper</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>get_user</targetReference>
+        </connector>
+        <faultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>get_user</targetReference>
+        </faultConnector>
+        <flowTransactionModel>Automatic</flowTransactionModel>
+        <inputParameters>
+            <name>contactIds</name>
+            <value>
+                <elementReference>AllUserInformationArchitech</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>emailTemplateId</name>
+            <value>
+                <elementReference>Get_IA_Subscription_Email_Template.Id</elementReference>
+                <inputConfiguratorMode>Resource</inputConfiguratorMode>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>orgWideEmailAddressId</name>
+            <value>
+                <elementReference>Get_Org_Wide_Email_Address.Id</elementReference>
+                <inputConfiguratorMode>Resource</inputConfiguratorMode>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>recordId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+                <inputConfiguratorMode>Resource</inputConfiguratorMode>
+            </value>
+        </inputParameters>
+        <nameSegment>AEHC_email_msg_helper</nameSegment>
+        <offset>0</offset>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </actionCalls>
+    <actionCalls>
+        <description>Send custom notification to community</description>
+        <name>Send_Notification_community</name>
+        <label>Send Notification community</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <actionName>customNotificationAction</actionName>
+        <actionType>customNotificationAction</actionType>
+        <connector>
+            <targetReference>Send_Email_Alert_to_community_user</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>create_user_log_notificationonrecord</targetReference>
+        </faultConnector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>customNotifTypeId</name>
+            <value>
+                <elementReference>Get_Custom_Notification_type.Id</elementReference>
+                <inputConfiguratorMode>Resource</inputConfiguratorMode>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>recipientIds</name>
+            <value>
+                <elementReference>alluser</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>title</name>
+            <value>
+                <elementReference>BOHeader</elementReference>
+                <inputConfiguratorMode>Resource</inputConfiguratorMode>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>body</name>
+            <value>
+                <elementReference>BONotification</elementReference>
+                <inputConfiguratorMode>Resource</inputConfiguratorMode>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>targetPageRef</name>
+            <value>
+                <formulaDataType>String</formulaDataType>
+                <formulaExpression>&apos;{&quot;type&quot;: &quot;comm__namedPage&quot;, &quot;attributes&quot;: {&quot;pageName&quot;: &quot;manage-subscriptions&quot;}, &quot;state&quot;: {&quot;subscriptionId&quot;: &quot;&apos; + {!$Record.AEHC_Subscription_Request__r.Id}+ &apos;&quot;, &quot;ver&quot;: &quot;&apos;+{!$Record.AEHC_Schema_Version__c}+&apos;&quot;, &quot;env&quot;: &quot;&apos; + TEXT({!$Record.AEHC_Environment__c}) + &apos;&quot;}}&apos;</formulaExpression>
+                <inputConfiguratorMode>Formula</inputConfiguratorMode>
+            </value>
+        </inputParameters>
+        <nameSegment>customNotificationAction</nameSegment>
+        <offset>0</offset>
+    </actionCalls>
+    <actionCalls>
+        <name>Send_Notification_to_Requesting_user</name>
+        <label>Send Notification to Requesting user</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <actionName>customNotificationAction</actionName>
+        <actionType>customNotificationAction</actionType>
+        <connector>
+            <targetReference>send_email_alert_to_requesting_subscriber_user3</targetReference>
+        </connector>
+        <faultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>send_email_alert_to_requesting_subscriber_user3</targetReference>
+        </faultConnector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>customNotifTypeId</name>
+            <value>
+                <elementReference>Get_Custom_Notification_type_v2.Id</elementReference>
+                <inputConfiguratorMode>Resource</inputConfiguratorMode>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>recipientIds</name>
+            <value>
+                <elementReference>alluser</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>title</name>
+            <value>
+                <elementReference>RequestorHeader</elementReference>
+                <inputConfiguratorMode>Resource</inputConfiguratorMode>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>body</name>
+            <value>
+                <elementReference>RequestorNotificationBody</elementReference>
+                <inputConfiguratorMode>Resource</inputConfiguratorMode>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>targetPageRef</name>
+            <value>
+                <formulaDataType>String</formulaDataType>
+                <formulaExpression>&apos;{&quot;type&quot;: &quot;comm__namedPage&quot;, &quot;attributes&quot;: {&quot;pageName&quot;: &quot;data-publication-details&quot;}, &quot;state&quot;: {&quot;id&quot;: &quot;&apos; + {!$Record.AEHC_Publication__c} + &apos;&quot;, &quot;env&quot;: &quot;&apos; + TEXT({!$Record.AEHC_Environment__c}) + &apos;&quot;}}&apos;</formulaExpression>
+                <inputConfiguratorMode>Formula</inputConfiguratorMode>
+            </value>
+        </inputParameters>
+        <nameSegment>customNotificationAction</nameSegment>
+        <offset>0</offset>
+    </actionCalls>
+    <actionCalls>
+        <name>Send_Notification_to_Requesting_user_Suibscribers</name>
+        <label>Send Notification to Requesting user Suibscriber</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <actionName>customNotificationAction</actionName>
+        <actionType>customNotificationAction</actionType>
+        <connector>
+            <targetReference>Send_Email_Alert_to_requesting_user_subscriber</targetReference>
+        </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>customNotifTypeId</name>
+            <value>
+                <elementReference>Get_Custom_Notification_type_reject.Id</elementReference>
+                <inputConfiguratorMode>Resource</inputConfiguratorMode>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>recipientIds</name>
+            <value>
+                <elementReference>alluser</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>title</name>
+            <value>
+                <elementReference>RejectHeader</elementReference>
+                <inputConfiguratorMode>Resource</inputConfiguratorMode>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>body</name>
+            <value>
+                <elementReference>RejectNotificationBody</elementReference>
+                <inputConfiguratorMode>Resource</inputConfiguratorMode>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>targetPageRef</name>
+            <value>
+                <formulaDataType>String</formulaDataType>
+                <formulaExpression>&apos;{&quot;type&quot;: &quot;comm__namedPage&quot;, &quot;attributes&quot;: {&quot;pageName&quot;: &quot;manage-subscriptions&quot;}, &quot;state&quot;: {&quot;subscriptionId&quot;: &quot;&apos; + {!$Record.AEHC_Subscription_Request__r.Id}+&apos;&quot;,&apos;
++IF({!$Record.AEHC_Is_Subscription__c}, &apos;&quot;ver&quot;: &quot;&apos; +{!$Record.AEHC_Schema_Version__c}+&apos;&quot;,&apos;,
+&apos;&apos;)+&apos;&quot;env&quot;: &quot;&apos; + TEXT({!$Record.AEHC_Environment__c}) + &apos;&quot;}}&apos;</formulaExpression>
+                <inputConfiguratorMode>Formula</inputConfiguratorMode>
+            </value>
+        </inputParameters>
+        <nameSegment>customNotificationAction</nameSegment>
+        <offset>0</offset>
+    </actionCalls>
+    <actionCalls>
+        <name>Send_Notification_to_Requesting_users</name>
+        <label>Send Notification to Requesting user</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <actionName>customNotificationAction</actionName>
+        <actionType>customNotificationAction</actionType>
+        <connector>
+            <targetReference>Send_email_alert_to_requesting_user</targetReference>
+        </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>customNotifTypeId</name>
+            <value>
+                <elementReference>Get_Custom_Notification_type_reject.Id</elementReference>
+                <inputConfiguratorMode>Resource</inputConfiguratorMode>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>recipientIds</name>
+            <value>
+                <elementReference>alluser</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>title</name>
+            <value>
+                <elementReference>RejectNotificationBody</elementReference>
+                <inputConfiguratorMode>Resource</inputConfiguratorMode>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>body</name>
+            <value>
+                <elementReference>RejectNotificationBody</elementReference>
+                <inputConfiguratorMode>Resource</inputConfiguratorMode>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>targetPageRef</name>
+            <value>
+                <formulaDataType>String</formulaDataType>
+                <formulaExpression>&apos;{&quot;type&quot;: &quot;comm__namedPage&quot;, &quot;attributes&quot;: {&quot;pageName&quot;: &quot;data-publication-details&quot;}, &quot;state&quot;: {&quot;id&quot;: &quot;&apos; + {!$Record.AEHC_Publication__c} + &apos;&quot;, &quot;env&quot;: &quot;&apos; + {!previousEnv}+ &apos;&quot;}}&apos;</formulaExpression>
+                <inputConfiguratorMode>Formula</inputConfiguratorMode>
+            </value>
+        </inputParameters>
+        <nameSegment>customNotificationAction</nameSegment>
+        <offset>0</offset>
+    </actionCalls>
+    <actionCalls>
+        <name>Send_Notification_to_user</name>
+        <label>Send Notification to user</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <actionName>customNotificationAction</actionName>
+        <actionType>customNotificationAction</actionType>
+        <connector>
+            <targetReference>Send_Email_alert_to_Approver</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>create_user_log</targetReference>
+        </faultConnector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>customNotifTypeId</name>
+            <value>
+                <elementReference>Get_Custom_Notification_type.Id</elementReference>
+                <inputConfiguratorMode>Resource</inputConfiguratorMode>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>recipientIds</name>
+            <value>
+                <elementReference>alluser</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>title</name>
+            <value>
+                <elementReference>BOHeader</elementReference>
+                <inputConfiguratorMode>Resource</inputConfiguratorMode>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>body</name>
+            <value>
+                <elementReference>BONotification</elementReference>
+                <inputConfiguratorMode>Resource</inputConfiguratorMode>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>targetPageRef</name>
+            <value>
+                <formulaDataType>String</formulaDataType>
+                <formulaExpression>&apos;{&quot;type&quot;: &quot;comm__namedPage&quot;, &quot;attributes&quot;: {&quot;pageName&quot;: &quot;data-publication-details&quot;}, &quot;state&quot;: {&quot;id&quot;: &quot;&apos; + {!$Record.AEHC_Publication__c} + &apos;&quot;, &quot;env&quot;: &quot;&apos; + TEXT({!$Record.AEHC_Environment__c}) + &apos;&quot;}}&apos;</formulaExpression>
+                <inputConfiguratorMode>Formula</inputConfiguratorMode>
+            </value>
+        </inputParameters>
+        <nameSegment>customNotificationAction</nameSegment>
+        <offset>0</offset>
+    </actionCalls>
+    <actionCalls>
+        <name>submit_for_approval_process</name>
+        <label>submit for approval process</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <actionName>submit</actionName>
+        <actionType>submit</actionType>
+        <connector>
+            <targetReference>check_for_auto_approval</targetReference>
+        </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>objectId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+                <inputConfiguratorMode>Resource</inputConfiguratorMode>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>processDefinitionNameOrId</name>
+            <value>
+                <inputConfiguratorMode>Resource</inputConfiguratorMode>
+                <stringValue>AEHC_Version_Approval_PublicationV4</stringValue>
+            </value>
+        </inputParameters>
+        <nameSegment>submit</nameSegment>
+        <offset>0</offset>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </actionCalls>
+    <apiVersion>67.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <assignments>
+        <name>add_requestor_user</name>
+        <label>add requestor user</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>alluser</assignToReference>
+            <operator>Assign</operator>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>alluser</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>$Record.CreatedById</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Check_Is_Subscription</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>add_requestors</name>
+        <label>add requestor user</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>alluser</assignToReference>
+            <operator>Assign</operator>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>alluser</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>$Record.CreatedById</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Check_Is_Subscriptions</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>add_user_in_list</name>
+        <label>add user in list</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>alluser</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>loop_subscription.CreatedById</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>loop_subscription</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>assign_acr</name>
+        <label>assign acr</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>acrrecord</assignToReference>
+            <operator>Assign</operator>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>acrrecord.AccountId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.AEHC_Subscription_Request__r.AEHC_Group_Account__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>acrrecord.ContactId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>iterate_user.ContactId</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>acrrecord.IsActive</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>acrlist</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>acrrecord</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>iterate_user</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Assign ADLs to all user list</description>
+        <name>Assign_ADL_Users</name>
+        <label>Assign ADL Users</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>alluser</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>ADL_ReviewLoop.AEHC_User__c</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>ADL_ReviewLoop</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>assign_created_by_user_in_list</name>
+        <label>assign created by user in list</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>submitterUserId</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>$Record.CreatedById</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>notification_to_subscriber_on_submission</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Assign_IA_user_in_list</name>
+        <label>Assign IA user in list</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>alluser</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>Loop_On_IA_Records.AEHC_User__c</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Loop_On_IA_Records</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Assign Security Architects to all user list</description>
+        <name>Assign_Security_Architects</name>
+        <label>Assign Security Architects</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>alluser</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>Security_Architect.AEHC_User__c</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Security_Architect</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Assign_user</name>
+        <label>Assign user</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>alluser</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>Loop_on_sset_member_for_user.AEHC_User__c</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Loop_on_sset_member_for_user</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>assign_user_for_subs_bo</name>
+        <label>assign user for subs bo</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>alluser</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>iterate_subscriber_bo.AEHC_User__c</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>iterate_subscriber_bo</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>assign_user_id_to_collection</name>
+        <label>assign user id to collection</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>alluser</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>get_DDH_user.AEHC_User__c</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>get_DDH_user</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>assign_user_id_to_collection_for_Information_Architech</name>
+        <label>user id to collection for Information Architech</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>AllUserInformationArchitech</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>get_Information_Architech_User.AEHC_User__r.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>get_Information_Architech_User</targetReference>
+        </connector>
+    </assignments>
+    <customErrors>
+        <description>Email Notification Sending Failed</description>
+        <name>Email_Notification_Failed</name>
+        <label>Email Notification Sending Failed</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <customErrorMessages>
+            <errorMessage>Email Notification Sending Failed</errorMessage>
+            <isFieldError>false</isFieldError>
+        </customErrorMessages>
+    </customErrors>
+    <decisions>
+        <name>check_acr</name>
+        <label>check acr</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>iterate_user</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>check_acr_record</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>check_existing_acr</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>iterate_user.ContactId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.AEHC_Subscription_Request__r.AEHC_Group_Account__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>assign_acr</targetReference>
+            </connector>
+            <label>check acr record</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Check_ADL_User_Is_active</name>
+        <label>Check ADL User Is active</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>ADL_ReviewLoop</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>is_user_active_ADL</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>ADL_ReviewLoop.AEHC_User__r.IsActive</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_ADL_Users</targetReference>
+            </connector>
+            <label>is user active ADL</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>check_Environment_on_creation</name>
+        <label>check Environment on creation</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Dev</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.AEHC_Environment__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Dev</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>checksubscription</targetReference>
+            </connector>
+            <label>Dev</label>
+        </rules>
+        <rules>
+            <name>QA</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.AEHC_Environment__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>QA</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <isGoTo>true</isGoTo>
+                <targetReference>Get_DDH_ADMIN</targetReference>
+            </connector>
+            <label>QA</label>
+        </rules>
+        <rules>
+            <name>UAT</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.AEHC_Environment__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>UAT</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <isGoTo>true</isGoTo>
+                <targetReference>Get_Security_Reviewer</targetReference>
+            </connector>
+            <label>UAT</label>
+        </rules>
+        <rules>
+            <name>prod</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.AEHC_Environment__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Production</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>check_for_status</targetReference>
+            </connector>
+            <label>prod</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>check_for_auto_approval</name>
+        <label>check for auto approval</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>check_status</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>check_auto_approval_required</name>
+            <conditionLogic>(NOT(3) AND 1 ) OR (3 AND 2)</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.AEHC_Publication_Owner_Approved__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.AEHC_Subscription_Owner_Approved__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.AEHC_Is_Subscription__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>auto_approve_step_1</targetReference>
+            </connector>
+            <label>check auto approval required</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>check_for_PBO_approval</name>
+        <label>check for PBO approval</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Get_Information_Architech</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>PBO_is_required</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.AEHC_Is_Subscription__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.AEHC_Publication_Owner_Approved__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>auto_approve_step_2</targetReference>
+            </connector>
+            <label>PBO is required</label>
+        </rules>
+        <rules>
+            <name>Is_Publication</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.AEHC_Is_Subscription__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <isGoTo>true</isGoTo>
+                <targetReference>Get_DDH_ADMIN</targetReference>
+            </connector>
+            <label>Is Publication</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>check_for_status</name>
+        <label>check for status</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Get_Security_Reviewer</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>IS_DDH_Admin_Reviews</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Approval_Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>DDH Admin Review</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <isGoTo>true</isGoTo>
+                <targetReference>Get_DDH_ADMIN</targetReference>
+            </connector>
+            <label>IS DDH Admin Reviews</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Check_Is_Subscription</name>
+        <label>Check Is Subscription</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Send_Notification_to_Requesting_user</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>is_subscription_request</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.AEHC_Is_Subscription__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>end_Notification_to_Requesting_user_Suibscriber</targetReference>
+            </connector>
+            <label>is subscription request</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Check_Is_Subscriptions</name>
+        <label>Check Is Subscription</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Send_Notification_to_Requesting_users</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Copy_1_of_is_subscription_request</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.AEHC_Is_Subscription__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Send_Notification_to_Requesting_user_Suibscribers</targetReference>
+            </connector>
+            <label>Copy 1 of is subscription request</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>check_is_user_active_SA</name>
+        <label>check is user active</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Security_Architect</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Is_User_Active_SA</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Security_Architect.AEHC_User__r.IsActive</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_Security_Architects</targetReference>
+            </connector>
+            <label>Is User Active SA</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>check_status</name>
+        <label>check status</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>notsumitted_to_ddh_admin</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Approval_Status__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Submitted to DDH</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Information_Architech</targetReference>
+            </connector>
+            <label>not sumitted to ddh admin</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>check_Subscription</name>
+        <label>check Subscription</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>i</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Check_If_subscription_is_tagged</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.AEHC_Subscription_Request__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>alluser</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Send_Notification_to_user</targetReference>
+            </connector>
+            <label>Check If subscription is tagged</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Check_user_for_IA</name>
+        <label>Check user for IA</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Loop_On_IA_Records</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Is_user_Active_IA</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Loop_On_IA_Records.AEHC_User__r.IsActive</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_IA_user_in_list</targetReference>
+            </connector>
+            <label>Is user Active IA</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>check_user_is_active</name>
+        <label>check user is active</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>get_DDH_user</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>is_active_DDH</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>get_DDH_user.AEHC_User__r.IsActive</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>assign_user_id_to_collection</targetReference>
+            </connector>
+            <label>is active</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Check_User_is_add_or_not</name>
+        <label>Check User is add or not</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>iterate_subscriber_bo</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>check_user</name>
+            <conditionLogic>NOT (1) AND 2</conditionLogic>
+            <conditions>
+                <leftValueReference>alluser</leftValueReference>
+                <operator>Contains</operator>
+                <rightValue>
+                    <elementReference>iterate_subscriber_bo.AEHC_User__c</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>iterate_subscriber_bo.AEHC_User__r.IsActive</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>assign_user_for_subs_bo</targetReference>
+            </connector>
+            <label>check user</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Check_Valid_IA_for_Subscription</name>
+        <label>Check Valid IA for Subscription</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>get_user</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Has_Valid_IA</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>AllUserInformationArchitech</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_IA_Subscription_Email_Template</targetReference>
+            </connector>
+            <label>Has Valid IA</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>check_Valid_Information_Architect</name>
+        <label>check Valid Information Architect</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Requestor_notification_check</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>has_Values</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>AllUserInformationArchitech</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_IA_publication_Email_Template</targetReference>
+            </connector>
+            <label>has Values</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>checksubscription</name>
+        <label>checksubscription</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Get_Business_Owner</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>check_subscriptions</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.AEHC_Subscription_Request__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.AEHC_Subscription_Owner_Approved__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>getsubscripton_bo</targetReference>
+            </connector>
+            <label>check subscription</label>
+        </rules>
+        <rules>
+            <name>DDH_Admin_Review</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Approval_Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>DDH Admin Review</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <isGoTo>true</isGoTo>
+                <targetReference>Get_DDH_ADMIN</targetReference>
+            </connector>
+            <label>DDH Admin Review</label>
+        </rules>
+        <rules>
+            <name>pending_adl_review</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Approval_Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Pending ADL Review</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <isGoTo>true</isGoTo>
+                <targetReference>Get_ADL_USER</targetReference>
+            </connector>
+            <label>pending adl review</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>i</name>
+        <label>check 8user</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Requestor_notification_check</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Outcome_1_of_i</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>alluser</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Send_Notification_community</targetReference>
+            </connector>
+            <label>Outcome 1 of check 8user</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>is_User_Active</name>
+        <label>is User Active</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Loop_on_sset_member_for_user</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>check_is_Active</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Loop_on_sset_member_for_user.AEHC_User__r.IsActive</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_user</targetReference>
+            </connector>
+            <label>is Active</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Is_Version_for_Graph</name>
+        <label>Is Version for Graph</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>yes_Graph_Version</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.AEHC_Is_GraphQL_Request__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Recordtype_Check</targetReference>
+            </connector>
+            <label>No Graph Version</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Check</description>
+        <name>Recordtype_Check</name>
+        <label>Recordtype Check</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Is_Version</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.RecordType.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>AEHC_Version</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Custom_Notification_type_v2</targetReference>
+            </connector>
+            <label>Is Version</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Requestor_notification_check</name>
+        <label>Requestor notification check</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>is_required</name>
+            <conditionLogic>1 AND ( 2 OR 3 OR 4 OR 5 OR 6 ) AND 7</conditionLogic>
+            <conditions>
+                <leftValueReference>CheckISnew</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Approval_Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Business Owner Publication Review</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Approval_Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>DDH Admin Review</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Approval_Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Submitted to DDH</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Approval_Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Pending ADL Review</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Approval_Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Information Architect Review</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record__Prior.Approval_Status__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Rejected</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>add_requestor_user</targetReference>
+            </connector>
+            <label>is required</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>send_notification</name>
+        <label>send notification</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>is_adl</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>alluser</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.AEHC_ADL_Review_Required__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Copy_1_of_Send_Notification_to_Requesting_user</targetReference>
+            </connector>
+            <label>is adl</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Conditions to check the approval and notification to user</description>
+        <name>Submit_record_for_Approval_and_Send_Notiofication</name>
+        <label>Submit record for Approval and Send Notiofication</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Is_new</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>CheckISnew</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>submit_for_approval_process</targetReference>
+            </connector>
+            <label>Is new</label>
+        </rules>
+        <rules>
+            <name>DDH_Is_status_changed</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Approval_Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>DDH Admin Review</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Approval_Status__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <elementReference>$Record__Prior.Approval_Status__c</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_DDH_ADMIN</targetReference>
+            </connector>
+            <label>DDH Review and Is status changed</label>
+        </rules>
+        <rules>
+            <name>Security_Review_and_status_is_changed</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Approval_Status__c</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Approval_Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Security Architect Review</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Security_Reviewer</targetReference>
+            </connector>
+            <label>Security Review and status is changed</label>
+        </rules>
+        <rules>
+            <name>Business_Owner_Publication_Review</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Approval_Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Business Owner Publication Review</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Approval_Status__c</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <isGoTo>true</isGoTo>
+                <targetReference>Get_Business_Owner</targetReference>
+            </connector>
+            <label>Business Owner Publication Review</label>
+        </rules>
+        <rules>
+            <name>Submitted_to_DDH</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Approval_Status__c</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Approval_Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Submitted to DDH</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <isGoTo>true</isGoTo>
+                <targetReference>Requestor_notification_check</targetReference>
+            </connector>
+            <label>Submitted to DDH</label>
+        </rules>
+        <rules>
+            <name>Adl_Review</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Approval_Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Pending ADL Review</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Approval_Status__c</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_ADL_USER</targetReference>
+            </connector>
+            <label>Adl Review</label>
+        </rules>
+        <rules>
+            <name>Rejected_Status</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Approval_Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Rejected</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Approval_Status__c</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Custom_Notification_type_reject</targetReference>
+            </connector>
+            <label>Rejected Status</label>
+        </rules>
+        <rules>
+            <name>is_Active</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Approval_Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Active</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Approval_Status__c</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>get_subscription</targetReference>
+            </connector>
+            <label>is Active</label>
+        </rules>
+        <rules>
+            <name>Information_Architect_Review</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Approval_Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Information Architect Review</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Approval_Status__c</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>get_Information_Architect</targetReference>
+            </connector>
+            <label>Information Architect  Review</label>
+        </rules>
+    </decisions>
+    <description>Flow for After Insert and Update and added security architect review
+
+UAT Toggle Notification Addition
+
+Information Architect changes
+Email Alert Chnages
+
+Auto Approval changes
+
+DDH admin for Publication as well.</description>
+    <environments>Default</environments>
+    <formulas>
+        <name>ApprovalSubmittedBody</name>
+        <dataType>String</dataType>
+        <expression>IF( AND(
+        NOT($Record.AEHC_Is_Subscription__c),
+        Text($Record.AEHC_Environment__c) = &quot;Dev&quot;,
+        $Record.AEHC_Is_Fields_Change__c = TRUE
+    ),
+   &quot;Your Fields change request for publication &quot; &amp;
+    $Record.AEHC_Application__r.Name &amp;
+    &quot; has been submitted and is awaiting approval.&quot;,
+   IF(
+    AND(
+        NOT($Record.AEHC_Is_Subscription__c),
+        Text($Record.AEHC_Environment__c) = &quot;Dev&quot;,
+        $Record.AEHC_ADL_Review_Required__c = TRUE
+    ),
+    &quot;Your GP Schema change request for publication &quot; &amp;
+    $Record.AEHC_Application__r.Name &amp;
+    &quot; has been submitted and is awaiting approval.&quot;,
+
+    IF(
+        $Record.AEHC_Is_Subscription__c,
+
+        IF(
+            Text($Record.AEHC_Environment__c) &lt;&gt; &quot;Dev&quot;,
+            &quot;Your subscription promotion request for publication &quot; &amp;
+            $Record.AEHC_Application__r.Name &amp;
+            &quot; in the &quot; &amp;
+            Text($Record.AEHC_Environment__c) &amp;
+            &quot; environment has been submitted.&quot;,
+            &quot;Your subscription request for publication &quot; &amp;
+            $Record.AEHC_Application__r.Name &amp;
+            &quot; in the &quot; &amp;
+            Text($Record.AEHC_Environment__c) &amp;
+            &quot; environment has been submitted successfully and is awaiting approval.&quot;
+        ),
+
+        IF(
+            Text($Record.AEHC_Environment__c) &lt;&gt; &quot;Dev&quot;,
+            &quot;Your publication promotion request for publication &quot; &amp;
+            $Record.AEHC_Application__r.Name &amp;
+            &quot; in the &quot; &amp;
+            Text($Record.AEHC_Environment__c) &amp;
+            &quot; environment has been submitted.&quot;,
+            &quot;Your publication creation request for publication &quot; &amp;
+            $Record.AEHC_Application__r.Name &amp;
+            &quot; in the &quot; &amp;
+            Text($Record.AEHC_Environment__c) &amp;
+            &quot; environment has been submitted successfully.&quot;
+          )
+        )
+    )
+)</expression>
+    </formulas>
+    <formulas>
+        <name>ApprovalSubmitterHeader</name>
+        <dataType>String</dataType>
+        <expression>IF( AND(
+        NOT($Record.AEHC_Is_Subscription__c),
+        Text($Record.AEHC_Environment__c) = &quot;Dev&quot;,
+        $Record.AEHC_Is_Fields_Change__c = TRUE
+    ),
+   &quot;Publication Fields Change Submitted: &quot;&amp;{!Pub_Sub_Id} &amp; $Record.Name,
+   IF( AND(
+        NOT($Record.AEHC_Is_Subscription__c),
+        Text($Record.AEHC_Environment__c) = &quot;Dev&quot;,
+        $Record.AEHC_ADL_Review_Required__c = TRUE
+    ),
+    &quot;Schema Change Submitted: &quot;&amp;{!Pub_Sub_Id} &amp; $Record.Name,
+
+    IF(
+        $Record.AEHC_Is_Subscription__c,
+
+        IF(
+            Text($Record.AEHC_Environment__c) &lt;&gt; &quot;Dev&quot;,
+            &quot;Subscription Promotion Submitted: &quot; &amp; {!Pub_Sub_Id}&amp;  &quot; - &quot;&amp; $Record.Name,
+            &quot;Request Submitted: &quot;&amp; {!Pub_Sub_Id}&amp;  &quot; - &quot; &amp; $Record.Name
+        ),
+
+        IF(
+            Text($Record.AEHC_Environment__c) &lt;&gt; &quot;Dev&quot;,
+            &quot;Promotion Submitted: &quot; &amp; {!Pub_Sub_Id}&amp;  &quot; - &quot;&amp; $Record.Name,
+            &quot;Request Submitted: &quot; &amp; {!Pub_Sub_Id}&amp; &quot; - &quot; &amp; $Record.Name
+           )
+        )
+    )
+)</expression>
+    </formulas>
+    <formulas>
+        <description>HEade for notification</description>
+        <name>BOHeader</name>
+        <dataType>String</dataType>
+        <expression>IF(
+   AND(
+        NOT($Record.AEHC_Is_Subscription__c),
+        Text($Record.AEHC_Environment__c) = &quot;Dev&quot;,
+        $Record.AEHC_Is_Fields_Change__c = TRUE
+    ),
+   &quot;Publication Fields Change Approval Required : &quot;&amp;{!Pub_Sub_Id} &amp; $Record.Name,
+   IF(
+    TEXT($Record.Approval_Status__c) = &quot;Security Architect Review&quot;,
+
+    &quot;Security Approval Required: &quot;&amp; {!Pub_Sub_Id} &amp; $Record.Name,
+
+    IF(
+        TEXT($Record.Approval_Status__c) = &quot;DDH Admin Review&quot;,
+
+        &quot;Pending DDH Admin Approval: &quot; &amp; {!Pub_Sub_Id} &amp; $Record.Name,
+
+        IF(
+            AND(
+                NOT($Record.AEHC_Is_Subscription__c),
+                $Record.AEHC_ADL_Review_Required__c,
+                TEXT($Record.Approval_Status__c) = &quot;Information Architect Review&quot;
+            ),
+
+            &quot;Approval Required: &quot;&amp; {!Pub_Sub_Id} &amp; $Record.Name,
+
+            &quot;Approval Required: &quot;&amp; {!Pub_Sub_Id} &amp; $Record.Name
+         )
+        )
+    )
+)</expression>
+    </formulas>
+    <formulas>
+        <name>BONotification</name>
+        <dataType>String</dataType>
+        <expression>IF(AND(
+        NOT($Record.AEHC_Is_Subscription__c),
+        Text($Record.AEHC_Environment__c) = &quot;Dev&quot;,
+        $Record.AEHC_Is_Fields_Change__c = TRUE
+    ),
+   
+        &quot;Field Change request for publication &quot; &amp;
+        $Record.AEHC_Application__r.Name &amp;
+        &quot; in the &quot; &amp;
+        TEXT($Record.AEHC_Environment__c) &amp;
+        &quot; environment requires your approval.&quot;,
+   IF(
+    TEXT($Record.Approval_Status__c) = &quot;Security Architect Review&quot;,
+
+    IF(
+        $Record.AEHC_Is_Subscription__c,
+
+        &quot;A subscription promotion request for publication &quot; &amp;
+        $Record.AEHC_Application__r.Name &amp;
+        &quot; in the &quot; &amp;
+        TEXT($Record.AEHC_Environment__c) &amp;
+        &quot; environment requires your security review and approval.&quot;,
+
+        &quot;A publication promotion request for &quot; &amp;
+        $Record.AEHC_Application__r.Name &amp;
+        &quot; in the &quot; &amp;
+        TEXT($Record.AEHC_Environment__c) &amp;
+        &quot; environment requires your security review and approval.&quot;
+    ),
+
+    IF(
+        TEXT($Record.Approval_Status__c) = &quot;DDH Admin Review&quot;,
+
+        IF(
+            $Record.AEHC_Is_Subscription__c,
+
+            &quot;A subscription request for publication &quot; &amp;
+            $Record.AEHC_Application__r.Name &amp;
+            &quot; in the &quot; &amp;
+            TEXT($Record.AEHC_Environment__c) &amp;
+            &quot; environment requires your DDH Admin review and approval.&quot;,
+
+            &quot;A publication request for &quot; &amp;
+            $Record.AEHC_Application__r.Name &amp;
+            &quot; in the &quot; &amp;
+            TEXT($Record.AEHC_Environment__c) &amp;
+            &quot; environment requires your DDH Admin review and approval.&quot;
+        ),
+
+        IF(
+            AND(
+                NOT($Record.AEHC_Is_Subscription__c),
+                $Record.AEHC_ADL_Review_Required__c,
+                TEXT($Record.Approval_Status__c) = &quot;Information Architect Review&quot;
+            ),
+
+            &quot;A GP Schema change request for publication &quot; &amp;
+            $Record.AEHC_Application__r.Name &amp;
+            &quot; requires your review and approval.&quot;,
+
+            IF(
+                AND(
+                    NOT($Record.AEHC_Is_Subscription__c),
+                    $Record.AEHC_ADL_Review_Required__c
+                ),
+
+                &quot;A GP Schema change request for publication &quot; &amp;
+                $Record.AEHC_Application__r.Name &amp;
+                &quot; requires your review and approval.&quot;,
+
+                IF(
+                    $Record.AEHC_Is_Subscription__c,
+
+                    &quot;A subscription request for publication &quot; &amp;
+                    $Record.AEHC_Application__r.Name &amp;
+                    &quot; in the &quot; &amp;
+                    TEXT($Record.AEHC_Environment__c) &amp;
+                    &quot; environment requires your review and approval.&quot;,
+
+                    &quot;A new publication request for &quot; &amp;
+                    $Record.AEHC_Application__r.Name &amp;
+                    &quot; in the &quot; &amp;
+                    TEXT($Record.AEHC_Environment__c) &amp;
+                    &quot; environment requires your review and approval.&quot;
+                   )
+                )
+            )
+        )
+    )
+)</expression>
+    </formulas>
+    <formulas>
+        <description>To check is new</description>
+        <name>CheckISnew</name>
+        <dataType>Boolean</dataType>
+        <expression>ISNEW()</expression>
+    </formulas>
+    <formulas>
+        <name>checkStatusChanged</name>
+        <dataType>Boolean</dataType>
+        <expression>ISCHANGED({!$Record.Approval_Status__c})</expression>
+    </formulas>
+    <formulas>
+        <description>To return the notification type</description>
+        <name>NotificationType</name>
+        <dataType>String</dataType>
+        <expression>IF(
+AND(
+NOT($Record.AEHC_Is_Subscription__c),
+$Record.AEHC_ADL_Review_Required__c,
+TEXT($Record__Prior.Approval_Status__c)=&quot;Information Architect Review&quot;
+),
+&quot;GP_IA&quot;,
+
+IF(
+AND(
+NOT($Record.AEHC_Is_Subscription__c),
+$Record.AEHC_ADL_Review_Required__c,
+TEXT($Record__Prior.Approval_Status__c)=&quot;Business Owner Publication Review&quot;
+),
+&quot;GP_BO&quot;,
+
+IF(
+AND(
+$Record.AEHC_Is_Subscription__c,
+TEXT($Record__Prior.Approval_Status__c)=&quot;Business Owner Subscriber Review&quot;
+),
+&quot;SUB_SBO&quot;,
+
+IF(
+AND(
+$Record.AEHC_Is_Subscription__c,
+TEXT($Record__Prior.Approval_Status__c)=&quot;Business Owner Publication Review&quot;
+),
+&quot;SUB_PBO&quot;,
+
+IF(
+AND(
+$Record.AEHC_Is_Subscription__c,
+TEXT($Record__Prior.Approval_Status__c)=&quot;Security Architect Review&quot;
+),
+&quot;SUB_SA&quot;,
+
+IF(
+AND(
+$Record.AEHC_Is_Subscription__c,
+TEXT($Record__Prior.Approval_Status__c)=&quot;DDH Admin Review&quot;
+),
+&quot;SUB_DDH&quot;,
+
+IF(
+AND(
+NOT($Record.AEHC_Is_Subscription__c),
+TEXT($Record__Prior.Approval_Status__c)=&quot;Security Architect Review&quot;
+),
+&quot;PUB_SA&quot;,
+
+IF(
+AND(
+NOT($Record.AEHC_Is_Subscription__c),
+TEXT($Record__Prior.Approval_Status__c)=&quot;DDH Admin Review&quot;
+),
+&quot;PUB_DDH&quot;,
+
+&quot;PUB_BO&quot;
+))))))))</expression>
+    </formulas>
+    <formulas>
+        <name>previousEnv</name>
+        <dataType>String</dataType>
+        <expression>CASE(Text({!$Record.AEHC_Environment__c}), &apos;Dev&apos;, &apos;Dev&apos;, 
+&apos;QA&apos;, &apos;Dev&apos;,
+&apos;UAT&apos;, &apos;QA&apos;,
+&apos;Production&apos;,&apos;UAT&apos;,
+&apos;Dev&apos;)</expression>
+    </formulas>
+    <formulas>
+        <name>Pub_Sub_Id</name>
+        <dataType>String</dataType>
+        <expression>if({!$Record.AEHC_Is_Subscription__c},   {!$Record.AEHC_Subscription_Request__r.Name} &amp; &quot; - &quot;  , {!$Record.AEHC_Publication__r.AEHC_Publication_Id__c} &amp;&quot; - &quot;  )</expression>
+    </formulas>
+    <formulas>
+        <name>RejectHeader</name>
+        <dataType>String</dataType>
+        <expression>IF(  AND(
+        NOT($Record.AEHC_Is_Subscription__c),
+        Text($Record.AEHC_Environment__c) = &quot;Dev&quot;,
+        $Record.AEHC_Is_Fields_Change__c = TRUE
+    ),
+   &quot;Publication Fields Change Request Rejected : &quot;&amp;{!Pub_Sub_Id} &amp; $Record.Name,
+   IF(
+    AND(
+        NOT($Record.AEHC_Is_Subscription__c),
+        $Record.AEHC_ADL_Review_Required__c,
+        Text($Record__Prior.Approval_Status__c) = &quot;Information Architect Review&quot;
+    ),
+    &quot;Request Rejected by IA: &quot; &amp; {!Pub_Sub_Id}&amp; $Record.Name,
+
+    IF(
+        AND(
+            NOT($Record.AEHC_Is_Subscription__c),
+            $Record.AEHC_ADL_Review_Required__c,
+            Text($Record__Prior.Approval_Status__c) = &quot;Business Owner Publication Review&quot;
+        ),
+        &quot;Request Rejected by BO: &quot;&amp; {!Pub_Sub_Id} &amp; $Record.Name,
+
+        IF(
+            AND(
+                $Record.AEHC_Is_Subscription__c,
+                Text($Record__Prior.Approval_Status__c )= &quot;Business Owner Subscriber Review&quot;
+            ),
+            &quot;Request Rejected by SBO: &quot;&amp; {!Pub_Sub_Id} &amp; $Record.Name,
+
+            IF(
+                AND(
+                    $Record.AEHC_Is_Subscription__c,
+                   Text( $Record__Prior.Approval_Status__c) = &quot;Business Owner Publication Review&quot;
+                ),
+                &quot;Request Rejected PBO: &quot;&amp; {!Pub_Sub_Id} &amp; $Record.Name,
+
+                IF(
+                    AND(
+                        $Record.AEHC_Is_Subscription__c,
+                       Text( $Record__Prior.Approval_Status__c )= &quot;Security Architect Review&quot;
+                    ),
+                    &quot;Subscription Promotion Rejected by SA: &quot;&amp; {!Pub_Sub_Id} &amp; $Record.Name,
+
+                    IF(
+                        AND(
+                            $Record.AEHC_Is_Subscription__c,
+                            Text($Record__Prior.Approval_Status__c )= &quot;DDH Admin Review&quot;
+                        ),
+                        &quot;Request Rejected by DDH Admin: &quot; &amp; {!Pub_Sub_Id} &amp; $Record.Name,
+
+                        IF(
+                            AND(
+                                NOT($Record.AEHC_Is_Subscription__c),
+                               Text( $Record__Prior.Approval_Status__c) = &quot;Security Architect Review&quot;
+                            ),
+                            &quot;Promotion Rejected by SA: &quot; &amp; {!Pub_Sub_Id} &amp; $Record.Name,
+
+                            IF(
+                                AND(
+                                    NOT($Record.AEHC_Is_Subscription__c),
+                                    Text($Record__Prior.Approval_Status__c) = &quot;DDH Admin Review&quot;
+                                ),
+                                &quot;Publication Rejected by DDH Admin: &quot; &amp; {!Pub_Sub_Id} &amp; $Record.Name,
+
+                                &quot;Request Rejected by BO: &quot; &amp; {!Pub_Sub_Id} &amp; $Record.Name
+                               )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+    )
+)</expression>
+    </formulas>
+    <formulas>
+        <name>RejectNotificationBody</name>
+        <dataType>String</dataType>
+        <expression>CASE(
+NotificationType,
+
+&quot;GP_IA&quot;,
+&quot;Your GP Schema change request for publication &quot;&amp; {!$Record.Name} &amp;&quot; has been rejected.&quot;,
+
+&quot;GP_BO&quot;,
+&quot;Your GP Schema change request for publication &quot;&amp; {!$Record.Name} &amp;&quot;  in the &quot;&amp; Text({!$Record.AEHC_Environment__c}) &amp;&quot; has been rejected.&quot;,
+
+&quot;SUB_SBO&quot;,
+&quot;Your subscription request for publication &quot;&amp; {!$Record.Name} &amp;&quot;  in the &quot;&amp; Text({!$Record.AEHC_Environment__c}) &amp;&quot; has been rejected. Please review the comments provided.&quot;,
+
+&quot;SUB_PBO&quot;,
+&quot;Your subscription request for publication &quot;&amp; {!$Record.Name} &amp;&quot;  in the &quot;&amp; Text({!$Record.AEHC_Environment__c}) &amp;&quot; has been rejected. Please review the comments provided. &quot;,
+
+&quot;SUB_SA&quot;,
+&quot;Your subscription promotion request for publication &quot;&amp; {!$Record.Name} &amp;&quot; in the &quot;&amp;Text({!$Record.AEHC_Environment__c})&amp;&quot; has been rejected during security review.&quot;,
+
+&quot;SUB_DDH&quot;,
+&quot;Your subscription request for publication &quot;&amp; {!$Record.Name} &amp;&quot;  in the &quot;&amp;Text({!$Record.AEHC_Environment__c})&amp;&quot; environment has been rejected. Please review the comments provided.&quot;,
+
+&quot;PUB_SA&quot;,
+&quot;Your publication promotion request for &quot;&amp; {!$Record.Name} &amp;&quot;  in the &quot;&amp; Text({!$Record.AEHC_Environment__c}) &amp;&quot; environment has been rejected during security review.&quot;,
+
+&quot;PUB_DDH&quot;,
+&quot;Your publication request for &quot;&amp; {!$Record.Name} &amp;&quot;  in the &quot;&amp; Text({!$Record.AEHC_Environment__c}) &amp;&quot; environment has been rejected&quot;,
+  IF( AND(
+        NOT($Record.AEHC_Is_Subscription__c),
+        Text($Record.AEHC_Environment__c) = &quot;Dev&quot;,
+        $Record.AEHC_Is_Fields_Change__c = TRUE
+    ),
+   &quot;Your publication field update request for &quot;&amp; {!$Record.Name} &amp;&quot;  in the &quot;&amp; Text({!$Record.AEHC_Environment__c}) &amp;&quot; environment has been rejected.&quot; , 
+&quot;Your publication creation request for &quot;&amp; {!$Record.Name} &amp;&quot;  in the &quot;&amp; Text({!$Record.AEHC_Environment__c}) &amp;&quot; environment has been rejected.&quot; )
+) &amp; {!UATToggleMessage}</expression>
+    </formulas>
+    <formulas>
+        <name>RequestorHeader</name>
+        <dataType>String</dataType>
+        <expression>IF(
+   AND(
+        NOT($Record.AEHC_Is_Subscription__c),
+        Text($Record.AEHC_Environment__c) = &quot;Dev&quot;,
+        $Record.AEHC_Is_Fields_Change__c = TRUE
+    ),
+   &quot;Publication Fields Change Approved by BO: &quot;&amp;{!Pub_Sub_Id} &amp; $Record.Name,
+   IF(
+    AND(
+        NOT($Record.AEHC_Is_Subscription__c),
+        $Record.AEHC_ADL_Review_Required__c,
+        TEXT($Record__Prior.Approval_Status__c) = &quot;Information Architect Review&quot;
+    ),
+    &quot;Request Approved by IA: &quot;&amp; {!Pub_Sub_Id} &amp; $Record.Name,
+
+    IF(
+        AND(
+            NOT($Record.AEHC_Is_Subscription__c),
+            $Record.AEHC_ADL_Review_Required__c,
+            TEXT($Record__Prior.Approval_Status__c) = &quot;Business Owner Publication Review&quot;
+        ),
+        &quot;Request Approved by BO: &quot;&amp; {!Pub_Sub_Id} &amp; $Record.Name,
+
+        IF(
+            AND(
+                $Record.AEHC_Is_Subscription__c,
+                TEXT($Record__Prior.Approval_Status__c) = &quot;Business Owner Subscriber Review&quot;
+            ),
+            &quot;Request Approved by SBO: &quot; &amp; {!Pub_Sub_Id}&amp; $Record.Name,
+
+            IF(
+                AND(
+                    $Record.AEHC_Is_Subscription__c,
+                    TEXT($Record__Prior.Approval_Status__c) = &quot;Business Owner Publication Review&quot;
+                ),
+                &quot;Request Approved by PBO: &quot; &amp; {!Pub_Sub_Id} &amp; $Record.Name,
+
+                IF(
+                    AND(
+                        $Record.AEHC_Is_Subscription__c,
+                        TEXT($Record__Prior.Approval_Status__c) = &quot;Security Architect Review&quot;
+                    ),
+                    &quot;Subscription Promotion Approved by SA: &quot;&amp; {!Pub_Sub_Id} &amp; $Record.Name,
+
+                    IF(
+                        AND(
+                            $Record.AEHC_Is_Subscription__c,
+                            TEXT($Record__Prior.Approval_Status__c) = &quot;DDH Admin Review&quot;
+                        ),
+                        &quot;Subscription Approved by DDH Admin: &quot; &amp; {!Pub_Sub_Id}&amp; $Record.Name,
+
+                        IF(
+                            AND(
+                                NOT($Record.AEHC_Is_Subscription__c),
+                                TEXT($Record__Prior.Approval_Status__c) = &quot;Security Architect Review&quot;
+                            ),
+                            &quot;Promotion Approved by SA: &quot; &amp; {!Pub_Sub_Id}&amp; $Record.Name,
+
+                            IF(
+                                AND(
+                                    NOT($Record.AEHC_Is_Subscription__c),
+                                    TEXT($Record__Prior.Approval_Status__c) = &quot;DDH Admin Review&quot;
+                                ),
+                                &quot;Publication Approved by DDH Admin: &quot;&amp; {!Pub_Sub_Id} &amp; $Record.Name,
+
+                                &quot;Request Approved: &quot; &amp; {!Pub_Sub_Id} &amp; $Record.Name
+                                 )
+                            )
+                        )
+                    )
+                )
+            )
+        )
+    )
+)</expression>
+    </formulas>
+    <formulas>
+        <name>RequestorNotificationBody</name>
+        <dataType>String</dataType>
+        <expression>CASE(
+    SubmitterApprovalNotificationType,
+
+    &quot;GP_IA&quot;,
+    &quot;Your GP Schema change request for publication &quot; &amp;
+    $Record.AEHC_Application__r.Name &amp;
+    &quot; has been approved.&quot;,
+
+    &quot;GP_BO&quot;,
+    &quot;Your GP Schema change request for publication &quot; &amp;
+    $Record.AEHC_Application__r.Name &amp;
+    &quot; has been approved.&quot;,
+
+    &quot;SUB_SBO&quot;,
+    &quot;Your subscription request for publication &quot; &amp;
+    $Record.AEHC_Application__r.Name &amp;
+    &quot; in the &quot; &amp;
+    TEXT($Record.AEHC_Environment__c) &amp;
+    &quot; environment has been approved. Please review the comments provided.&quot;,
+
+    &quot;SUB_PBO&quot;,
+    &quot;Your subscription request for publication &quot; &amp;
+    $Record.AEHC_Application__r.Name &amp;
+    &quot; in the &quot; &amp;
+    TEXT($Record.AEHC_Environment__c) &amp;
+    &quot; environment has been approved &quot;,
+
+    &quot;SUB_SA&quot;,
+    &quot;Your subscription promotion request for publication &quot; &amp;
+    $Record.AEHC_Application__r.Name &amp;
+    &quot; in the &quot; &amp;
+    TEXT($Record.AEHC_Environment__c) &amp;
+    &quot; environment has been approved by Security Architect.&quot;,
+
+    &quot;SUB_DDH&quot;,
+    &quot;Your subscription request for publication &quot; &amp;
+    $Record.AEHC_Application__r.Name &amp;
+    &quot; in the &quot; &amp;
+    TEXT($Record.AEHC_Environment__c) &amp;
+    &quot; environment has been approved.&quot;,
+
+    &quot;PUB_SA&quot;,
+    &quot;Your publication promotion request for &quot; &amp;
+    $Record.AEHC_Application__r.Name &amp;
+    &quot; in the &quot; &amp;
+    TEXT($Record.AEHC_Environment__c) &amp;
+    &quot; environment has been approved.&quot;,
+
+    &quot;PUB_DDH&quot;,
+    &quot;Your publication request for &quot; &amp;
+    $Record.AEHC_Application__r.Name &amp;
+    &quot; in the &quot; &amp;
+    TEXT($Record.AEHC_Environment__c) &amp;
+    &quot; environment has been approved.&quot;,
+    IF( AND(
+        NOT($Record.AEHC_Is_Subscription__c),
+        Text($Record.AEHC_Environment__c) = &quot;Dev&quot;,
+        $Record.AEHC_Is_Fields_Change__c = TRUE
+    ),
+    &quot;Your publication field Update request for &quot; &amp;
+    $Record.AEHC_Application__r.Name &amp;
+    &quot; in the &quot; &amp;
+    TEXT($Record.AEHC_Environment__c) &amp;
+    &quot; environment has been approved.&quot;,
+
+    &quot;Your publication creation request for &quot; &amp;
+    $Record.AEHC_Application__r.Name &amp;
+    &quot; in the &quot; &amp;
+    TEXT($Record.AEHC_Environment__c) &amp;
+    &quot; environment has been approved.&quot; )
+) &amp; {!UATToggleMessage}</expression>
+    </formulas>
+    <formulas>
+        <description>Submitter notification for Sending notification to submitter on record approval</description>
+        <name>SubmitterApprovalNotificationType</name>
+        <dataType>String</dataType>
+        <expression>IF(
+    AND(
+        NOT($Record.AEHC_Is_Subscription__c),
+        $Record.AEHC_ADL_Review_Required__c,
+        TEXT($Record__Prior.Approval_Status__c) = &quot;Information Architect Review&quot;
+    ),
+    &quot;GP_IA&quot;,
+
+    IF(
+        AND(
+            NOT($Record.AEHC_Is_Subscription__c),
+            $Record.AEHC_ADL_Review_Required__c,
+            TEXT($Record__Prior.Approval_Status__c) = &quot;Business Owner Publication Review&quot;
+        ),
+        &quot;GP_BO&quot;,
+
+        IF(
+            AND(
+                $Record.AEHC_Is_Subscription__c,
+                TEXT($Record__Prior.Approval_Status__c) = &quot;Business Owner Subscriber Review&quot;
+            ),
+            &quot;SUB_SBO&quot;,
+
+            IF(
+                AND(
+                    $Record.AEHC_Is_Subscription__c,
+                    TEXT($Record__Prior.Approval_Status__c) = &quot;Business Owner Publication Review&quot;
+                ),
+                &quot;SUB_PBO&quot;,
+
+                IF(
+                    AND(
+                        $Record.AEHC_Is_Subscription__c,
+                        TEXT($Record__Prior.Approval_Status__c) = &quot;Security Architect Review&quot;
+                    ),
+                    &quot;SUB_SA&quot;,
+
+                    IF(
+                        AND(
+                            $Record.AEHC_Is_Subscription__c,
+                            TEXT($Record__Prior.Approval_Status__c) = &quot;DDH Admin Review&quot;
+                        ),
+                        &quot;SUB_DDH&quot;,
+
+                        IF(
+                            AND(
+                                NOT($Record.AEHC_Is_Subscription__c),
+                                TEXT($Record__Prior.Approval_Status__c) = &quot;Security Architect Review&quot;
+                            ),
+                            &quot;PUB_SA&quot;,
+
+                            IF(
+                                AND(
+                                    NOT($Record.AEHC_Is_Subscription__c),
+                                    TEXT($Record__Prior.Approval_Status__c) = &quot;DDH Admin Review&quot;
+                                ),
+                                &quot;PUB_DDH&quot;,
+
+                                &quot;PUB_BO&quot;
+                            )
+                        )
+                    )
+                )
+            )
+        )
+    )
+)</expression>
+    </formulas>
+    <formulas>
+        <name>SubmitterRequestBody</name>
+        <dataType>String</dataType>
+        <expression>&quot;A GP Schema change has been implemented for publication&quot;&amp;  {!$Record.Name}  &amp;&quot; Please review impacts to your subscription.&quot;</expression>
+    </formulas>
+    <formulas>
+        <name>SubmitterRequestHeader</name>
+        <dataType>String</dataType>
+        <expression>&quot;Publication Schema Updated:&quot; &amp; {!Pub_Sub_Id} &amp;  {!$Record.Name}</expression>
+    </formulas>
+    <formulas>
+        <description>Formula to return uat toggle is enabled when publication business owner approves the record</description>
+        <name>UATToggleMessage</name>
+        <dataType>String</dataType>
+        <expression>if(
+AND({!$Record.AEHC_Is_Subscription__c}, ISPICKVAL({!$Record__Prior.Approval_Status__c}, &apos;Business Owner Publication Review&apos;), {!$Record.AEHC_Subscription_Request__r.AEHC_UAT_Approval__c}),
+&apos; UAT Toggle Enabled &apos;,&apos;&apos;
+)</expression>
+    </formulas>
+    <formulas>
+        <description>Notification to user after approval</description>
+        <name>UserApprovalNotificationSubscription</name>
+        <dataType>Boolean</dataType>
+        <expression>AND(NOT({!Is_new}) , OR (Text({!$Record.Approval_Status__c}) == &apos;DDH Admin Review&apos; ,
+Text({!$Record.Approval_Status__c}) == &apos;Business Owner Publication Review&apos; ,
+Text({!$Record.Approval_Status__c}) == &apos;Submitted to DDH&apos;
+),
+ISCHANGED({!$Record.Approval_Status__c})
+
+)</expression>
+    </formulas>
+    <interviewLabel>Aseet Flow After Insert {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Aseet Flow After Insert Update</label>
+    <loops>
+        <name>ADL_ReviewLoop</name>
+        <label>ADL Review</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <collectionReference>Get_ADL_USER</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Check_ADL_User_Is_active</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Get_Custom_Notification_type</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <loops>
+        <name>get_DDH_user</name>
+        <label>get DDH user</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <collectionReference>Get_DDH_ADMIN</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>check_user_is_active</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Get_Custom_Notification_type</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <loops>
+        <description>Loop on Information architect to assign user id in list</description>
+        <name>get_Information_Architech_User</name>
+        <label>get Information Architech User</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <collectionReference>Get_Information_Architech</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>assign_user_id_to_collection_for_Information_Architech</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>assign_created_by_user_in_list</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <loops>
+        <name>iterate_subscriber_bo</name>
+        <label>iterate subscriber bo</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <collectionReference>getsubscripton_bo</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Check_User_is_add_or_not</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Get_Custom_Notification_type</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <loops>
+        <name>iterate_user</name>
+        <label>iterate user</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <collectionReference>get_user</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>check_existing_acr</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>create_acr</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <loops>
+        <name>Loop_On_IA_Records</name>
+        <label>Loop On IA Records</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <collectionReference>get_Information_Architect</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Check_user_for_IA</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Get_Custom_Notification_type</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <loops>
+        <description>Get user list</description>
+        <name>Loop_on_sset_member_for_user</name>
+        <label>Loop on sset member for user</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <collectionReference>Get_Business_Owner</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>is_User_Active</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Get_Custom_Notification_type</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <loops>
+        <name>loop_subscription</name>
+        <label>loop subscription</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <collectionReference>get_subscription</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>add_user_in_list</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>send_notification</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <loops>
+        <description>Loop on security architect to assign user id in list</description>
+        <name>Security_Architect</name>
+        <label>Security Architect</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <collectionReference>Get_Security_Reviewer</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>check_is_user_active_SA</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Get_Custom_Notification_type</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordCreates>
+        <name>create_acr</name>
+        <label>create acr</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Requestor_notification_check</targetReference>
+        </connector>
+        <faultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Requestor_notification_check</targetReference>
+        </faultConnector>
+        <inputReference>acrlist</inputReference>
+    </recordCreates>
+    <recordCreates>
+        <name>create_user_log</name>
+        <label>create user log</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <inputAssignments>
+            <field>AEHC_Category__c</field>
+            <value>
+                <stringValue>Flow</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>AEHC_Component_Name__c</field>
+            <value>
+                <stringValue>Asset flow after insert update</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>AEHC_Environment__c</field>
+            <value>
+                <stringValue>Dev</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>AEHC_Message__c</field>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>AEHC_Operation__c</field>
+            <value>
+                <stringValue>Create</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>AEHC_Record_Id__c</field>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>AEHC_Running_As__c</field>
+            <value>
+                <elementReference>$User.Username</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>AEHC_User__c</field>
+            <value>
+                <elementReference>$User.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>AEHC_Error_Event__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <name>create_user_log_notificationonrecord</name>
+        <label>create user log</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Send_Email_Alert_to_community_user</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>AEHC_Category__c</field>
+            <value>
+                <stringValue>Flow</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>AEHC_Component_Name__c</field>
+            <value>
+                <stringValue>Asset flow after insert update</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>AEHC_Environment__c</field>
+            <value>
+                <stringValue>Dev</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>AEHC_Message__c</field>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>AEHC_Operation__c</field>
+            <value>
+                <stringValue>Create</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>AEHC_Record_Id__c</field>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>AEHC_Running_As__c</field>
+            <value>
+                <elementReference>$User.Username</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>AEHC_User__c</field>
+            <value>
+                <elementReference>$User.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>AEHC_Error_Event__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordLookups>
+        <name>check_existing_acr</name>
+        <label>check existing acr</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>check_acr</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>AccountId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.AEHC_Subscription_Request__r.AEHC_Group_Account__c</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>ContactId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>iterate_user.ContactId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>AccountContactRelation</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>get ADL review</description>
+        <name>Get_ADL_USER</name>
+        <label>Get ADL USER</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>ADL_ReviewLoop</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>AEHC_Role__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>ADL Reviewer</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>AEHC_User__c</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>AEHC_AssetMember__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_Business_Owner</name>
+        <label>Get Business Owner</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Loop_on_sset_member_for_user</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>AEHC_Asset__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.AEHC_Publication__r.AEHC_Application__c</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>AEHC_Role__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Business Owner</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>AEHC_User__c</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>AEHC_AssetMember__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_Custom_Notification_type</name>
+        <label>Get Custom Notification type</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>check_Subscription</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>DeveloperName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>AEH_Request_Approval_Notification</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>CustomNotificationType</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_Custom_Notification_type_reject</name>
+        <label>Get Custom Notification type Reject</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>add_requestors</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>DeveloperName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>AEH_Request_Approval_Notification</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>CustomNotificationType</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_Custom_Notification_type_v2</name>
+        <label>Get Custom Notification type</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Submit_record_for_Approval_and_Send_Notiofication</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>DeveloperName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>AEH_Request_Approval_Notification</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>CustomNotificationType</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_DDH_ADMIN</name>
+        <label>Get_DDH_ADMIN</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>get_DDH_user</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>AEHC_Role__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>DDH Admin</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>AEHC_User__c</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>AEHC_AssetMember__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_IA_publication_Email_Template</name>
+        <label>Get IA publication Email Template</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Send_Email_to_IA_Publication</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>DeveloperName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>AEHC_Information_Architect_Notification_Publication</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>EmailTemplate</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_IA_Subscription_Email_Template</name>
+        <label>Get IA Subscription Email Template</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Send_Email_to_IA_Subscription</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>DeveloperName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>AEHC_Information_Architect_Notification</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>EmailTemplate</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>Fetch asset member record where role is security Architect</description>
+        <name>Get_Information_Architech</name>
+        <label>Get Information Architech</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Get_Org_Wide_Email_Address</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>AEHC_Role__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Information Architect</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>AEHC_AssetMember__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>record for Information Architect</description>
+        <name>get_Information_Architect</name>
+        <label>get Information Architect</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Loop_On_IA_Records</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>AEHC_Role__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Information Architect</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>AEHC_AssetMember__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_Org_Wide_Email_Address</name>
+        <label>Get Org Wide Email Address</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>get_Information_Architech_User</targetReference>
+        </connector>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>OrgWideEmailAddress</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>Fetch asset member record where role is security Architect</description>
+        <name>Get_Security_Reviewer</name>
+        <label>Get Security Reviewer</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Security_Architect</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>AEHC_Role__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Security Architect</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>AEHC_User__c</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>AEHC_AssetMember__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>get_subscription</name>
+        <label>get subscription</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>loop_subscription</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>AEHC_Publication_ID__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.AEHC_Publication__c</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>Subscription__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>get_user</name>
+        <label>get user</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>iterate_user</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>In</operator>
+            <value>
+                <elementReference>alluser</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>User</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>getsubscripton_bo</name>
+        <label>getsubscripton bo</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>iterate_subscriber_bo</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>AEHC_Asset__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.AEHC_Subscription_Request__r.AEHC_Consumming_Application__c</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>AEHC_Role__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Business Owner</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>AEHC_User__c</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>AEHC_AssetMember__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <start>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Is_Version_for_Graph</targetReference>
+        </connector>
+        <object>AEHC_Asset__c</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+    <variables>
+        <name>acrlist</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>AccountContactRelation</objectType>
+    </variables>
+    <variables>
+        <name>acrrecord</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>AccountContactRelation</objectType>
+    </variables>
+    <variables>
+        <name>alluser</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>AllUserInformationArchitech</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>InfoArchitectUserID</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>submitterUserId</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+</Flow>

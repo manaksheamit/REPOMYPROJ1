@@ -1,0 +1,422 @@
+<template>
+    <div class="slds-p-around_medium">
+        <!-- HEADER -->
+        <h2 class="slds-text-heading_medium slds-m-bottom_medium">
+            <!--Review &amp; Submit-->
+        </h2>
+
+        <!-- GENERAL INFO -->
+        <template if:true={isSubscription}>
+            <lightning-layout multiple-rows>
+                <lightning-layout-item size="12" medium-device-size="6">
+                    <p><b>{uiLabels.appName}:</b> {wizardData.applicationName}</p>
+                </lightning-layout-item>
+
+                <lightning-layout-item size="12" medium-device-size="6">
+                    <p><b>{uiLabels.pubName}:</b> {wizardData.publicationName}</p>
+                </lightning-layout-item>
+
+                <lightning-layout-item size="12" medium-device-size="6">
+                    <p><b>{uiLabels.pubId}:</b> {wizardData.publicationId}</p>
+                </lightning-layout-item>
+
+                <lightning-layout-item size="12" medium-device-size="6">
+                    <p><b>{uiLabels.environment}:</b> {wizardData.environment}</p>
+                </lightning-layout-item>
+
+                <lightning-layout-item size="12" medium-device-size="6">
+                    <p><b>Consuming Application:</b> {wizardData.subscriberApplicationData?.mainField || 'N/A'} </p>
+                </lightning-layout-item>
+
+                <template if:true={showUAT}>
+                    <lightning-layout-item size="12" medium-device-size="6">
+                    <div class="slds-grid slds-grid_align-spread slds-p-vertical_x-small" style="width: 250px;">
+                        <div><b>Enable UAT:</b> </div>
+                        <div> <lightning-input type="toggle" checked={isUATEnabled} variant="label-hidden" message-toggle-active="" message-toggle-inactive="" disabled> </lightning-input></div>
+                    </div>
+                    </lightning-layout-item>
+                </template>
+
+                <lightning-layout-item size="12" medium-device-size="6">
+                    <p><b>{uiLabels.schemaVersion}:</b> {wizardData.schemaVersion}</p>
+                </lightning-layout-item>
+
+                <lightning-layout-item size="12">
+                    <p><b>{uiLabels.purposeUse}:</b> {wizardData.purposeOfUse}</p>
+                </lightning-layout-item>
+            </lightning-layout>
+        </template>
+
+        <!-- TRANSFORMATION -->
+        <template if:true={isSubscription}>
+            <div class="slds-m-top_medium">
+
+                <div class="slds-grid slds-grid_align-spread slds-p-vertical_x-small" style="width: 250px;">
+
+                    <!-- LEFT: Label -->
+                    <div>
+                        <b>{uiLabels.transformReq}:</b>
+                    </div>
+
+                    <!-- RIGHT: Toggle -->
+                    <div>
+                        <lightning-input type="toggle" checked={isTransformationRequired} variant="label-hidden"
+                            message-toggle-active="" message-toggle-inactive="" disabled>
+                        </lightning-input>
+                    </div>
+
+                </div>
+                <p>
+                    <b>{uiLabels.selectedFieldsOrder}</b>
+                    <c-aehcjson-table json-data={selectedFieldsJson1}></c-aehcjson-table>
+                </p>
+            </div>
+        </template>
+
+        <template if:true={isPublication}>
+
+            <div class="slds-box slds-m-bottom_medium">
+
+                <!-- GENERAL INFO -->
+                <div class="section-title slds-text-heading_small slds-m-bottom_small">
+                    Publication Details
+                </div>
+
+                <lightning-layout multiple-rows>
+
+                    <lightning-layout-item size="6">
+                        <p><b>{uiLabels.appName}:</b> {appName}</p>
+                    </lightning-layout-item>
+
+                    <lightning-layout-item size="6">
+                        <p><b>{uiLabels.pubName}:</b> {pubName}</p>
+                    </lightning-layout-item>
+
+                    <lightning-layout-item size="6">
+                        <p><b>Publication Type:</b> {wizardData?.metadata?.publicationType}</p>
+                    </lightning-layout-item>
+
+                    <lightning-layout-item size="12">
+                        <p class="description-text"><b>{uiLabels.description}:</b> {wizardData?.metadata?.description}</p>
+                    </lightning-layout-item>
+
+                    <lightning-layout-item size="6">
+                        <p><b>Schema:</b> {wizardData?.schema?.schema}</p>
+                    </lightning-layout-item>
+
+                    <lightning-layout-item size="6">
+                        <p><b>Table:</b> {wizardData?.schema?.table}</p>
+                    </lightning-layout-item>
+
+                </lightning-layout>
+
+            </div>
+
+        </template>
+
+        <template if:true={isPublication}>
+
+            <!-- EXISTING CONTENT -->
+
+            <!-- FIELDS SECTION (NEW FIX) -->
+            <template if:true={hasFields}>
+                <div class="slds-m-top_medium">
+                    <div class="section-title slds-text-title_bold">
+                        {uiLabels.selectedFieldsOrder}
+                    </div>
+
+                    <div class="table-container">
+                        <div class="table-scroll">
+                            <lightning-datatable key-field="id" data={fields} columns={fieldColumns}
+                                hide-checkbox-column>
+                            </lightning-datatable>
+                        </div>
+                    </div>
+
+                </div>
+            </template>
+
+        </template>
+
+        <!-- ACCORDION -->
+        <lightning-accordion allow-multiple-sections-open active-section-name="schedule" class="slds-m-top_medium">
+
+            <!-- SCHEDULE -->
+            <lightning-accordion-section name="schedule" label={uiLabels.scheduleDetails}
+                class="custom-accordion-section">
+
+                <lightning-layout-item size="12" medium-device-size="6">
+                    <p><b>{uiLabels.mode}:</b> {wizardData?.schedule?.schedulerMode}</p>
+                </lightning-layout-item>
+
+                <template if:false={isSubmon}>
+                    <lightning-layout-item size="12" medium-device-size="6">
+                        <p><b>{uiLabels.frequency}</b> {wizardData.schedule.frequency}</p>
+                    </lightning-layout-item>
+                </template>
+
+                <template if:true={isFrequencyDaily}>
+                    <lightning-layout-item size="12" medium-device-size="6">
+                        <p><b>{uiLabels.time24}:</b> {wizardData?.schedule?.scheduleTime}</p>
+                    </lightning-layout-item>
+                </template>
+
+                <template if:true={isFrequencyWeekly}>
+                    <lightning-layout-item size="12">
+                        <p><b>{uiLabels.weekdays}</b> {weekdays}</p>
+                    </lightning-layout-item>
+
+                    <lightning-layout-item size="12" medium-device-size="6">
+                        <p><b>{uiLabels.time24}:</b> {wizardData?.schedule?.scheduleTime}</p>
+                    </lightning-layout-item>
+                </template>
+
+                <template if:true={isFrequencyMultiWeekly}>
+                    <lightning-layout-item size="12" medium-device-size="6">
+                        <p><b>{uiLabels.time24}:</b> {wizardData?.schedule?.scheduleTime}</p>
+                    </lightning-layout-item>
+
+                    <lightning-layout-item size="12">
+                        <p><b>{uiLabels.weekdays}</b> {multiWeekDays}</p>
+                    </lightning-layout-item>
+
+                    <lightning-layout-item size="12">
+                        <p><b>{uiLabels.multiWeeks}:</b> {multiWeekWeeks}</p>
+                    </lightning-layout-item>
+                </template>
+
+                <template if:true={isFrequencyMonthly}>
+                    <lightning-layout-item size="12">
+                        <p><b>{uiLabels.dayOfMonth}</b> {wizardData.schedule.monthlyDay}</p>
+                    </lightning-layout-item>
+
+                    <lightning-layout-item size="12" medium-device-size="6">
+                        <p><b>{uiLabels.time24}:</b> {wizardData?.schedule?.scheduleTime}</p>
+                    </lightning-layout-item>
+                </template>
+
+                <template if:true={isFrequencyOneTime}>
+                    <lightning-layout-item size="12">
+                        <p><b>{uiLabels.oneTimeDate}:</b> {wizardData.schedule.oneTimeDate}</p>
+                    </lightning-layout-item>
+
+                    <lightning-layout-item size="12">
+                        <p><b>{uiLabels.time24}:</b> {wizardData.schedule.oneTimeTime}</p>
+                    </lightning-layout-item>
+                </template>
+
+                <lightning-layout-item size="12">
+                    <p><b>{uiLabels.scheduleSummary}</b> {wizardData.schedule.scheduleSummary}</p>
+                </lightning-layout-item>
+
+                <template if:false={isSubmon}>
+                    <lightning-layout-item size="12">
+                        <p><b>{uiLabels.cron}:</b> {wizardData.schedule.cronExpression}</p>
+                    </lightning-layout-item>
+                </template>
+
+            </lightning-accordion-section>
+        </lightning-accordion>
+
+        <!-- ACCORDION -->
+        <template if:true={isSubscription}>
+            <lightning-accordion allow-multiple-sections-open active-section-name="destination"
+                class="slds-m-top_medium">
+                <!-- DESTINATION -->
+                <lightning-accordion-section name="destination" label={uiLabels.destDetails} class="slds-box">
+                    <lightning-layout multiple-rows>
+                        <lightning-layout-item size="12" medium-device-size="6">
+                            <p><b>Destination Type:</b> {wizardData.destination.destinationType}</p>
+                        </lightning-layout-item>
+                        <!--Blob fields-->
+                        <template if:true={isDestinationBlob}>
+                            <!-- Your Blob-specific template -->
+                            <lightning-layout-item size="12" medium-device-size="6">
+                                <p><b>{uiLabels.fileName}:</b> {wizardData.destination.blobFileName}</p>
+                            </lightning-layout-item>
+                            <lightning-layout-item size="12" medium-device-size="6">
+                                <p><b>Storage Account:</b> {wizardData.destination.storageAccount}</p>
+                            </lightning-layout-item>
+                            <lightning-layout-item size="12" medium-device-size="6">
+                                <p><b>Container Path:</b> {wizardData.destination.containerPath}</p>
+                            </lightning-layout-item>
+                            <lightning-layout-item size="12" medium-device-size="6">
+                                <p><b>Output Format:</b> {wizardData.destination.outputFormat}</p>
+                            </lightning-layout-item>
+                            <lightning-layout-item size="12" medium-device-size="6">
+                                <div class="slds-grid slds-grid_align-spread slds-p-vertical_x-small"
+                                    style="width: 250px;">
+                                    <div><b>Include Header:</b></div>
+                                    <div>
+                                        <lightning-input type="toggle" checked={includeHeader} variant="label-hidden"
+                                            message-toggle-active="" message-toggle-inactive="" disabled>
+                                        </lightning-input>
+                                    </div>
+                                </div>
+                            </lightning-layout-item>
+                            <lightning-layout-item size="12" medium-device-size="6">
+                                <div class="slds-grid slds-grid_align-spread slds-p-vertical_x-small"
+                                    style="width: 250px;">
+                                    <div><b>Provide Custom Header:</b></div>
+                                    <div>
+                                        <lightning-input type="toggle" checked={provideCustomHeader}
+                                            variant="label-hidden" message-toggle-active="" message-toggle-inactive=""
+                                            disabled>
+                                        </lightning-input>
+                                    </div>
+                                </div>
+                            </lightning-layout-item>
+                            <template if:true={showBlobDelimeter}>
+                            <lightning-layout-item size="12" medium-device-size="6">
+                                <p><b>Delimiter:</b> {wizardData.destination.delimiter}</p>
+                            </lightning-layout-item>
+                            </template>
+                        </template>
+                        <!--Database fields-->
+                        <template if:true={showStoredProcedure}>
+                            <lightning-layout-item size="12" medium-device-size="6">
+                                <p><b>Database Type:</b> {wizardData.destination.databaseType}</p>
+                            </lightning-layout-item>
+                            <lightning-layout-item size="12" medium-device-size="6">
+                                <p><b>Host Name:</b> {wizardData.destination.databaseHost}</p>
+                            </lightning-layout-item>
+                            <lightning-layout-item size="12" medium-device-size="6">
+                                <p><b>Port:</b> {wizardData.destination.databasePort}</p>
+                            </lightning-layout-item>
+                            <lightning-layout-item size="12" medium-device-size="6">
+                                <p><b>JDBC Url:</b> {wizardData.destination.jdbcUrl}</p>
+                            </lightning-layout-item>
+                            <lightning-layout-item size="12" medium-device-size="6">
+                                <p><b>Initial Catalog:</b> {wizardData.destination.otherProperties}</p>
+                            </lightning-layout-item>
+                            <template if:true={wizardData.destination.batchFlag}>
+                                <lightning-layout-item size="12" medium-device-size="6">
+                                    <p><b>{uiLabels.batchSize}:</b> {wizardData.destination.batchSize}</p>
+                                </lightning-layout-item>
+                            </template>
+                        </template>
+                        <!--SFTP fields-->
+                        <template if:true={isDestinationSFTP}>
+                            <lightning-layout-item size="12" medium-device-size="6">
+                                <p><b>SFTP HostName:</b> {wizardData.destination.sftpHostName}</p>
+                            </lightning-layout-item>
+                            <lightning-layout-item size="12" medium-device-size="6">
+                                <p><b>SFTP Port:</b> {wizardData.destination.sftpPort}</p>
+                            </lightning-layout-item>
+                            <lightning-layout-item size="12" medium-device-size="6">
+                                <p><b>SFTP Remote Path:</b> {wizardData.destination.sftpRemotePath}</p>
+                            </lightning-layout-item>
+                            <lightning-layout-item size="12" medium-device-size="6">
+                                <p><b>File Name:</b> {wizardData.destination.sftpFileName}</p>
+                            </lightning-layout-item>
+                            <lightning-layout-item size="12" medium-device-size="6">
+                                <p><b>Output Format:</b> {wizardData.destination.sftpOutputFormat}</p>
+                            </lightning-layout-item>
+                            <lightning-layout-item size="12" medium-device-size="6">
+                                <div class="slds-grid slds-grid_align-spread slds-p-vertical_x-small"
+                                    style="width: 250px;">
+                                    <div><b>Include Header:</b></div>
+                                    <div>
+                                        <lightning-input type="toggle" checked={includeHeader} variant="label-hidden"
+                                            message-toggle-active="" message-toggle-inactive="" disabled>
+                                        </lightning-input>
+                                    </div>
+                                </div>
+                            </lightning-layout-item>
+                            <lightning-layout-item size="12" medium-device-size="6">
+                                <div class="slds-grid slds-grid_align-spread slds-p-vertical_x-small"
+                                    style="width: 250px;">
+                                    <div><b>Provide Custom Header:</b></div>
+                                    <div>
+                                        <lightning-input type="toggle" checked={provideCustomHeader}
+                                            variant="label-hidden" message-toggle-active="" message-toggle-inactive=""
+                                            disabled>
+                                        </lightning-input>
+                                    </div>
+                                </div>
+                            </lightning-layout-item>
+                            <template if:true={showDelimeter}>
+                            <lightning-layout-item size="12" medium-device-size="6">
+                                <p><b>Delimiter:</b> {wizardData.destination.delimiter}</p>
+                            </lightning-layout-item>
+                            </template>
+                        </template>
+                    </lightning-layout>
+                </lightning-accordion-section>
+
+            </lightning-accordion>
+        </template>
+
+        <template if:true={isSubscription}>
+            <template if:true={isDestinationDatabase}>
+                <!-- ACCORDION -->
+                <lightning-accordion allow-multiple-sections-open active-section-name="storedProcedure"
+                    class="slds-m-top_medium">
+                    <!-- DESTINATION -->
+                    <lightning-accordion-section name="storedProcedure" label={uiLabels.storedProcedure}
+                        class="slds-box">
+                        <lightning-layout multiple-rows>
+                            <lightning-layout-item size="12" medium-device-size="6">
+                                <p><b>OnInit:</b> {wizardData.destination.spOnInit}</p>
+                            </lightning-layout-item>
+                            <lightning-layout-item size="12" medium-device-size="6">
+                                <p><b>OnLoad:</b> {wizardData.destination.spOnLoad}</p>
+                            </lightning-layout-item>
+                            <lightning-layout-item size="12" medium-device-size="6">
+                                <p><b>OnSuccess:</b> {wizardData.destination.spOnSuccess}</p>
+                            </lightning-layout-item>
+                            <lightning-layout-item size="12" medium-device-size="6">
+                                <p><b>OnError:</b> {wizardData.destination.spOnError}</p>
+                            </lightning-layout-item>
+                            <lightning-layout-item size="12" medium-device-size="6">
+                                <div class="slds-grid slds-grid_align-spread slds-p-vertical_x-small"
+                                    style="width: 250px;">
+                                    <div><b>Mute ErrorFlag:</b></div>
+                                    <div>
+                                        <lightning-input type="toggle" checked={muteErrorFlag} variant="label-hidden"
+                                            message-toggle-active="" message-toggle-inactive="" disabled>
+                                        </lightning-input>
+                                    </div>
+                                </div>
+                            </lightning-layout-item>
+                            <lightning-layout-item size="12" medium-device-size="6">
+                                <div class="slds-grid slds-grid_align-spread slds-p-vertical_x-small"
+                                    style="width: 250px;">
+                                    <div><b>Batch Flag:</b></div>
+                                    <div>
+                                        <lightning-input type="toggle" checked={batchFlag} variant="label-hidden"
+                                            message-toggle-active="" message-toggle-inactive="" disabled>
+                                        </lightning-input>
+                                    </div>
+                                </div>
+                            </lightning-layout-item>                            
+                            <lightning-layout-item size="12" medium-device-size="6">
+                                <div class="slds-grid slds-grid_align-spread slds-p-vertical_x-small"
+                                    style="width: 250px;">
+                                    <div><b>Alias/Custom Header:</b></div>
+                                    <div>
+                                        <lightning-input type="toggle" checked={provideCustomHeader}
+                                            variant="label-hidden" message-toggle-active="" message-toggle-inactive=""
+                                            disabled>
+                                        </lightning-input>
+                                    </div>
+                                </div>
+                            </lightning-layout-item>
+                        
+                        </lightning-layout>
+                    </lightning-accordion-section>
+                </lightning-accordion>
+            </template>
+        </template>
+
+        <!-- FOOTER BUTTONS -->
+        <div class="slds-m-top_large slds-pt_medium slds-text-align_right">
+            <lightning-button label={backLabel} onclick={handleBack} class="slds-m-right_small" disabled={isSubmitting}>
+            </lightning-button>
+            <lightning-button label={submitLabel} variant="brand" onclick={handleSubmit} disabled={isSubmitting}>
+            </lightning-button>
+        </div>
+
+    </div>
+
+</template>

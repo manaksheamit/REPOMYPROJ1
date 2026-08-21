@@ -1,0 +1,8 @@
+.slds-has-error .slds-form-element__help {
+	display: none;
+}
+
+.slds-combobox_container.slds-has-selection .slds-combobox__input-value {
+	padding-left: 2rem;
+	box-shadow: 0 0 0 1px #ffffff inset, 0 0 0 2px #d4d4d4 inset;
+}

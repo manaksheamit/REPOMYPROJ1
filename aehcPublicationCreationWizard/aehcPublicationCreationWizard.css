@@ -1,0 +1,167 @@
+.section-title {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 12px;
+}
+
+.schedule-panel {
+    margin-top: 24px;
+    padding-top: 12px;
+}
+
+.schedule-summary {
+    font-weight: 600;
+    color: #444;
+    padding: 8px 12px;
+    background: #f3f6fb;
+    border-left: 4px solid #1b5cab;
+}
+
+.footer-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.search-results {
+    border: 1px solid #dddbda;
+    border-radius: 4px;
+    margin-top: 4px;
+    background: #ffffff;
+}
+
+.search-result-row {
+    padding: 10px 12px;
+    cursor: pointer;
+    border-bottom: 1px solid #f3f2f2;
+}
+
+.search-result-row:hover {
+    background: #f3f6fb;
+}
+
+.result-main {
+    font-size: 14px;
+}
+
+.result-sub {
+    font-size: 12px;
+    color: #706e6b;
+    margin-top: 2px;
+}
+
+.ci-text {
+    color: #706e6b;
+    margin-left: 6px;
+}
+.publication-wrapper {
+    background: #ffffff;
+}
+
+.form-section {
+    margin-bottom: 12px;
+}
+
+.selected-application-box {
+    background: #f8f9fb;
+    border: 1px solid #e5e5e5;
+    border-radius: 6px;
+    padding: 8px;
+}
+
+.section-title {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 12px;
+}
+
+.search-results {
+    border: 1px solid #dddbda;
+    border-radius: 4px;
+    margin-top: 4px;
+    background: #ffffff;
+    max-width: 600px;
+}
+
+.search-result-row {
+    padding: 10px 12px;
+    cursor: pointer;
+    border-bottom: 1px solid #f3f2f2;
+}
+
+.search-result-row:hover {
+    background: #f3f6fb;
+}
+
+.result-main {
+    font-size: 14px;
+}
+
+.result-sub {
+    font-size: 12px;
+    color: #706e6b;
+    margin-top: 2px;
+}
+
+.ci-text {
+    color: #706e6b;
+    margin-left: 6px;
+}
+
+.fields-table-box {
+    max-height: 360px;
+    overflow-y: auto;
+    border: 1px solid #dddbda;
+    border-radius: 6px;
+    background: #ffffff;
+}
+
+.load-more-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 12px;
+}
+
+.schedule-panel {
+    margin-top: 24px;
+    padding: 16px;
+    border: 1px solid #e5e5e5;
+    border-radius: 6px;
+    background: #ffffff;
+}
+
+.schedule-summary {
+    font-weight: 600;
+    color: #444;
+    padding: 8px 12px;
+    background: #f3f6fb;
+    border-left: 4px solid #1b5cab;
+}
+
+.footer-actions {
+    position: sticky;
+    bottom: 0;
+    z-index: 5;
+    background: #ffffff;
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    padding: 16px 0 4px 0;
+    margin-top: 24px;
+    border-top: 1px solid #e5e5e5;
+}
+.form-section {
+    position: relative;
+}
+
+.search-results {
+    position: absolute;
+    width: 100%;
+    max-width: 600px;
+    background: #fff;
+    border: 1px solid #dddbda;
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    z-index: 10;
+}

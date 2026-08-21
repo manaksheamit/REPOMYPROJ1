@@ -1,0 +1,209 @@
+<template>
+    
+<div class="container">
+    <template if:false={showAudit}>
+    <div class="controls">
+                <div class="field">
+                    <lightning-combobox
+                        label="Environment"
+                        value={selectedEnv}
+                        options={envOptions}
+                        onchange={handleChange}>
+                    </lightning-combobox>
+                </div>
+
+                <div class="button-container">
+                    <lightning-button
+                        label="Run Now"
+                        variant="brand"
+                        onclick={handleRun}>
+                </lightning-button>
+                </div>
+            </div>
+            
+<template if:true={showPrompt}>
+        <section role="dialog" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <!-- Body -->
+                <div class="slds-modal__content slds-p-around_medium">
+                    <template if:true={intId}>
+                    <p>
+                        <strong>Job ID:</strong> {intId}
+                    </p>
+                    </template>
+                    <p>
+                            <strong>Environment:</strong> {selectedEnv}
+                    </p>
+                </div>
+
+                <!-- Footer -->
+                <footer class="slds-modal__footer">
+                    <lightning-button 
+                        label="Cancel" 
+                        onclick={handleCancel}>
+                    </lightning-button>
+
+                    <lightning-button 
+                        label="Run Now" 
+                        variant="brand" 
+                        onclick={handleContinue}
+                        class="slds-m-left_small">
+                    </lightning-button>
+                </footer>
+
+            </div>
+        </section>
+
+        <!-- Backdrop -->
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+    <template if:true={showSnapshotPrompt}>
+        <section role="dialog" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <!-- Body -->
+                <div class="slds-modal__content slds-p-around_medium">
+                    <template if:true={intId}>
+                    <p>
+                        <strong>Job ID:</strong> {intId}
+                    </p>
+                    </template>
+                    <p>
+                            <strong>Environment:</strong> {selectedEnv}
+                    </p>
+                </div>
+
+                <!-- Footer -->
+                <footer class="slds-modal__footer">
+                    <lightning-button 
+                        label="Cancel" 
+                        onclick={handleSnapshotCancel}>
+                    </lightning-button>
+
+                    <lightning-button 
+                        label="Request Snapshot" 
+                        variant="brand" 
+                        onclick={handleSnapshotContinue}
+                        class="slds-m-left_small">
+                    </lightning-button>
+                </footer>
+
+            </div>
+        </section>
+
+        <!-- Backdrop -->
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+    </template>
+        <template if:true={errorMessage}>
+            <div class="error-box">
+                {errorMessage}
+            </div>
+        </template>
+
+        <template if:true={showTable}>
+        
+        <h3 class="section-title">
+            Historical Job Run | 
+            <span class="value"> Environment -</span>
+            <span class="value">{selectedEnv} |</span>
+            <span class="value">Version -</span>
+            <span class="value">{selectedVersion}</span>
+        </h3>
+
+            <!-- TABLE 1 -->
+            <div class="datatable-wrapper">
+                <lightning-datatable
+                    key-field="runId"
+                    data={runData}
+                    columns={columns}
+                    hide-checkbox-column="true"
+                    onrowaction={handleRowAction}>
+                </lightning-datatable>
+            </div>
+
+        </template>
+
+        <!-- TABLE 2 -->
+        <template if:true={showAudit}>
+
+            <div class="action-bar">
+                <lightning-button 
+                    label="Back" 
+                    onclick={handleBack}
+                    class="slds-m-right_small">
+                </lightning-button>
+
+                <lightning-button 
+                    label="Request Snapshot" 
+                    variant="brand" 
+                    onclick={handleRequestSnapshot}>
+                </lightning-button>
+            </div>
+
+            <h3 class="section-title">Summary</h3>
+
+            <div class="summary-grid">
+
+                <div class="summary-item">
+                    <label>Run ID</label>
+                    <div class="summary-value">{selectedRunId}</div>
+                </div>
+
+                <div class="summary-item">
+                    <label>Execution Status</label>
+                    <div class="summary-value">{executionStatus}</div>
+                </div>
+
+                <div class="summary-item">
+                    <label>Run Completion Time</label>
+                    <div class="summary-value">{runCompletionTime}</div>
+                </div>
+                <div class="summary-item">
+                    <label>Records Processed</label>
+                    <div class="summary-value">{runRecordCount}</div>
+                </div>
+
+            </div>
+
+            <div class="datatable-wrapper">
+                <lightning-datatable
+                    key-field="stage"
+                    data={auditData}
+                    columns={auditColumns}
+                    hide-checkbox-column="true">
+                </lightning-datatable>
+            </div>
+
+        </template>
+
+    </div>
+
+    <template if:true={showNoJobIdPrompt}>
+    <section role="dialog" class="slds-modal slds-fade-in-open">
+        <div class="slds-modal__container">
+
+            <!-- Body -->
+            <div class="slds-modal__content slds-p-around_medium">
+                <p>
+                    No Job ID is available for the <strong>{selectedEnv}</strong> environment
+                </p>
+            </div>
+
+            <!-- Footer -->
+            <footer class="slds-modal__footer">
+                <lightning-button
+                    label="Close"
+                    variant="brand"
+                    onclick={handleNoJobIdClose}>
+                </lightning-button>
+            </footer>
+
+        </div>
+    </section>
+
+    <div class="slds-backdrop slds-backdrop_open"></div>
+</template>
+
+</template>

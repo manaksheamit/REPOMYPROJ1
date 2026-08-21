@@ -1,0 +1,133 @@
+<template>
+    <template if:true={showUI}>
+        <lightning-card title="AEHC Pending Approvals">
+
+            <template if:true={aehc_records}>
+
+                <table class="slds-table slds-table_bordered">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Environment</th>
+                            <th>Version</th>
+                            <th>Queue</th>
+                            <th>Status</th>
+
+                            <template if:true={showUatColumn}>
+                                <th class="slds-text-align_center">UAT</th>
+                            </template>
+
+                            <template if:true={showTransformationColumn}>
+                                <th class="slds-text-align_center" style="width: 25%;">Transformation ID</th>
+                            </template>
+
+
+                            <th style="width: 25%;">Remarks</th>
+                            <th class="slds-text-align_center">Action</th>
+
+
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <template for:each={aehc_records} for:item="rec">
+                            <tr key={rec.aehc_workItemId}>
+
+                                <td class="name-truncate" title={rec.aehc_recordName}>
+                                    {rec.aehc_recordName}
+                                </td>
+
+                                <td>
+                                    <span class="slds-badge slds-theme_info">
+                                            {rec.aehc_env}
+                                        </span>
+                                </td>
+
+                                <td>{rec.aehc_version}</td>
+
+                                <td>
+                                    <lightning-badge label={rec.aehc_queueName}></lightning-badge>
+                                </td>
+
+
+                                <td>
+                                    <span class="slds-text-color_success">
+                                            {rec.aehc_status}
+                                        </span>
+                                </td>
+
+
+                                <!-- UAT CELL -->
+
+                                <template if:true={showUatColumn}>
+                                    <td class="slds-text-align_center">
+                                        <template if:true={rec.isPublicationBO}>
+                                            <lightning-input type="toggle" variant="label-hidden"
+                                                data-id={rec.aehc_workItemId} checked={rec.uatToggle}
+                                                onchange={handleRowToggle}>
+                                            </lightning-input>
+                                        </template>
+                                    </td>
+                                </template>
+
+                                <!-- Transfromation ID CELL -->
+
+                                <template if:true={showTransformationColumn}>
+                                    <td class="slds-text-align_center slds-cell-wrap" style="max-width: 250px; white-space: normal;">
+                                        <template if:true={rec.isDDHAdminWithFlag}>
+                                            <lightning-input
+                                                type="text"
+                                                variant="label-hidden"
+                                                value={rec.transformationId}
+                                                data-id={rec.aehc_workItemId}
+                                                placeholder="Enter ID"
+                                                pattern="^SC[0-9]{5}$"
+                                                message-when-pattern-mismatch="Invalid Transformation ID. Please enter the value in the format SC00001."
+                                                onchange={handleTransformationChange}
+                                                required>
+                                            </lightning-input>
+                                            <div class="slds-text-body_small slds-text-color_weak">
+                                                Format: SC00001
+                                            </div>
+                                        </template>
+                                    </td>
+                                </template>
+
+
+                                <td>
+                                    
+                                    <lightning-textarea
+                                        variant="label-hidden"
+                                        placeholder="Add remarks..."
+                                        class="remarks-box"
+                                        data-id={rec.aehc_workItemId}
+                                        onchange={handleCommentChange}>
+                                    </lightning-textarea>
+                                    <!--lightning-textarea variant="label-hidden" placeholder="Add remarks..."
+                                        class="remarks-box" data-id={rec.aehc_workItemId}
+                                        onchange={handleCommentChange}>
+                                    </lightning-textarea-->
+                                </td>
+
+
+
+                                <td class="slds-text-align_center">
+                                    <div class="slds-button-group" role="group">
+
+                                        <lightning-button label="Approve" data-id={rec.aehc_workItemId}
+                                            data-action="Approve" onclick={handleAction}></lightning-button>
+                                        <lightning-button label="Reject" data-id={rec.aehc_workItemId}
+                                            data-action="Reject" onclick={handleAction}></lightning-button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </template>
+                    </tbody>
+
+                </table>
+            </template>
+
+        </lightning-card>
+    </template>
+
+</template>

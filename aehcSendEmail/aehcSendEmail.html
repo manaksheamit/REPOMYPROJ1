@@ -1,0 +1,173 @@
+<template>
+    <template if:true={showEmailButton}>
+        <lightning-button-icon icon-name="action:email" onclick={togglePopup}>
+        </lightning-button-icon>
+    </template>
+
+    <template if:true={showPopup}>
+
+        <div class="slds-backdrop slds-backdrop_open"></div>
+
+        <section class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+
+                <!-- HEADER -->
+                <header class="slds-modal__header">
+                    <h2 class="slds-text-heading_medium">Correspondence</h2>
+                </header>
+
+                <!-- BODY -->
+                <div class="slds-modal__content slds-p-around_medium" style="text-align:left">
+
+                    <!-- SEARCH -->
+                    <lightning-input label="Search Application / Publication" value={searchTerm}
+                        onchange={handleSearch}>
+                    </lightning-input>
+
+                    <!-- DROPDOWN -->
+                    <div style="border:1px solid #ddd; max-height:150px; overflow:auto;">
+                        <template if:true={filteredAssets.length}>
+                            <template for:each={filteredAssets} for:item="a">
+                                <div key={a.value} data-id={a.value} onclick={handleAssetSelect}
+                                    style="padding:8px; cursor:pointer;">
+                                    {a.label}
+                                </div>
+                            </template>
+                        </template>
+
+                        <template if:true={showNoResults}>
+                            <div class="slds-modal__content slds-p-around_medium" style="text-align:left">
+                                No Application / Publication found
+                            </div>
+                        </template>
+                    </div>
+
+                    <div style="border:1px solid #ddd; padding:10px; margin-top:10px; max-height:200px; overflow:auto;">
+
+                        <template if:true={users.length}>
+
+                            <!-- All Users -->
+                            <div class="slds-checkbox slds-m-bottom_small">
+                                <input type="checkbox" id="allUsers" onchange={handleSelectAll}/>
+                                <label class="slds-checkbox__label" for="allUsers">
+                <span class="slds-checkbox_faux"></span>
+                <span class="slds-form-element__label">All Users</span>
+            </label>
+                            </div>
+
+                            <!-- User List -->
+                            <template for:each={users} for:item="u">
+                                <div key={u.userId} style="display:block;" class="slds-m-bottom_x-small">
+                                    <div class="slds-checkbox">
+                                        <input type="checkbox"
+               id={u.userId}
+               data-id={u.userId}
+               checked={u.checked}
+               onchange={handleCheckbox}/>
+                                        <label class="slds-checkbox__label" for={u.userId}>
+            <span class="slds-checkbox_faux"></span>
+            <span class="slds-form-element__label">
+                {u.name} - {u.role}
+            </span>
+        </label>
+                                    </div>
+                                </div>
+
+                            </template>
+
+                        </template>
+
+                        <template if:false={users.length}>
+                            <div style="color:gray;">No users found</div>
+                        </template>
+
+                    </div>
+
+
+                    <!--DATES
+                    <div class="slds-grid slds-gutters slds-m-top_medium">
+
+                        <div class="slds-col">
+                            <lightning-input 
+                                type="date" 
+                                label="From"
+                                value={fromDate}
+                                onchange={handleFromDate}>
+                            </lightning-input>
+                            <div style="color:red;">{fromDateError}</div>
+                        </div>
+
+                        <div class="slds-col">
+                            <lightning-input 
+                                type="date" 
+                                label="To"
+                                value={toDate}
+                                min={fromDate}
+                                onchange={handleToDate}>
+                            </lightning-input>
+                            <div style="color:red;">{toDateError}</div>
+                        </div>
+
+                    </div> -->
+
+                    <!-- TO -->
+                    <lightning-textarea label="To" value={selectedUserNames} disabled class="slds-m-top_small">
+                    </lightning-textarea>
+
+                    <div class="slds-form-element slds-m-top_small">
+
+                        <div class="slds-grid slds-grid_vertical-align-center slds-m-bottom_xx-small">
+
+                            <label class="slds-form-element__label">
+            CC
+        </label>
+
+                            <lightning-helptext
+                                content="Enter your email address in CC to stay updated on this conversation.">
+                            </lightning-helptext>
+
+                        </div>
+
+                        <lightning-input variant="label-hidden" placeholder="user1@company.com, user2@company.com"
+                            value={ccEmails} onchange={handleCcChange}>
+                        </lightning-input>
+
+                    </div>
+
+                    <!-- SUBJECT -->
+                    <lightning-input label="Subject" value={subject} class="slds-m-top_small" onchange={handleSubject}>
+                    </lightning-input>
+
+                    <!-- BODY -->
+                    <div class="slds-form-element slds-m-top_small">
+
+                        <div class="slds-grid slds-grid_vertical-align-center slds-m-bottom_xx-small">
+
+                            <label class="slds-form-element__label">
+            Body
+        </label>
+
+                            <lightning-helptext content="Please enter your signature in the body of this email.">
+                            </lightning-helptext>
+
+                        </div>
+
+                        <lightning-input-rich-text value={body} formats={formats} onchange={handleBody}>
+                        </lightning-input-rich-text>
+
+                    </div>
+
+                </div>
+
+                <!-- FOOTER -->
+                <footer class="slds-modal__footer">
+                    <lightning-button label="Cancel" onclick={togglePopup}></lightning-button>
+                    <lightning-button variant="brand" label="Send" onclick={handleSend}></lightning-button>
+                </footer>
+
+            </div>
+        </section>
+
+    </template>
+
+</template>

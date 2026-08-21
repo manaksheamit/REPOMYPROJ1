@@ -1,0 +1,217 @@
+<template>
+
+    <!-- Header / Subscribe Card -->
+    <template if:false={isSubscribed}>
+ 
+        <c-aehc-subscription-header application-name={wizardData.applicationName}
+            publication-name={wizardData.publicationName} show-subscribe={showSubscribe} show-promote={showPromote}
+            onpromote={handlePromote} is-subscribed={isSubscribed} is-promote-flow={isPromoteFlow}
+            show-edit-publication="true" onsubscribe={handleSubscribe} onsubscribers={handleSubscribers}
+            oneditpublication={handleEditPublication} onjobhistory={handleJobHistory}
+            onversionhistory={handleVersionHistory}>
+        </c-aehc-subscription-header>
+
+        <!-- Edit Publication Modal --> 
+        <template if:true={showEditModal}>
+            <c-aehc-edit-publication-modal publication-id={wizardData.publicationRecordId}
+                picklist-options={picklistOptions} onsuccess={handleUpdateSuccess} onerror={handleUpdateError}
+                onclose={handleCloseModal}>
+            </c-aehc-edit-publication-modal>
+        </template>
+
+        <template if:false={showPromoteComponent}>
+
+            <c-aehc-asset-detail record-id={urlRecordId} onenvchange={handleEnvironmentChange} onstatuschange={handleStatus}
+                selected-environment={selectedEnv} description-change={descriptionChange}>
+            </c-aehc-asset-detail>
+        </template>
+
+        <!-- Promote Component -->
+        <template if:true={showPromoteComponent}>
+            <c-aehc-publication-promote publication-id={wizardData.publicationRecordId}
+                environment-value={environmentValue} onpromotesuccess={handlePromoteSuccess}
+                onclose={handlePromoteClose}>
+            </c-aehc-publication-promote>
+        </template>
+    </template>
+
+    <!-- Path -->
+    <template if:true={isSubscribed}>
+        <div class="path-container">
+            <lightning-progress-indicator current-step={currentStep} type="path" variant="base">
+                <lightning-progress-step label={labels.stepSelectFields} value="1">
+                </lightning-progress-step>
+
+                <lightning-progress-step label={labels.stepSchedule} value="2">
+                </lightning-progress-step>
+
+                <lightning-progress-step label={labels.stepDestination} value="3">
+                </lightning-progress-step>
+
+                <lightning-progress-step label={labels.stepReviewSubmit} value="4">
+                </lightning-progress-step>
+            </lightning-progress-indicator>
+        </div>
+    </template>
+
+    <!-- STEP 1 -->
+    <template if:true={isStepOne}>
+  
+        <c-aehc-select-fields-step wizard-data={wizardData} schema-data={schemaData} labels={labels}
+            edit-mode={isEditFlow} is-loading={isSchemaLoading} has-schema-error={schemaLoadError}
+            onstepdatachange={handleStepDataChange} onback={handleCancel} onnext={goToStepTwo}
+            is-publication-bo={isPublicationBO}>
+        </c-aehc-select-fields-step> 
+
+    </template>
+
+    <!-- STEP 2 -->
+    <template if:true={isStepTwo}>
+        <c-aehc-schedule-step wizard-data={wizardData} record-id={urlRecordId}
+            scheduler-mode-options={picklistOptions.schedulerModeOptions}
+            frequency-options={picklistOptions.frequencyOptions} weekday-options={picklistOptions.weekdayOptions}
+            week-options={picklistOptions.weekOptions} month-day-options={picklistOptions.monthDayOptions}
+            onstepdatachange={handleStepDataChange} onback={goToStepOne} onnext={goToStepThree}
+            publisher-schedule-data={publisherScheduleData}>
+        </c-aehc-schedule-step>
+    </template>
+
+    <!-- STEP 3 -->
+    <template if:true={isStepThree}>
+        <c-aehc-destination-step wizard-data={wizardData}
+            destination-type-options={picklistOptions.destinationTypeOptions}
+            db-type-options={picklistOptions.databaseTypeOptions}
+            output-format-options={picklistOptions.outputFormatOptions} onstepdatachange={handleStepDataChange}
+            onback={goToStepTwo} onnext={goToStepFour}>
+        </c-aehc-destination-step>
+    </template>
+
+    <!-- STEP 4 -->
+    <template if:true={isStepFour}>
+        <template if:false={isSubmitSuccess}>
+
+            <c-aehc-review-submit-step wizard-data={wizardData} is-submitting={isSubmitting} submit-label={submitLabel}
+                disable-submit={isSubmitDisabledFinal} onback={goToStepThree} onsubmit={handleSubmit}
+                is-publication-bo={isPublicationBO}>
+            </c-aehc-review-submit-step>
+
+        </template>
+
+        <template if:true={isSubmitSuccess}>
+            <div class="submission-success-card">
+                <span class="submission-success-text">
+                Request submitted successfully, Request # :
+            </span>
+
+                <a class="submission-request-link" href={submittedSubscriptionUrl} target="_blank"
+                    data-id={submittedSubscriptionId}>
+                    {submittedRequestNumber}
+                </a>
+            </div>
+        </template>
+    </template>
+    <!-- Modal -->
+    <template if:true={isSubscriberModal}>
+        <section role="dialog" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+
+                <!-- Header -->
+                <header class="slds-modal__header">
+                    <lightning-button-icon icon-name="utility:close" alternative-text="close"
+                        onclick={closeSubscriberModal} class="slds-modal__close">
+                    </lightning-button-icon>
+
+                    <h2 class="slds-text-heading_medium">Subscribers</h2>
+                </header>
+
+                <!-- Body -->
+                <div class="slds-modal__content slds-p-around_medium">
+
+                    <!-- Child LWC -->
+                    <c-aehc-subscribers-lwc record-id={wizardData.publicationRecordId} environment={environmentValue}>
+                    </c-aehc-subscribers-lwc>
+
+                </div>
+
+                <!-- Footer -->
+                <footer class="slds-modal__footer">
+                    <lightning-button label="Close" onclick={closeSubscriberModal}>
+                    </lightning-button>
+                </footer>
+
+            </div>
+        </section>
+
+        <!-- Backdrop -->
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+    <!-- Modal -->
+    <template if:true={isJobRunHistory}>
+        <section role="dialog" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+
+                <!-- Header -->
+                <!-- <header class="slds-modal__header"> -->
+                <lightning-button-icon icon-name="utility:close" alternative-text="close" onclick={closeJobHistoryModal}
+                    class="slds-modal__close">
+                </lightning-button-icon>
+
+                <!-- <h2 class="slds-text-heading_medium">Job Run History</h2> -->
+                <!-- </header> -->
+
+                <!-- Body -->
+                <div class="slds-modal__content slds-p-around_medium">
+
+                    <!-- Child LWC -->
+                    <c-aehc-publication-job-history>
+                    </c-aehc-publication-job-history>
+
+                </div>
+
+                <!-- Footer -->
+                <footer class="slds-modal__footer">
+                    <lightning-button label="Close" onclick={closeJobHistoryModal}>
+                    </lightning-button>
+                </footer>
+
+            </div>
+        </section>
+
+        <!-- Backdrop -->
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+    <!--version History-->
+    <template if:true={isVersionHistory}>
+
+        <section role="dialog" class="slds-modal slds-fade-in-open">
+
+            <div class="slds-modal__container">
+
+                <lightning-button-icon icon-name="utility:close" alternative-text="close"
+                    onclick={closeVersionHistoryModal} class="slds-modal__close">
+                </lightning-button-icon>
+
+                <div class="slds-modal__content slds-p-around_medium">
+
+                    <c-aehcversion-history publication-id={wizardData.publicationRecordId}>
+                    </c-aehcversion-history>
+
+                </div>
+
+                <footer class="slds-modal__footer">
+
+                    <lightning-button label="Close" onclick={closeVersionHistoryModal}>
+                    </lightning-button>
+
+                </footer>
+
+            </div>
+
+        </section>
+
+        <div class="slds-backdrop slds-backdrop_open"></div>
+
+    </template>
+</template>

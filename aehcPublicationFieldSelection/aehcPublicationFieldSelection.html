@@ -1,0 +1,121 @@
+<template>
+
+    <div class="schema-container">
+
+        <!-- AVAILABLE FIELDS -->
+        <div class="schema-box">
+
+            <h3 class="table-title">
+                Available Fields
+            </h3>
+
+            <lightning-input type="search" label="Search Fields" placeholder="Search Fields" value={searchKey}
+                class="slds-m-bottom_small" onchange={handleSearch}>
+            </lightning-input>
+
+            <div class="table-container">
+
+                <lightning-datatable key-field="name" data={displayedSchema} columns={availableColumns}
+                    selected-rows={visibleSelectedRowNames} onsort={handleSort} sorted-by={sortedBy}
+                    sorted-direction={sortedDirection} onrowselection={handleRowSelection} class="figma-datatable">
+                </lightning-datatable>
+
+            </div>
+
+        </div>
+
+        <!-- SELECTED FIELDS -->
+        <div class="schema-box">
+
+            <div class="table-title-row">
+
+                <h3 class="table-title">
+                    Selected Fields
+                </h3>
+
+                <span class="badge">
+                    {selectedCount}
+                </span>
+
+            </div>
+
+            <template if:true={selectedCount}>
+
+                <div class="preview-container">
+
+                    <template for:each={selectedSchemaForDisplay} for:item="row">
+
+                        <div
+    key={row.name}
+    class={row.rowClass}
+    data-id={row.name}
+    draggable="true"
+    ondragstart={handleDragStart}
+    ondragover={handleDragOver}
+    ondragleave={handleDragLeave}
+    ondrop={handleDrop}
+    ondragend={handleDragEnd}>
+
+                            <div class="preview-details">
+
+                                <div class="preview-name">
+
+    <span class="drag-handle">
+        ☰
+    </span>
+
+    {row.name}
+
+</div>
+
+                                <div class="alias-row">
+
+                                    <span class="alias-label">
+        Alias
+    </span>
+
+                                    <lightning-input type="text" variant="label-hidden" value={row.alias}
+                                        data-name={row.name} onchange={handleAliasChange} onblur={handleAliasBlur} onkeydown={handleAliasKeyDown}>
+                                    </lightning-input>
+
+                                </div>
+
+
+                            </div>
+
+                            <lightning-button-icon type="button" icon-name="utility:delete" alternative-text="Remove"
+                                data-name={row.name} onclick={removeRow}>
+                            </lightning-button-icon>
+
+                        </div>
+
+                    </template>
+
+                </div>
+
+            </template>
+
+            <template if:false={selectedCount}>
+
+                <div class="state-container">
+
+                    <lightning-icon icon-name="utility:info" size="small">
+                    </lightning-icon>
+
+                    <div class="state-title">
+                        No Fields Selected
+                    </div>
+
+                    <div class="state-description">
+                        Select fields from the Available Fields list.
+                    </div>
+
+                </div>
+
+            </template>
+
+        </div>
+
+    </div>
+
+</template>

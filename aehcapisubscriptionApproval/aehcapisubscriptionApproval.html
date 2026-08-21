@@ -1,0 +1,46 @@
+<template>
+    <template if:true={showApprovalActions}>
+
+        <lightning-card title="Subscription Approval">
+
+            <template if:true={isLoading}>
+                <div class="slds-p-around_medium slds-align_absolute-center">
+                    <lightning-spinner size="small"></lightning-spinner>
+                </div>
+            </template>
+
+            <template if:true={hasError}>
+                <div class="slds-p-around_medium">
+                    <div class="slds-notify slds-alert_error">
+                        <p>{errorMessage}</p>
+                    </div>
+                </div>
+            </template>
+
+            <template if:true={isLoaded}>
+                <div class="slds-p-around_medium">
+
+                    <lightning-textarea
+                        label="Comment"
+                        value={comment}
+                        onchange={handleCommentChange}
+                        required={commentError}>
+                    </lightning-textarea>
+
+                    <br>
+
+                    <!-- ACTION -->
+                    <div class="slds-m-top_medium">
+                        <lightning-button-group>
+                            <lightning-button label="Approve" onclick={action}></lightning-button>
+                            <lightning-button label="Reject" onclick={action}></lightning-button>
+                        </lightning-button-group>
+                    </div>
+
+                </div>
+            </template>
+
+        </lightning-card>
+
+    </template>
+</template>

@@ -1,0 +1,479 @@
+<template>
+
+    <!-- <div class="config"> controls-->
+
+    <div class="config slds-grid slds-nowrap slds-gutters slds-grid_vertical-align-center slds-theme_shade">
+        <!-- slds-grid_vertical-align-end slds-grid_vertical-align-end slds-medium-size_1-of-4 -->
+
+        <div class="slds-col slds-size_1-of-5 ">
+            <lightning-combobox label="Environment" value={selectedEnvironment} options={envOptions}
+                onchange={handleEnvChange}>
+            </lightning-combobox>
+        </div>
+
+        <div class="slds-col slds-size_1-of-5">
+
+            <lightning-combobox key={selectedEnvironment} value={selectedVersion} options={versionOptions}
+                onchange={handleVersionChange}>
+            </lightning-combobox>
+
+        </div>
+        <template if:true={showButtons}>
+            <div class="slds-col slds-size_1-of-5 slds-align_absolute-center">
+
+                <lightning-input type="toggle" label="SubMon" checked={isEnabled} onchange={handleToggle}>
+                </lightning-input>
+            </div>
+        </template>
+        <div class="slds-col slds-size_2-of-5 slds-text-align_right">
+            <template if:false={isHideButton}>
+                <lightning-button-group>
+
+                    <lightning-button label="Edit" disabled={disableEdit} onclick={handleEdit}>
+                    </lightning-button>
+
+
+                    <lightning-button label="Promote" onclick={handlePromote} disabled={disablePromoteButton}>
+                    </lightning-button>
+
+                    <lightning-button label={labels.approvalhistory} onclick={handleChangeHistory}>
+                    </lightning-button>
+
+                </lightning-button-group>
+            </template>
+        </div>
+
+
+    </div>
+    <!-- </div> -->
+
+
+    <template if:true={isLoading}>
+        <lightning-spinner size="medium"></lightning-spinner>
+    </template>
+
+    <template if:false={isLoading}>
+        <template if:false={versionData}>
+            <div class="slds-box slds-theme_shade slds-m-around_medium">
+
+                We couldn't retrieve the subscription details due to a temporary issue
+                or because the subscription data is unavailable. Please try again. If
+                the issue persists, contact admin for support.
+
+            </div>
+
+        </template>
+    </template>
+
+
+    <template if:true={versionData}>
+        <template if:false={isLoading}>
+
+            <lightning-accordion allow-multiple-sections-open active-section-name={activeSections}>
+
+                <lightning-accordion-section label="General Info">
+
+                    <div class="details-grid">
+
+                        <div class="field">
+                            <div class="label">Application Id</div>
+                            <div class="value">{versionData.applicationId}</div>
+                        </div>
+
+                        <div class="field">
+                            <div class="label">Publication Id</div>
+                            <div class="value">{versionData.publicationId}</div>
+                        </div>
+
+                        <div class="field">
+                            <div class="label">Application</div>
+                            <div class="value">{versionData.applicationName}</div>
+                        </div>
+
+                        <div class="field">
+                            <div class="label">Publication</div>
+                            <div class="value">{versionData.publicationName}</div>
+                        </div>
+
+                        <div class="field">
+                            <div class="label">Consuming Application</div>
+                            <div class="value">{versionData.consumingApplicationName}</div>
+                        </div>
+
+
+                        <div class="field">
+                            <div class="label">Version Name</div>
+                            <div class="value">{versionData.versionName}</div>
+                        </div>
+
+
+                        <div class="field">
+                            <div class="label">Approval Status</div>
+                            <div class="value">{versionData.approvalStatus}</div>
+                        </div>
+
+                        <div class="field">
+                            <div class="label">DDH Job Id</div>
+                            <div class="value">{versionData.integrationId}</div>
+                        </div>
+
+                    </div>
+
+                </lightning-accordion-section>
+
+                <lightning-accordion-section label="Transformation" active-section-name={activeSections}>
+
+                    <div class="details-grid">
+
+                        <div class="field">
+                            <div class="label">Transformation Required</div>
+                            <div class="value">
+                                <lightning-input type="toggle" checked={isTransformationRequired} variant="label-hidden"
+                                    disabled>
+                                </lightning-input>
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <div class="label">Transformation Id</div>
+                            <div class="value">{versionData.transformationId}</div>
+                        </div>
+
+                    </div>
+
+                    <div class="slds-m-top_medium">
+                        <c-aehcjson-table json-data={selectedFieldsJson}></c-aehcjson-table>
+                    </div>
+
+                </lightning-accordion-section>
+
+                <lightning-accordion-section label="Schedule" active-section-name={activeSections}>
+
+                    <div class="details-grid">
+
+                        <div class="field">
+                            <div class="label">Mode</div>
+                            <div class="value">{versionData.schedule.schedulerMode}</div>
+                        </div>
+
+                        <template if:false={isSubmonSchedule}>
+                            <div class="field">
+                                <div class="label">Frequency</div>
+                                <div class="value">{versionData.schedule.frequency}</div>
+                            </div>
+                        </template>
+
+                        <template if:true={isFrequencyDaily}>
+                            <div class="field">
+                                <div class="label">Time</div>
+                                <div class="value">{versionData.schedule.scheduleTime}</div>
+                            </div>
+                        </template>
+
+                        <template if:true={isFrequencyWeekly}>
+                            <div class="field">
+                                <div class="label">Weekdays</div>
+                                <div class="value">{weekdays}</div>
+                            </div>
+                        </template>
+
+                        <template if:true={isFrequencyMonthly}>
+                            <div class="field">
+                                <div class="label">Day of Month</div>
+                                <div class="value">{versionData.schedule.monthlyDay}</div>
+                            </div>
+                        </template>
+
+                        <template if:true={isFrequencyMultiWeekly}>
+
+                            <div class="field">
+                                <div class="label">Weeks</div>
+                                <div class="value">{multiWeekWeeks}</div>
+                            </div>
+
+                            <div class="field">
+                                <div class="label">Weekdays</div>
+                                <div class="value">{multiWeekDays}</div>
+                            </div>
+
+                        </template>
+
+                        <template if:true={isFrequencyOneTime}>
+
+                            <div class="field">
+                                <div class="label">Execution Date</div>
+                                <div class="value">
+                                    {versionData.schedule.oneTimeDate}
+                                </div>
+                            </div>
+
+                            <div class="field">
+                                <div class="label">Execution Time</div>
+                                <div class="value">
+                                    {versionData.schedule.oneTimeTime}
+                                </div>
+                            </div>
+
+                        </template>
+
+                        <div class="field">
+                            <div class="label">Schedule Summary</div>
+                            <div class="value">{versionData.schedule.scheduleSummary}</div>
+                        </div>
+
+                        <template if:false={isSubmonSchedule}>
+                            <div class="field">
+                                <div class="label">Cron Expression</div>
+                                <div class="value">{versionData.schedule.cronExpression}</div>
+                            </div>
+                        </template>
+
+                    </div>
+
+                </lightning-accordion-section>
+
+                <lightning-accordion-section label="Destination">
+
+                    <div class="details-grid">
+
+                        <div class="field">
+                            <div class="label">Destination Type</div>
+                            <div class="value">{versionData.destination.destinationType}</div>
+                        </div>
+
+                        <template if:true={isBlob}>
+                            <div class="field">
+                                <div class="label">File Name</div>
+                                <div class="value">{versionData.destination.blobFileName}</div>
+                            </div>
+
+                            <div class="field">
+                                <div class="label">Storage Account</div>
+                                <div class="value">{versionData.destination.storageAccount}</div>
+                            </div>
+
+                            <div class="field">
+                                <div class="label">Container Path</div>
+                                <div class="value">{versionData.destination.containerPath}</div>
+                            </div>
+
+                            <div class="field">
+                                <div class="label">Output Format</div>
+                                <div class="value">{versionData.destination.outputFormat}</div>
+                            </div>
+                                <template if:true={showDelimeter}>
+                                 <div class="field">
+                                <div class="label">Delimiter</div>
+                                <div class="value">{versionData.destination.delimiter}</div>
+                            </div>
+                                </template>
+
+                            <div class="field">
+                                <div class="label">Include Header</div>
+                                <lightning-input type="toggle" checked={includeHeader} disabled></lightning-input>
+                            </div>
+
+                            <div class="field">
+                                <div class="label">Provide Custom Header</div>
+                                <lightning-input type="toggle" checked={provideCustomHeader} disabled></lightning-input>
+                            </div>
+                            
+                        </template>
+
+                        <template if:true={isDatabase}>
+                            <div class="field">
+                                <div class="label">Database Type</div>
+                                <div class="value">{versionData.destination.databaseType}</div>
+                            </div>
+
+                            <div class="field">
+                                <div class="label">Host Name</div>
+                                <div class="value">{versionData.destination.databaseHost}</div>
+                            </div>
+
+                            <div class="field">
+                                <div class="label">JDBC URL</div>
+                                <div class="value">{versionData.destination.jdbcUrl}</div>
+                            </div>
+
+                            <div class="field">
+                                <div class="label">Port</div>
+                                <div class="value">{versionData.destination.databasePort}</div>
+                            </div>
+
+                            <div class="field">
+                                <div class="label">Initial Catalog</div>
+                                <div class="value">{versionData.destination.otherProperties}</div>
+                            </div>
+
+                            <div class="field">
+                                <div class="label">Batch Flag</div>
+                                <lightning-input type="toggle" checked={versionData.destination.batchFlag} disabled>
+                                </lightning-input>
+                            </div>
+
+                            <div class="field">
+                                <div class="label">Mute Error Flag</div>
+                                <lightning-input type="toggle" checked={versionData.destination.muteErrorFlag} disabled>
+                                </lightning-input>
+                            </div>
+
+                            <template if:true={versionData.destination.batchFlag}>
+                                <div class="field">
+                                    <div class="label">Batch Size</div>
+                                    <div class="value">{versionData.destination.batchSize}</div>
+                                </div>
+                            </template>  
+
+                            <div class="field">
+                                <div class="label">Alias/Custom Header</div>
+                                <lightning-input type="toggle" checked={provideCustomHeader} disabled></lightning-input>
+                            </div>
+
+                        </template>
+
+                        <template if:true={isSFTP}>
+                            <div class="field">
+                                <div class="label">Host Name</div>
+                                <div class="value">{versionData.destination.sftpHostName}</div>
+                            </div>
+
+                            <div class="field">
+                                <div class="label">Remote Directory / Path</div>
+                                <div class="value">{versionData.destination.sftpRemotePath}</div>
+                            </div>
+
+                            <div class="field">
+                                <div class="label">File Name</div>
+                                <div class="value">{versionData.destination.sftpFileName}</div>
+                            </div>
+
+                            <div class="field">
+                                <div class="label">Output Format</div>
+                                <div class="value">{versionData.destination.sftpOutputFormat}</div>
+                            </div>
+
+                            <div class="field">
+                                <div class="label">Port</div>
+                                <div class="value">{versionData.destination.sftpPort}</div>
+                            </div>
+                            <template if:true={showDelimeter}>
+                            <div class="field">
+                                <div class="label">Delimiter</div>
+                                <div class="value">{versionData.destination.delimiter}</div>
+                            </div>
+                            </template>
+                            <div class="field">
+                                <div class="label">Include Header</div>
+                                <lightning-input type="toggle" checked={includeHeader} disabled></lightning-input>
+                            </div>
+
+                            <div class="field">
+                                <div class="label">Provide Custom Header</div>
+                                <lightning-input type="toggle" checked={provideCustomHeader} disabled></lightning-input>
+                            </div>
+                        </template>
+
+                        <!-- Custom Header-->
+
+                    </div>
+
+                </lightning-accordion-section>
+
+                <template if:true={isDatabase}>
+                    <lightning-accordion-section label="Stored Procedure">
+
+                        <div class="details-grid">
+
+                            <div class="field">
+                                <div class="label">On Init</div>
+                                <div class="value">{versionData.destination.spOnInit}</div>
+                            </div>
+
+                            <div class="field">
+                                <div class="label">On Load</div>
+                                <div class="value">{versionData.destination.spOnLoad}</div>
+                            </div>
+
+                            <div class="field">
+                                <div class="label">On Success</div>
+                                <div class="value">{versionData.destination.spOnSuccess}</div>
+                            </div>
+
+                            <div class="field">
+                                <div class="label">On Error</div>
+                                <div class="value">{versionData.destination.spOnError}</div>
+                            </div>
+
+                        </div>
+
+                    </lightning-accordion-section>
+                </template>
+
+            </lightning-accordion>
+
+        </template>
+    </template>
+
+
+    <!-- promote popup model -->
+    <template if:true={showPromoteModal}>
+        <section role="dialog" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+
+                <!-- Header -->
+                <header class="slds-modal__header">
+                    <lightning-button-icon icon-name="utility:close" alternative-text="close"
+                        onclick={closePromoteModel} class="slds-modal__close">
+                    </lightning-button-icon>
+
+                    <h2 class="slds-text-heading_medium">Subscribers</h2>
+                </header>
+
+                <!-- Body -->
+                <div class="slds-modal__content slds-p-around_medium">
+
+                    <!-- Child LWC -->
+                    <c-aehc-promote-subscription env={selectedEnvironment} selected-version={selectedVersion}
+                        oncomplete={handlePromoteComplete}>
+                    </c-aehc-promote-subscription>
+
+                </div>
+
+                <!-- Footer -->
+                <footer class="slds-modal__footer">
+                    <lightning-button label="Close" onclick={closePromoteModel}>
+                    </lightning-button>
+                </footer>
+
+            </div>
+        </section>
+
+        <!-- Backdrop -->
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+    <!-- END Promote POPUP  -->
+
+    <!-- Start Toggle Pop-Up -->
+    <!-- Confirmation Modal -->
+    <template if:true={showModal}>
+        <section role="dialog" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <h2 class="slds-text-heading_medium">Confirmation</h2>
+                </header>
+
+                <div class="slds-modal__content slds-p-around_medium">
+                    <p>{modalMessage}</p>
+                </div>
+
+                <footer class="slds-modal__footer">
+                    <lightning-button label="Cancel" onclick={closeModal}></lightning-button>
+                    <lightning-button variant="brand" label="Yes" onclick={confirmAction}></lightning-button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+</template>

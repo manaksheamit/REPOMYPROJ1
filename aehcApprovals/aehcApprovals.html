@@ -1,0 +1,237 @@
+<template>
+    
+    <template if:true={recordVisibility}>
+        <lightning-card title="Publication Approval" if:true={isApprover}>
+
+            <!-- LOADING -->
+            <template if:true={isLoading}>
+                <div class="spinner-container">
+                    <lightning-spinner alternative-text="Loading" size="small">
+                    </lightning-spinner>
+                </div>
+            </template>
+                        
+            <template if:true={scheduleChange}>
+                <div class="custom-section">
+
+                    <div class="section-header">
+                        <span>Schedule Change Details</span>
+                    </div>
+
+                    <div class="schema-card">
+                        <lightning-layout multiple-rows>
+
+                            <lightning-layout-item size="12" padding="around-small">
+                                <lightning-textarea
+                                    label="Schedule Summary"
+                                    value={scheduleSummary}
+                                    read-only>
+                                </lightning-textarea>
+                            </lightning-layout-item>
+
+                            <lightning-layout-item size="12" padding="around-small">
+                                <lightning-textarea
+                                    label="CRON Job Expression"
+                                    value={cronExpression}
+                                    read-only>
+                                </lightning-textarea>
+                            </lightning-layout-item>
+
+                        </lightning-layout>
+                    </div>
+
+                </div>
+            </template>
+            <template if:true={showFieldsTable}>
+
+                <c-aehc-publication-field-data-table
+                        field-data={tabledata}>
+                    </c-aehc-publication-field-data-table>
+
+            </template>
+            <div class="approval-container">
+                <template if:true={adlReviewRequired}>
+
+    <div class="custom-section change-request-section">
+
+        <div class="section-header">
+            <span>Change Request Details</span>
+        </div>
+
+        <div class="schema-card">
+
+            <lightning-layout multiple-rows>
+
+                
+
+                <lightning-layout-item size="6" padding="around-small">
+                    <lightning-input
+                        class="display-field"
+                        label="Created By"
+                        value={createdByName}
+                        read-only>
+                    </lightning-input>
+                </lightning-layout-item>
+
+                <lightning-layout-item size="6" padding="around-small">
+                    <lightning-input
+                        class="display-field"
+                        label="Created Date"
+                        value={formattedCreatedDate}
+                        read-only>
+                    </lightning-input>
+                </lightning-layout-item>
+
+                <lightning-layout-item size="12" padding="around-small">
+                    <lightning-textarea
+                        
+                        class="description-field"
+                        label="Description"
+                        value={description}
+                        read-only>
+                    </lightning-textarea>
+                </lightning-layout-item>
+
+            </lightning-layout>
+
+        </div>
+
+    </div>
+
+</template>
+                <template if:true={isADL}>
+                    <!-- Change Request Details -->
+                
+                    <!-- Schema & Table Section -->
+                    <div class="custom-section">
+
+                        <div class="section-header">
+                            <span>{labels.schemaTable}</span>
+                        </div>
+
+                        <div class="schema-card">
+                            <lightning-layout vertical-align="end" multiple-rows>
+
+                                <lightning-layout-item size="5" padding="around-small">
+                                    <lightning-input
+                                        label={labels.schemaName}
+                                        value={schema}
+                                        read-only="true">
+                                    </lightning-input>
+                                </lightning-layout-item>
+
+                                <lightning-layout-item size="5" padding="around-small">
+                                    <lightning-input
+                                        label={labels.tableName}
+                                        value={table}
+                                        read-only="true">
+                                    </lightning-input>
+                                </lightning-layout-item>
+
+                                <lightning-layout-item size="2" padding="around-small">
+                                    <div class="validate-btn-container">
+                                        <lightning-button
+                                            label={labels.validate}
+                                            variant="brand"
+                                            onclick={handleValidate}>
+                                        </lightning-button>
+                                    </div>
+                                </lightning-layout-item>
+
+                            </lightning-layout>
+                        </div>
+
+                    </div>
+
+                    <template if:true={isSchemaLoading}>
+                        <div class="spinner-container">
+                            <lightning-spinner size="small"></lightning-spinner>
+                        </div>
+                    </template>
+
+                    <!-- Fields Section -->
+                    <template if:true={hasVisibleFields}>
+
+                        <div class="custom-section">
+
+                            <div class="section-header">
+                                <span>{labels.fields}</span>
+                            </div>
+
+                            <div class="datatable-wrapper">
+                                <lightning-datatable
+                                    key-field="id"
+                                    data={visibleFields}
+                                    columns={columns}
+                                    hide-checkbox-column>
+                                </lightning-datatable>
+                            </div>
+
+                            <template if:true={showLoadMore}>
+                                <div class="load-more-container">
+                                    <lightning-button
+                                        label="Load More"
+                                        variant="neutral"
+                                        onclick={handleLoadMore}>
+                                    </lightning-button>
+                                </div>
+                            </template>
+
+                        </div>
+
+                    </template>
+
+                    <template if:true={showNoFields}>
+                        <div class="empty-state">
+                            No fields available for selected schema/table
+                        </div>
+                    </template>
+
+                </template>
+
+                <!-- Approval Section -->
+                <div class="action-section">
+
+                    <lightning-textarea
+                        data-id="commentBox"
+                        label="Comment"
+                        value={comment}
+                        placeholder="Enter your comments..."
+                        onchange={handleCommentChange}
+                        required={commentError}
+                        message-when-value-missing="Comment is mandatory to reject.">
+                    </lightning-textarea>
+
+                    <div class="action-buttons">
+                        <template if:true={isADL}>
+                            <lightning-button
+                            label="Complete Review"                            
+                            onclick={action}
+                            disabled={isActionInProgress}>
+                        </lightning-button>
+
+                        </template>
+                        <template if:false={isADL}>
+                         
+                        <lightning-button
+                            label="Approve"                            
+                            onclick={action}
+                            disabled={isActionInProgress}>
+                        </lightning-button>
+
+                        <lightning-button
+                            label="Reject"
+                            onclick={action}
+                            disabled={isActionInProgress}>
+                        </lightning-button>
+                        </template>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </lightning-card>
+    </template>
+</template>

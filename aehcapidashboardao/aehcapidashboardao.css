@@ -1,0 +1,133 @@
+.card {
+    display: flex;
+    height: 100%;
+    background: #fff;
+    border-radius: 2px;
+    padding: 20px;
+    box-shadow: 0px 3px 6px 0px rgba(0, 0, 0, 0.15);
+    border: 1px solid lightgray;
+    height: 250px;
+    overflow: hidden;
+}
+
+/* Responsive: stack on small screens */
+@media (max-width: 768px) {
+    .card {
+        flex-direction: column;
+        height: auto;
+    }
+}
+
+/* LEFT PANEL */
+.left-panel {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    justify-content: space-between;
+}
+
+
+.row {
+    display: flex;
+    align-items: center;
+    margin: 5px 0;
+    font-size: 14px;
+}
+
+.dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 4px;
+    display: inline-block;
+}
+
+.green {
+    background: #4CAF50;
+}
+
+.red {
+    background: #F44336;
+}
+
+.blue {
+    background: #2196F3;
+}
+
+/* RIGHT PANEL - BARS ALWAYS VISIBLE */
+.right-panel {
+    width: 50%;
+    /* border-left: 1px solid #ddd; */
+    padding-left: 20px;
+
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-end;
+}
+
+/* Bar items */
+.bar-item {
+    text-align: center;
+}
+
+/* Bar shapes */
+.bar {
+    width: 40px;
+    border-radius: 6px 6px 0 0;
+}
+
+.green-bar {
+    background: #4CAF50;
+}
+
+.red-bar {
+    background: #F44336;
+}
+
+.blue-bar {
+    background: #2196F3;
+}
+
+.label {
+    margin-top: 6px;
+    font-size: 12px;
+}
+
+.leftPanel__card1 {
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
+    margin-bottom: 10px;
+}
+
+leftPanel__card1>div {
+    height: 100%;
+}
+
+.leftPanel__card1-iconBox {
+    font-size: 3rem;
+    background-color: skyblue;
+    border-radius: 0.3rem;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 6rem;
+    height: 4rem;
+}
+
+.leftPanel__card1-title {
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.leftPanel__card1-subtitle {
+    color: #777;
+}
+
+.legend-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}

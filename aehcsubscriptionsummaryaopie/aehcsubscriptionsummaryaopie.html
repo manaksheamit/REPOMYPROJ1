@@ -1,0 +1,58 @@
+<template>
+    <div class="card">
+
+        <!-- LEFT PANEL -->
+        <div class="left-panel">
+            <!-- total Summary -->
+            <div class="leftPanel__card1">
+                <div class="leftPanel__card1-iconBox">
+                    <lightning-icon icon-name="utility:groups" size="small" class="slds-icon-text-warning"></lightning-icon>
+                </div>
+                <div>
+                    <div class="leftPanel__card1-title">Total Subscribers to My APIs</div>
+                    <div class="leftPanel__card1-subtitle">Total Subscribers : {totalSubscribers}</div>
+                </div>
+            </div>
+
+            <!-- Grouped Summary -->
+            <div class="leftPanel__card2">
+                <template for:each={legendItems} for:item="item">
+                    <div key={item.label} class="legend-row">
+                        <div>
+                            <span class="dot" style={item.style}></span>
+                            <span class="legend-text">{item.label}</span>
+                        </div>
+                        <div>
+                            <span class="legend-text">{item.count}</span>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </div>
+
+        <!-- RIGHT PANEL (BARS) -->
+        <div class="right-panel">
+            <svg width="180" height="180">
+                <template for:each={segments} for:item="s">
+                    <g key={s.d}>
+                        <path d={s.d} fill={s.color}></path>
+
+                        <!-- PERCENTAGE LABEL -->
+                        <text
+                            x={s.labelX}
+                            y={s.labelY}
+                            fill="#ffffff"
+                            font-size="14"
+                            font-weight="600"
+                            text-anchor="middle"
+                            alignment-baseline="middle"
+                        >
+                            {s.percent}%
+                        </text>
+                    </g>
+                </template>
+            </svg>
+
+        </div>
+    </div>
+</template>

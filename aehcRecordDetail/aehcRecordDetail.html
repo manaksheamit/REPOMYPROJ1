@@ -1,0 +1,22 @@
+<template>
+    <template if:true={isJSONTable}>
+        <div class="slds-section slds-is-open">
+            <!-- Section Header -->
+            <template if:true={title}>
+                <h3 class="slds-section__title">
+                    <button class="slds-button slds-section__title-action">
+                        <span class="slds-truncate" title={title}>
+                            {title}
+                        </span>
+                    </button>
+                </h3>
+            </template>
+
+            <!-- Section Content -->
+            <div class="slds-section__content">
+
+                    <c-aehcjson-table json-data={jsonData}></c-aehcjson-table>
+            </div>
+        </div>
+    </template>
+</template>

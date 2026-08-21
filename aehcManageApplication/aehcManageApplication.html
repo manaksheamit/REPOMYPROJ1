@@ -1,0 +1,153 @@
+<template>
+    <div class="slds-p-around_medium">
+        <!-- Header -->
+        <div class="slds-text-heading_medium slds-m-bottom_medium">
+            Manage Application
+        </div>
+
+        <!-- Header Row -->
+        <div onblur={handleBlur_SearchDiv}>
+            <lightning-layout class="slds-m-bottom_medium slds-gutters">
+
+                <!-- Left side: Lookup -->
+                <lightning-layout-item size="3" class="slds-p-around_small">
+                    <c-aehc-reusable-lookup label={applicationSearchFieldDetail.label}
+                        object-label={applicationSearchFieldDetail.objectLabel}
+                        placeholder={applicationSearchFieldDetail.placeholder}
+                        selected-icon-name={applicationSearchFieldDetail.iconName}
+                        onchangevalue={handleChange_SearchApplicationField}
+                        onvalueselected={handleSelect_SearchApplication}
+                        onvaluedeselected={handleDeselect_SearchApplication}>
+                    </c-aehc-reusable-lookup>
+                </lightning-layout-item>
+
+                <!-- Right side: Buttons -->
+                <lightning-layout-item size="9" class="slds-p-around_small slds-grid_vertical-align-end button-box">
+
+                    <div class="search-btn-box">
+                        <button class="slds-button slds-button_brand slds-m-right_small"
+                            disabled={isDisabled_Btn_Search} onclick={handleClick_Search} label="Search">
+                            <template if:true={isLoading_Search}>
+                                <lightning-spinner alternative-text="Loading" size="x-small" class="spinner-inside">
+                                </lightning-spinner>
+                            </template>
+                            <span>Search</span>
+                        </button>
+
+                        <!--  spinner -->
+                        <!-- <template if:true={isLoading}>
+                        <lightning-spinner size="small"></lightning-spinner>
+                    </template> -->
+                    </div>
+
+                    <template if:true={isVisible_Btn_Reset}>
+                        <lightning-button disabled={isDisabled_Btn_Reset} variant="neutral" label="Reset">
+                        </lightning-button>
+                    </template>
+
+
+                </lightning-layout-item>
+
+            </lightning-layout>
+        </div>
+
+        <!-- Fields Grid -->
+        <div style="position: relative;">
+            <template if:true={isLoading_Detail}>
+                <lightning-spinner alternative-text="Loading" size="large" class="spinner-inside">
+                </lightning-spinner>
+            </template>
+
+            <template if:true={hasApplicationData}>
+
+                <lightning-layout multiple-rows class="slds-gutters">
+
+                    <!-- Row 1 -->
+                    <lightning-layout-item size="3" class="slds-p-around_small">
+                        <lightning-input label="Business Owner" disabled="true"
+                            value={appRec.businessOwner.mainField}></lightning-input>
+                    </lightning-layout-item>
+
+                    <lightning-layout-item size="3" class="slds-p-around_small">
+                        <lightning-input label="IT Owner" disabled="true"
+                            value={appRec.ITOwner.mainField}></lightning-input>
+                    </lightning-layout-item>
+
+                    <lightning-layout-item size="3" class="slds-p-around_small">
+                        <lightning-input label="Application Description" disabled="true"
+                            value={appRec.description}></lightning-input>
+                    </lightning-layout-item>
+
+                    <lightning-layout-item size="3" class="slds-p-around_small">
+                        <lightning-input label="Data Classification" disabled="true"
+                            value={appRec.dataClassification}></lightning-input>
+                    </lightning-layout-item>
+
+                    <!-- Row 2 -->
+                    <lightning-layout-item size="3" class="slds-p-around_small">
+                        <lightning-input label="Portfolio" disabled="true" value={appRec.portfolio}></lightning-input>
+                    </lightning-layout-item>
+
+                    <lightning-layout-item size="3" class="slds-p-around_small">
+                        <lightning-input label="CCI" disabled="true" value={appRec.CCI}></lightning-input>
+                    </lightning-layout-item>
+
+                    <lightning-layout-item size="3" class="slds-p-around_small">
+                        <lightning-input label="PHI" disabled="true" value={appRec.PHI}></lightning-input>
+                    </lightning-layout-item>
+
+                    <lightning-layout-item size="3" class="slds-p-around_small">
+                        <lightning-input label="PII" disabled="true" value={appRec.PII}></lightning-input>
+                    </lightning-layout-item>
+
+                </lightning-layout>
+
+                <div class="slds-grid slds-grid_align-center slds-m-top_medium">
+                    <button class="slds-button slds-button_brand slds-m-right_small"
+                        disabled={isDisabled_Btn_CreateApplication} onclick={handleClick_CreateApplication}
+                        label="Create Application">
+                        <template if:true={isLoading_CreateApp}>
+                            <lightning-spinner alternative-text="Loading" size="x-small" class="spinner-inside">
+                            </lightning-spinner>
+                        </template>
+                        <span>Create Application</span>
+                    </button>
+                </div>
+            </template>
+        </div>
+
+
+        <template if:true={isVisible_Warning}>
+            <div
+                class="slds-notify slds-notify_alert slds-alert_warning slds-theme_warning slds-grid slds-grid_align-center slds-m-top_medium">
+
+                <div class="slds-grid slds-grid_vertical-align-center">
+                    <lightning-icon icon-name='utility:warning' alternative-text='warning' size='x-small'
+                        class="slds-m-right_small" title='warning'></lightning-icon>
+                    <span class="slds-text-heading_small">{message}</span>
+                </div>
+            </div>
+        </template>
+
+        <template if:true={isVisible_Success}>
+            <div
+                class="slds-notify slds-notify_alert slds-alert_success slds-theme_success slds-grid slds-grid_align-center slds-m-top_medium">
+
+                <div class="slds-grid slds-grid_vertical-align-center">
+                    <lightning-icon icon-name="utility:success" alternative-text="success" size="x-small"
+                        class="slds-m-right_small" title="success">
+                    </lightning-icon>
+
+                    <span class="slds-text-heading_small">{message}</span>
+                </div>
+            </div>
+        </template>
+
+        <template if:true={isSFRecord}>
+            <div class="slds-m-top_medium">
+                <c-aehc-manage-application-user record-id={appRec.id} app-rec={appRec}></c-aehc-manage-application-user>
+            </div>
+        </template>
+        <!-- test only <c-aehc-manage-application-user record-id="a069V00000jntzAQAQ"></c-aehc-manage-application-user> -->
+    </div>
+</template>

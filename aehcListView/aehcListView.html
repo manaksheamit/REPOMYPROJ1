@@ -1,0 +1,78 @@
+<template>
+    <article class="slds-card">
+        <template if:true={isLoading}>
+            <lightning-spinner alternative-text="Loading" variant="brand" size="medium"></lightning-spinner>
+        </template>
+        <header class="slds-card__header slds-grid slds-wrap">
+
+            <!-- LEFT SIDE (Title) -->
+            <div class="slds-col slds-size_1-of-2 slds-align-middle">
+                <div class="slds-text-heading_medium">
+                    {title}
+                </div>
+                <div class="slds-text-body_small slds-m-top_xx-small">
+                    {pagination.totalCount} items • All records
+                </div>
+            </div>
+
+            <div class="slds-col slds-size_1-of-2">
+                <!-- <div class="slds-card__title"> -->
+
+                <!-- ROW 1: Action Buttons -->
+                <div class="slds-grid slds-grid_align-end slds-m-bottom_x-small">
+                    <template if:true={actions}>
+                        <lightning-button-group>
+                            <template for:each={actions} for:item="action">
+                                <lightning-button key={action.label} label={action.label} icon-name={action.iconName} data-name={action.name}
+                                    data-link={action.link} onclick={handleClick_Action}>
+                                </lightning-button>
+                            </template>
+                        </lightning-button-group>
+                    </template>
+                </div>
+                <!-- <div class="slds-card__actions"> -->
+
+                <!-- ROW 2: Search + Icons -->
+                <div class="slds-grid slds-grid_align-end slds-grid_vertical-align-center">
+
+                    <!--PAGE NAVIGATION-->
+                    <div class="paginationWrap">
+                        <lightning-button disabled={isLeftBtnDisabled} icon-name="utility:jump_to_left" label="First"
+                            title="First Page" class="slds-p-horizontal_x-small" alternative-text="first page"
+                            onclick={handleClick_firstPage}></lightning-button>
+                        <lightning-button disabled={isLeftBtnDisabled} icon-name="utility:chevronleft" label="Previous"
+                            title="Previous" alternative-text="Previous"
+                            onclick={handleClick_previousPage}></lightning-button>
+                        &nbsp;
+                        <span class="slds-badge">{pagination.startCount} &nbsp;-&nbsp; {pagination.endCount}
+                            &nbsp;of&nbsp;{pagination.totalCount}</span>
+                        &nbsp;
+                        <lightning-button disabled={isRightBtnDisabled} icon-name="utility:chevronright" label="Next"
+                            title="Next" alternative-text="Next" onclick={handleClick_nextPage}
+                            icon-position="right"></lightning-button>
+                        <lightning-button disabled={isRightBtnDisabled} icon-name="utility:jump_to_right"
+                            title="Last Page" class="slds-p-horizontal_x-small" label="Last"
+                            alternative-text="last page" onclick={handleClick_lastPage}
+                            icon-position="right"></lightning-button>
+                    </div>
+                    <div>
+                        <lightning-combobox disabled={isLoading} name="pageSize" variant="label-hidden"
+                            value={pagination.pageSize} placeholder="Page Size" options={pagination.pageSizes}
+                            onchange={handleClick_PageSize}></lightning-combobox>
+                    </div>
+                    <div class="slds-p-left_x-small">
+                        <lightning-button-icon disabled={isLoading} icon-name="utility:refresh"
+                            alternative-text="Refresh" title="Refresh"
+                            onclick={handleClick_Refresh}></lightning-button-icon>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="slds-card__body slds-card__body_inner">
+            <lightning-datatable key-field={keyField} data={recordsToDisplay} columns={columns}
+                onsort={handleClick_sort} sorted-by={sort.fieldName} sorted-direction={sort.direction}
+                hide-checkbox-column="true" onrowaction={handleDataTableRowAction}>
+            </lightning-datatable>
+        </div>
+    </article>
+</template>

@@ -1,0 +1,39 @@
+<template>
+    <template if:true={isVisible}>
+        <div style="text-align:left;">
+            <lightning-button label="Edit Schema Fields"  onclick={handleClick}>
+            </lightning-button>
+        </div>
+        <!-- Modal -->
+        <template if:true={isModalOpen}>
+            <section role="dialog" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container custom-modal">
+
+                    <header class="slds-modal__header">
+                        <h2 class="slds-text-heading_medium">Edit Schema Fields</h2>
+                        <button class="slds-button slds-button_icon slds-modal__close" onclick={closeModal}>
+                            ✕
+                        </button>
+                    </header>
+
+                    <div class="slds-modal__content slds-p-around_medium">
+
+
+                        <c-aehcgraphqlapischemabrowser record-id={recordId} api-name={apiName}>
+                        </c-aehcgraphqlapischemabrowser>
+
+
+                    </div>
+
+                    <footer class="slds-modal__footer">
+                        <!--<lightning-button label="Close" onclick={closeModal}></lightning-button>-->
+                    </footer>
+
+                </div>
+            </section>
+
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </template>
+
+    </template>
+</template>

@@ -1,0 +1,182 @@
+<template>
+    <template if:true={isVisible}>
+
+             <c-aehc-subscription-approval-list></c-aehc-subscription-approval-list>
+
+        
+        <!-- ✅ HEADER -->
+        <div class="header-container">
+
+
+            <!-- LEFT SIDE -->
+
+            <!-- LEFT -->
+            <h2 class="title">{name}</h2>
+
+
+            <!-- RIGHT SIDE -->
+            <div class="header-actions">
+                <lightning-button label="Change History" onclick={openModalApproval}>
+                </lightning-button>
+                <c-aehcschemabrowserlauncher></c-aehcschemabrowserlauncher>
+
+            </div>
+
+        </div>
+
+        <!-- ✅ CARD GRID -->
+        <div class="card-grid">
+
+            <div class="info-card">
+                <label>API Name</label>
+                <a href="javascript:void(0);" data-id={communityAsset} onclick={navigateToApp} class="link">
+                    <p>{apiName}</p>
+                </a>
+
+            </div>
+
+            <div class="info-card">
+                <label>APM Number</label>
+                <p>{apmNumber}</p>
+            </div>
+
+            <div class="info-card">
+                <label>Data Classification</label>
+                <p>{dataClassification}</p>
+            </div>
+
+        </div>
+        <!-- ✅ 2. ACTIVE VERSION -->
+        <template if:true={isGraphQLRequest}>
+            <lightning-accordion allow-multiple-sections-open active-section-name="active">
+                <lightning-accordion-section name="active" label="Active Version">
+
+                    <template if:true={activeVersion}>
+
+                        <div class="pad">
+
+                            <div class="version-container">
+                                <!-- ✅ TOP ROW -->
+                                <div class="top-row">
+
+                                    <!-- Environment Name -->
+                                    <lightning-input label="Environment Name" value={environment} disabled>
+                                    </lightning-input>
+
+                                    <!-- Version Dropdown -->
+                                    <lightning-combobox label="Version" value={selectedVersion.Id}
+                                        options={versionOptions} onchange={handleVersionChange}>
+                                    </lightning-combobox>
+
+                                </div>
+
+                                <!-- ✅ SPLIT LAYOUT -->
+                                <div class="version-layout">
+
+                                    <!-- LEFT: TOKEN -->
+                                <template if:true={isApproved}>     
+                                    <div class="version-left">
+                                        <b>GraphQL Signed Token:</b>
+
+                                        <div class="graphql">
+                                            <pre>{selectedVersionToken}</pre>
+                                        </div>
+                                    </div>
+                                </template>
+                                    <!-- RIGHT: FIELDS -->
+                                    <div class="version-right">
+
+                                        <b>Selected Fields:</b>
+
+                                        <div class="pill-container">
+                                            <template for:each={selectedFieldsList} for:item="field">
+                                                <span key={field} class="custom-pill">
+                                                    {field}
+                                                </span>
+                                            </template>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </template>
+
+                </lightning-accordion-section>
+
+            </lightning-accordion>
+        </template>
+        <!-- ✅ SINGLE ACCORDION -->
+        <lightning-accordion allow-multiple-sections-open active-section-name="api">
+
+            <!-- ✅ 1. API DETAILS -->
+            <lightning-accordion-section name="api" label="General Info">
+
+                <div class="form-grid">
+
+                    <div class="field"><label>Status</label><span>{status}</span></div>
+                    <div class="field"><label>Product Type</label><span>{assetType}</span></div>
+                    <div class="field"><label>Environment Name</label><span>{environment}</span></div>
+                    <div class="field"><label>Consuming Appplication Name</label><span>{appName}</span></div>
+                    <div class="field"><label>IP Address of the Application</label><span>{ipAddress}</span></div>
+                    <div class="field"><label>Projected Transaction Volume in a Day</label><span>{volume}</span></div>
+                    <div class="field"><label>PII Information</label><span>{piiInfo}</span></div>
+                    <div class="field"><label>Firewall RITM</label><span>{snowRequest}</span></div>
+                    <!-- <div class="field"><label>Firewall RITM Status</label><span>{snowStatus}</span></div> -->
+                    <div class="field"><label>App Registration RITM</label><span>{entraRequest}</span></div>
+                    <!-- <div class="field"><label>App Registration RITM Status</label><span>{entraRequestStatus}</span></div>-->
+                    <div class="field"><label>API Asset Owner</label><span>{ownerName}</span></div>
+                    <div class="field"><label>Purpose of Use</label><span>{purpose}</span></div>
+                    <div class="field"><label>Business Unit (Optional)</label><span>{bussUnit}</span></div>
+                    <div class="field"><label>TAP document of application (URL)</label><span>{tapDoc}</span></div>
+                    <!--<div class="field"><label>TAP document of application (URL)</label><span>{securityReviewer}</span></div>-->
+                    <div class="field"><label>Subscriber Name</label><span>{createdBy}</span></div>
+                    <div class="field"><label>Security Reviewer</label><span>{securityReviewer}</span></div>
+                    <div class="field"><label>Created Date</label><span><lightning-formatted-date-time value={createdDate} year="numeric" month="short" day="2-digit" hour="2-digit" minute="2-digit"></lightning-formatted-date-time></span></div>
+                    <div class="field"><label>Last Modified Date</label><span><lightning-formatted-date-time value={lastModifiedDate} year="numeric" month="short" day="2-digit" hour="2-digit" minute="2-digit"></lightning-formatted-date-time></span></div>
+                    
+                    
+                </div>
+
+            </lightning-accordion-section>
+        </lightning-accordion>
+
+
+        <!-- Approval History Modal -->
+
+
+        <template if:true={isModalOpenApproval}>
+
+            <div class="custom-backdrop"></div>
+
+            <div class="custom-modal">
+
+                <!-- Header -->
+                <div class="modal-header">
+                    <span>Approval History ({totalCountApproval})</span>
+                </div>
+
+                <!-- Body -->
+                <div class="modal-body">
+
+                    <lightning-datatable key-field="id" data={approvalData} columns={columnsapproval}
+                        hide-checkbox-column>
+                    </lightning-datatable>
+
+                </div>
+
+                <!-- Footer -->
+                <div class="modal-footer">
+                    <lightning-button label="Close" onclick={closeModalApproval}>
+                    </lightning-button>
+                </div>
+
+            </div>
+
+        </template>
+
+    </template>
+</template>

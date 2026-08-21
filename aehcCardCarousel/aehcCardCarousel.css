@@ -1,0 +1,90 @@
+.card {
+    position: relative;
+    min-width: 340px;
+    max-width: 380px;
+    cursor: pointer;
+}
+
+.card-image {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    display: block;
+}
+
+.overlay {
+    position: absolute;
+    bottom: 8px;
+    left: 8px;
+    right: 8px;
+    height: 50%;
+    padding: 14px;
+}
+
+.overlay-box {
+    width: 100%;
+    height: 100%;
+    border: 1px dashed #ffffff;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.title {
+    color: #ffffff;
+    font-size: 22px;
+    font-weight: 600;
+}
+
+.subtitle {
+    color: #ffffff;
+    font-size: 13px;
+    margin-top: 6px;
+}
+.domain-card {
+    position: relative;
+    min-width: 350px;
+    max-width: 380px;
+    cursor: pointer;
+}
+
+.card-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    display: block;
+}
+
+/* Bottom translucent section */
+.overlay {
+    position: absolute;
+    bottom: 6px;
+    left: 6px;
+    right: 6px;
+    height: 45%;
+    padding: 10px;
+}
+
+/* Dashed inner box */
+.overlay-box {
+    height: 100%;
+    width: 100%;
+    border: 1px dashed #ffffff;
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.card-title {
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.card-cta {
+    margin-top: 6px;
+    font-size: 12px;
+    color: #ffffff;
+}

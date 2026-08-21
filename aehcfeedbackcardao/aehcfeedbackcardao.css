@@ -1,0 +1,55 @@
+.card {
+    display: flex;
+    background: #fff;
+    border-radius: 2px;
+    padding: 20px;
+    box-shadow: 0px 3px 6px 0px rgba(0, 0, 0, 0.15);
+    gap: 20px;
+    border: 1px solid lightgray;
+    height: 250px;
+    flex-direction: column;
+}
+
+/* Header layout */
+.header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* Icon background */
+.icon-box {
+    background: #e8fbf8;
+    padding: 14px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Title text */
+.title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+}
+
+/* Large count number */
+.count {
+    font-size: 42px;        /* ✅ Larger & matches screenshot */
+    font-weight: 500;
+    color: #000;
+    margin-top: 20px;
+}
+
+/* ✅ Mobile responsiveness */
+@media screen and (max-width: 480px) {
+    .card-container {
+        height: auto;        /* auto height for mobile */
+        padding: 16px;
+    }
+
+    .count {
+        font-size: 32px;     /* smaller count on mobile */
+    }
+}

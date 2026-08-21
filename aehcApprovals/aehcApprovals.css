@@ -1,0 +1,139 @@
+\\
+/* Main Wrapper */
+.approval-container {
+    padding: 1.25rem;
+    background: #f8fafc;
+}
+
+/* Spinner */
+.spinner-container {
+    display: flex;
+    justify-content: center;
+    padding: 1rem;
+}
+
+/* Section */
+.custom-section {
+    margin-bottom: 1.5rem;
+}
+
+/* Section Header */
+.section-header {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #16325c;
+    margin-bottom: 0.75rem;
+    border-left: 4px solid #0176d3;
+    padding-left: 0.75rem;
+}
+
+/* Schema Card */
+.schema-card {
+    background: #ffffff;
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e5e7eb;
+}
+
+/* Validate Button Alignment */
+.validate-btn-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    height: 100%;
+}
+
+/* Datatable */
+.datatable-wrapper {
+    background: #ffffff;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #d8dde6;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+/* Load More */
+.load-more-container {
+    text-align: center;
+    margin-top: 1rem;
+}
+
+/* No Records */
+.empty-state {
+    background: #ffffff;
+    border: 1px dashed #c9c9c9;
+    border-radius: 8px;
+    padding: 1.5rem;
+    text-align: center;
+    color: #706e6b;
+    font-size: 0.95rem;
+}
+
+/* Action Section */
+.action-section {
+    margin-top: 1.5rem;
+    background: #ffffff;
+    border-radius: 8px;
+    padding: 1.25rem;
+    border: 1px solid #d8dde6;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.08);
+}
+
+/* Action Buttons */
+.action-buttons {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: flex-end;
+    margin-top: 1rem;
+}
+
+/* Readonly Fields Styling */
+lightning-input {
+    --sds-c-input-color-border: #d8dde6;
+}
+
+/* Mobile */
+@media screen and (max-width: 768px) {
+
+    .action-buttons {
+        flex-direction: column;
+    }
+
+    .validate-btn-container {
+        justify-content: flex-start;
+        margin-top: 1rem;
+    }
+}
+
+/* ==========================================
+   Change Request Details Section
+========================================== */
+
+.change-request-section {
+    margin-bottom: 1.5rem;
+}
+
+.change-request-section .schema-card {
+    background: #ffffff;
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e5e7eb;
+}
+
+/* Read-only field appearance */
+.change-request-section lightning-input,
+.change-request-section lightning-textarea {
+    --slds-c-input-color-border: #d8dde6;
+}
+
+/* Description field */
+.description-field {
+    --slds-c-textarea-sizing-min-height: 150px;
+}
+
+/* Created By / Type Of Change / Created Date */
+.display-field {
+    font-weight: 500;
+}

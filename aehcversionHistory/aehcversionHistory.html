@@ -1,0 +1,19 @@
+<template>
+    <lightning-card> <!--- title="Version (Asset)"--->
+        <template if:true={data}>
+            <div class="slds-box slds-box_xx-small">
+            <lightning-datatable
+                key-field="assetId"
+                data={data}
+                columns={columns} hide-checkbox-column="true">
+            </lightning-datatable>
+            </div>
+        </template>
+
+        <template if:true={error}>
+            <div class="slds-text-color_error">
+                Error loading data
+            </div>
+        </template>
+    </lightning-card>
+</template>

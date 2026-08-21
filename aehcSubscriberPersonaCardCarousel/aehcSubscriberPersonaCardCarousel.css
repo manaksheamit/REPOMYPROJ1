@@ -1,0 +1,122 @@
+/* ===== Card ===== */
+.card {
+    width: 420px;
+    height: 260px;
+    background: #ffffff;
+    border: 1px solid #e1e1e1;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+/* ✅ TOP‑DOWN BACKGROUND ANIMATION */
+.reveal-bg {
+    position: absolute;
+    inset: 0;
+    background: #e6f8f6;            /* ✅ same light mint as Image 1 */
+    transform: translateY(-100%);  /* start hidden at top */
+    transition: transform 0.4s ease;
+    z-index: 0;
+}
+
+.card:hover .reveal-bg {
+    transform: translateY(0);      /* ✅ slides down */
+}
+
+/* ===== Top strip ===== */
+.top-strip {
+    height: 60px;
+    background: #e6f8f6;
+    position: relative;
+    z-index: 1;
+}
+
+/* ===== Divider ===== */
+.divider {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 2px;
+    transition: opacity 0.25s ease;
+}
+
+.card:hover .divider {
+    opacity: 0;
+}
+
+/* ===== Icon ===== */
+.icon-wrapper {
+    position: absolute;
+    top: 44px;
+    left: 20px;
+    z-index: 2;
+}
+
+.icon-box {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 4px solid #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+}
+
+/* ===== Content ===== */
+.card-content {
+    position: relative;
+    z-index: 2;  /* ✅ above animated bg */
+    padding: 44px 22px 22px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.tag {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--card-color);
+    margin-bottom: 8px;
+}
+
+.title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #000;
+    margin-bottom: 6px;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.cardBody{
+    font-size: 12px;
+    font-weight: 500;
+    color: #000;
+    margin-bottom: 4px;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* ===== Description ===== */
+.desc {
+    font-size: 14px;
+    color: #000;
+    line-height: 1.5;
+    margin-top: auto;
+
+    opacity: 0;
+    transform: translateY(6px);
+    transition: all 0.3s ease;
+}
+
+.card:hover .desc {
+    opacity: 1;
+    transform: translateY(0);
+}

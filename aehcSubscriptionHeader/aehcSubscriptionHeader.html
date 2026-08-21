@@ -1,0 +1,80 @@
+<template>
+    <div class="subscription-header slds-grid slds-grid_align-spread slds-grid_vertical-align-center">
+
+        <!-- Left Section -->
+        <div class="subscription-info slds-grid slds-grid_vertical-align-center">
+
+            <div class="subscription-icon-box">
+                <lightning-icon icon-name="utility:database" size="small" variant="inverse"
+                    alternative-text={labels.database}>
+                </lightning-icon>
+            </div>
+
+            <div class="subscription-text">
+                <div class="subscription-application-name">
+                    {applicationName}
+                </div>
+                <div class="subscription-publication-name">
+                    {publicationName}
+                </div>
+            </div>
+        </div>
+
+        <!-- BUTTON GROUP ONLY (NO DROPDOWN) -->
+        <template if:false={hideButtons}>
+            <div class="subscription-actions">
+            <lightning-button-group>
+
+                <!-- Subscribe -->
+                <!--<template if:true={showSubscribe}>-->
+                    
+                <template if:false={isHideButton}>
+                    <template if:true={showSubscribe}>
+                        <lightning-button label={labels.subscribe} variant="neutral" onclick={handleSubscribe}>
+                        </lightning-button>
+                    </template>
+                </template>
+
+                <!--</templet>-->
+
+                <!-- Edit Publication -->
+                <!-- <template if:true={showEditPublication}> -->
+                <template if:false={isHideButton}>
+                    <template if:true={showEditPublication}>
+                        <lightning-button label="Edit Publication" variant="neutral" onclick={handleEditClick}>
+                        </lightning-button>
+                    </template>
+                </template>
+                <!-- </template> -->
+
+                <!-- Promote -->
+                <template if:true={showPromote}>
+                <template if:false={isHideButton}>
+                    
+                    <lightning-button label="Promote" variant="neutral" onclick={handlePromoteClick}>
+                    </lightning-button>
+                </template>
+                </template>
+
+                <template if:true={hasRequiredRole}>
+                    <lightning-button label="Subscribers" variant="neutral" onclick={handleSubscribers}>
+                    </lightning-button>
+                </template>
+
+                <!-- View Job History -->
+                <template if:false={isHideButton}>
+                    <lightning-button label="View Historical Job Run" variant="neutral" onclick={handleRunClick}>
+                    </lightning-button>
+                </template>
+
+                <!-- Version History -->
+                <template if:false={isHideButton}>
+                    <lightning-button label="Version History" variant="neutral" onclick={handleVersionHistory}>
+                    </lightning-button>
+                </template>
+            
+            </lightning-button-group>
+            </div>
+        </template>
+    </div>
+</template>

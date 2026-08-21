@@ -1,0 +1,29 @@
+<template>
+    <template if:true={showActions}>
+        <lightning-card title="Approval Action">
+            <div class="slds-p-around_medium">
+
+                <lightning-textarea
+                    label="Remarks"
+                    value={remarks}
+                    onchange={handleRemarksChange}
+                    required>
+                </lightning-textarea>
+
+                <div class="slds-m-top_medium">
+                    <lightning-button-group>
+                        <lightning-button label="Approve" onclick={handleApprove}></lightning-button>
+                        <lightning-button label="Reject" onclick={handleReject}></lightning-button>
+                    </lightning-button-group>                    
+                </div>
+
+            </div>
+        </lightning-card>
+    </template>
+
+    <template if:false={showActions}>
+        <p class="slds-p-around_medium slds-text-color_weak">
+            
+        </p>
+    </template>
+</template>

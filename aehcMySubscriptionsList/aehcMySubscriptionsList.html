@@ -1,0 +1,112 @@
+<template> 
+    <lightning-card> 
+
+        <!-- Main Layout Wrapper --> 
+        <div class="slds-grid" style="position: relative; overflow: visible; min-height: 400px;"> 
+
+            <!-- Left Side: Main Content (List View + Datatable) --> 
+            <div class="slds-col slds-p-around_medium slds-scrollable_y" style="transition: width 0.2s ease;"> 
+                <!-- Toolbar: View Selector, Search, and Filter Button -->
+                <div class="slds-grid slds-grid_vertical-align-center slds-m-bottom_medium slds-grid_align-spread">
+                    <!-- List View Dropdown -->
+                    <div style="width: 300px;">
+                        <lightning-combobox 
+                            name="listView" 
+                            value={selectedView} 
+                            options={viewOptions} 
+                            onchange={handleViewChange} 
+                            variant="label-hidden">
+                        </lightning-combobox>
+                    </div>
+
+                    <!-- Search and Filter -->
+                    <div class="slds-grid slds-grid_vertical-align-center slds-gutters_x-small">
+                        <!-- Search Bar -->
+                        <div class="slds-col" style="width: 200px;">
+                            <lightning-input
+                                type="search"
+                                name="subscriptionSearch"
+                                value={searchTerm}
+                                placeholder="Search this list..."
+                                variant="label-hidden"
+                                onchange={handleSearchChange}>
+                            </lightning-input>
+                        </div>
+                        <!-- Filter Button -->
+                        <div class="slds-col">
+                            <lightning-button-icon  
+                                icon-name="utility:filterList"  
+                                variant={filterButtonVariant}  
+                                alternative-text="Toggle Filters"  
+                                onclick={toggleFilterPanel}>
+                            </lightning-button-icon>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Datatable --> 
+                <template if:true={filteredSubscriptions.length}> 
+                    <lightning-datatable 
+                        key-field="Id" 
+                        data={filteredSubscriptions} 
+                        columns={columns}
+                        hide-checkbox-column="true" 
+                        sorted-by={sortedBy} 
+                        sorted-direction={sortedDirection} 
+                        onsort={handleSort}> 
+                    </lightning-datatable> 
+                </template> 
+                <!-- Empty State --> 
+                <template if:false={filteredSubscriptions.length}> 
+                    <div class="slds-align_absolute-center slds-var-p-around_large slds-text-heading_small slds-text-color_weak"> 
+                        No records to display. 
+                    </div> 
+                </template> 
+            </div> 
+ 
+            <!-- Right Side: Standard Sliding Filter Panel --> 
+            <template if:true={isFilterOpen}> 
+                <div class="slds-panel slds-size_medium slds-panel_docked slds-panel_docked-right slds-is-open slds-border_left" aria-hidden="false"
+                    style=" overflow: visible; position: relative; z-index: 10; box-shadow: -2px 0 4px rgba(0,0,0,0.1); " >
+                    
+                    <!-- Panel Header --> 
+                    <div class="slds-panel__header"> 
+                        <h2 class="slds-panel__header-title slds-text-heading_small slds-truncate" title="Filter">Filters</h2> 
+                        <lightning-button-icon  
+                            icon-name="utility:close"  
+                            alternative-text="Close Filter"  
+                            variant="bare"  
+                            class="slds-panel__close"  
+                            onclick={toggleFilterPanel}> 
+                        </lightning-button-icon> 
+                    </div> 
+
+                    <!-- Panel Body (Scrollable for future filters) --> 
+                    <div class="slds-panel__body" style="overflow: visible; position: relative; z-index: 20; min-height: 250px; padding-bottom: 120px;"> 
+                        <!-- Consuming Application Filter --> 
+                        <div class="slds-m-bottom_medium"> 
+                            <lightning-combobox 
+                                name="consumingAppFilter" 
+                                label="Consuming Application" 
+                                value={selectedConsumingApp} 
+                                options={consumingAppOptions} 
+                                onchange={handleFilterChange} 
+                                placeholder="Select an Application..."> 
+                            </lightning-combobox> 
+                        </div> 
+
+                        <!-- Clear Filters Button --> 
+                        <div class="slds-m-top_large"> 
+                            <lightning-button  
+                                label="Remove All Filters"  
+                                variant="base"  
+                                onclick={clearFilters}  
+                                class="slds-text-color_error"> 
+                            </lightning-button> 
+                        </div> 
+                    </div> 
+                </div> 
+            </template> 
+        </div> 
+    </lightning-card> 
+</template>

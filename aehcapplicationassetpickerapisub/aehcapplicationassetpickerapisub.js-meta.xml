@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>66.0</apiVersion>
+    <isExposed>true</isExposed>
+
+    <targets>
+        <target>lightning__FlowScreen</target>
+    </targets>
+
+    <targetConfigs>
+        <targetConfig targets="lightning__FlowScreen">
+
+            <property
+                name="userId"
+                type="String"
+                label="User Id" />
+
+            <property
+                name="defaultSelected"
+                type="String"
+                label="Default Selected Asset Id" />
+
+            <property
+                name="selectedValue"
+                type="String"
+                label="Selected Asset Id"
+                role="outputOnly" />
+
+            <property
+                name="selectedLabel"
+                type="String"
+                label="Selected Asset Name"
+                role="outputOnly" />
+
+        </targetConfig>
+    </targetConfigs>
+
+</LightningComponentBundle>

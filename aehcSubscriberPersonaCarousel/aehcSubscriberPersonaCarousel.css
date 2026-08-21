@@ -1,0 +1,206 @@
+/* ===== Card ===== */
+.card {
+    width: 420px;
+    height: 170px;
+    background: #ffffff;
+    border: 1px solid #e1e1e1;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+/* ✅ TOP‑DOWN BACKGROUND ANIMATION */
+.reveal-bg {
+    position: absolute;
+    inset: 0;
+    background: #e6f8f6;            /* ✅ same light mint as Image 1 */
+    transform: translateY(-100%);  /* start hidden at top */
+    transition: transform 0.4s ease;
+    z-index: 0;
+}
+
+.card:hover .reveal-bg {
+    transform: translateY(0);      /* ✅ slides down */
+}
+
+/* ===== Top strip ===== */
+.top-strip {
+    height: 60px;
+    background: #e6f8f6;
+    position: relative;
+    z-index: 1;
+}
+
+/* ===== Divider ===== */
+.divider {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 2px;
+    transition: opacity 0.25s ease;
+}
+
+.card:hover .divider {
+    opacity: 0;
+}
+
+/* ===== Icon ===== */
+.icon-wrapper {
+    position: absolute;
+    top: 44px;
+    left: 20px;
+    z-index: 2;
+}
+
+.icon-box {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 4px solid #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+}
+
+/* ===== Content ===== */
+.card-content {
+    position: relative;
+    z-index: 2;  /* ✅ above animated bg */
+    padding: 44px 22px 22px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.tag {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--card-color);
+    margin-bottom: 8px;
+}
+
+.title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #000;
+    margin-bottom: 6px;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* ===== Description ===== */
+.desc {
+    font-size: 14px;
+    color: #000;
+    line-height: 1.5;
+    margin-top: auto;
+
+    opacity: 0;
+    transform: translateY(6px);
+    transition: all 0.3s ease;
+}
+
+.card:hover .desc {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.slider-wrapper {
+    position: relative;
+    padding: 0 50px;
+}
+
+.slider {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+
+    /* display: flex;
+    gap: 20px;
+    overflow-x: auto;
+
+    -ms-overflow-style: none;
+    scrollbar-width: none; */
+}
+.slider::-webkit-scrollbar { display: none; }
+
+.arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #2EC4B6;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.left { left: 0; }
+.right { right: 0; }
+
+.carousel-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+/* Ensure nav arrows sit above slider content and receive pointer events */
+.nav-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255,255,255,0.95);
+    border: none;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    pointer-events: auto;
+}
+
+.nav-arrow.left {
+    left: 8px;
+}
+
+.nav-arrow.right {
+    right: 8px;
+}
+
+.slider {
+    position: relative;
+    z-index: 1;
+}
+
+.nav-arrow {
+    position: absolute;
+    width: 32px;
+    height: 32px;
+    background: #ffffff;
+    border-radius: 50%;
+    border: 1px solid #d8d8d8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 2;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+}
+
+.state-container {
+    text-align: center;
+    padding: 40px;
+    background: #fff;
+    border-radius: 12px;
+}

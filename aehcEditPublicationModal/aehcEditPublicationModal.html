@@ -1,0 +1,100 @@
+<template>
+
+    <section class="slds-modal slds-fade-in-open slds-modal_large">
+        <div class="slds-modal__container" style="max-width:95%; width:95%;">
+
+            <header class="slds-modal__header">
+                <h2 class="slds-text-heading_medium">Edit Publication</h2>
+            </header>
+
+            <div class="slds-modal__content slds-p-around_medium">
+
+                <!-- ✅ CHANGE TYPE -->
+                <lightning-combobox label="Change Type" value={selectedType} options={editTypes}
+                    onchange={handleTypeChange}>
+                </lightning-combobox>
+
+                <template if:true={isSchedule}>
+                    <p class="slds-text-color_weak slds-m-top_small">
+                        A new version will be created for this schedule change.
+                    </p>
+                </template>
+
+                <template if:true={isSchema}>
+                    <p class="slds-text-color_weak slds-m-top_small">
+                        A new version will be created for schema request.
+                    </p>
+                </template>
+
+                <template if:true={isBasic}>
+                    <div class="slds-grid slds-gutters slds-wrap slds-m-top_medium">
+
+                        <!-- ✅ Application Id -->
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input label="Application Id" value={applicationId} disabled>
+                            </lightning-input>
+                        </div>
+
+                        <!-- ✅ Application Name -->
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input label="Application Name" value={applicationName} disabled>
+                            </lightning-input>
+                        </div>
+
+                        <!-- ✅ Publication Name -->
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input label="Publication Name" value={publicationName}
+                                onchange={handleNameChange} maxlength="80">
+                            </lightning-input>
+                        </div>
+
+                        <!-- ✅ Description -->
+                        <div class="slds-col slds-size_1-of-1">
+                            <lightning-textarea label="Publication Description" value={description}
+                                maxlength={descLimit.data} onchange={handleDescChange}>
+                            </lightning-textarea>
+                        </div>
+
+                    </div>
+                </template>
+
+                <!-- ✅ SCHEDULE -->
+                <template if:true={isSchedule}>
+                    <div class="slds-m-top_large" style="width:100%">
+                        <template if:true={isScheduleReady}>
+                            <c-aehc-schedule-step mode="publication" wizard-data={wizardData}
+                                scheduler-mode-options={picklistOptions.schedulerModeOptions}
+                                frequency-options={picklistOptions.frequencyOptions}
+                                weekday-options={picklistOptions.weekdayOptions}
+                                week-options={picklistOptions.weekOptions}
+                                month-day-options={picklistOptions.monthDayOptions}
+                                onstepdatachange={handleScheduleChange}>
+                            </c-aehc-schedule-step>
+                        </template>
+                    </div>
+                </template>
+
+                <!-- ✅ SCHEMA -->
+                <template if:true={isSchema}>
+                    <div class="slds-m-top_medium">
+                        <lightning-textarea label="Schema Change Request" value={schemaDescription}
+                            onchange={handleSchemaChange}>
+                        </lightning-textarea>
+                    </div>
+                </template>
+
+            </div>
+
+            <footer class="slds-modal__footer">
+                <lightning-button label="Cancel" onclick={handleClose}></lightning-button>
+
+                <lightning-button variant="brand" label="Submit" onclick={handleSubmit} disabled={isSubmitDisabled}>
+                </lightning-button>
+            </footer>
+
+        </div>
+    </section>
+
+    <div class="slds-backdrop slds-backdrop_open"></div>
+
+</template>

@@ -1,0 +1,39 @@
+<template>
+    <lightning-card title="Pending Approvals">
+
+        <lightning-datatable
+            key-field="Id"
+            data={displayData}
+            columns={columns}
+            sorted-by={sortedBy}
+            sorted-direction={sortedDirection}
+            onsort={handleSort}
+            hide-checkbox-column>
+        </lightning-datatable>
+
+        <div class="footer">
+            <div class="left-text">
+                Showing {showingFrom} - {showingTo} of {totalRecords} requests
+            </div>
+
+            <div class="right-buttons">
+
+                <lightning-button
+                    variant="neutral"
+                    label="Previous"
+                    onclick={handlePrevious}
+                    disabled="{page===1}">
+                </lightning-button>
+
+                <lightning-button
+                    variant="neutral"
+                    label="Next"
+                    onclick={handleNext}
+                    disabled="{page===totalPages}">
+                </lightning-button>
+
+            </div>
+        </div>
+
+    </lightning-card>
+</template>

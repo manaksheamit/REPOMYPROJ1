@@ -1,0 +1,79 @@
+.subscription-header {
+    background: #ffffff;
+    border: 1px solid #d8dde6;
+    min-height: 78px;
+    padding: 12px 24px;
+    box-sizing: border-box;
+}
+
+.subscription-info {
+    gap: 14px;
+}
+
+.subscription-icon-box {
+    width: 56px;
+    height: 56px;
+    border-radius: 12px;
+    background: #0176d3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.subscription-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.subscription-application-name {
+    font-size: 26px;
+    font-weight: 400;
+    color: #080707;
+    line-height: 1.2;
+}
+
+.subscription-publication-name {
+    font-size: 18px;
+    font-weight: 400;
+    color: #181818;
+    line-height: 1.3;
+    margin-top: 4px;
+}
+
+.subscription-button {
+    margin-left: auto;
+}
+
+.subscription-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+    gap: 1rem;
+}
+
+.subscription-info {
+    display: flex;
+    flex: 1;
+    min-width: 0;
+}
+
+.subscription-text {
+    flex: 1;
+    min-width: 0;
+}
+
+.subscription-application-name,
+.subscription-publication-name {
+    white-space: normal;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+    line-height: 1.4;
+}
+
+.subscription-actions {
+    flex-shrink: 0;
+    white-space: nowrap;
+}

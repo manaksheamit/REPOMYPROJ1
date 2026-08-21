@@ -1,0 +1,26 @@
+<template>
+    <lightning-card title="">
+        <div class="table-container">
+            
+            <!-- Header -->
+            <div class="header-row">
+                <span class="col field-col">Field Name</span>
+                <span class="col label-col">Label</span>
+            </div>
+
+            <!-- Rows -->
+            <template for:each={fieldList} for:item="field">
+                <div key={field.key} class="data-row">
+                    <span class="col field-col">{field.fieldName}</span>
+                    <span class="col label-col">{field.label}</span>
+                </div>
+            </template>
+
+            <!-- No Data -->
+            <template if:false={fieldList.length}>
+                <div class="no-data">No Data Available</div>
+            </template>
+
+        </div>
+    </lightning-card>
+</template>

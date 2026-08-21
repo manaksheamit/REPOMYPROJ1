@@ -1,0 +1,52 @@
+<template>
+    <div class="card">
+
+        <!-- LEFT PANEL -->
+        <div class="left-panel">
+            <!-- total Summary -->
+            <div class="leftPanel__card1">
+                <div class="leftPanel__card1-iconBox">
+                    <lightning-icon icon-name="utility:list" size="small" class="icon"></lightning-icon>
+                </div>
+                <div>
+                    <div class="leftPanel__card1-title">No. of My APIs Published</div>
+                    <div class="leftPanel__card1-subtitle">Total Published : {totalCount}</div>
+                </div>
+            </div>
+
+            <!-- Grouped Summary -->
+            <div class="leftPanel__card2">
+                <template for:each={data} for:item="item">
+                    <div key={item.label} class="legend-row">
+                        <div>
+                            <span class="dot" style={item.style}></span>
+                            <span class="legend-text">{item.label}</span>
+                        </div>
+                        <div>
+                            <span class="legend-text">{item.value}</span>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </div>
+
+        <!-- RIGHT PANEL (BARS) -->
+        <div class="right-panel">
+
+            <svg viewBox="0 0 150 200" width="100%" height="100%">
+                <line x1="20" y1="10" x2="20" y2="160" stroke="#ccc" />
+                <line x1="20" y1="160" x2="140" y2="160" stroke="#ccc" />
+
+                <template for:each={bars} for:item="bar">
+                    <g key={bar.label}>
+                        <rect x={bar.x} y={bar.y} width="15" height={bar.height} fill={bar.color}>
+                        </rect>
+                    </g>
+                </template>
+            </svg>
+
+
+        </div>
+
+    </div>
+</template>

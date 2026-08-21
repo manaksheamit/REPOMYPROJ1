@@ -1,0 +1,37 @@
+<template>
+    <template if:true={isSuccess}>
+        <div class="asset-discovery">
+
+            <div class="section-header">
+                <h2 class="section-title">{title}</h2>
+                <p class="section-description">{description}</p>
+            </div>
+
+            <div class="carousel-wrapper">
+                <button
+                    class="nav-arrow left"
+                    onclick={scrollLeft}
+                    disabled={leftDisabled}>
+                    <span>❮</span>
+                </button>
+
+                <div class="slider" data-id="slider">
+                    <template for:each={cards} for:item="card">
+                        <c-aehc-card-carousel key={card.id} title={card.title} category={card.category} url={card.url}
+                            image-url={card.imageUrl}>
+                        </c-aehc-card-carousel>
+                    </template>
+                </div>
+
+                <button
+                    class="nav-arrow right"
+                    onclick={scrollRight}
+                    disabled={rightDisabled}>
+                    <span>❯</span>
+                </button>
+            </div>
+
+        </div>
+    </template>
+
+</template>

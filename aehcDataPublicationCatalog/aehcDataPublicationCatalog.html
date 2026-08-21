@@ -1,0 +1,172 @@
+<template>
+    <div class="grid-wrapper">
+        <!-- ===== Search + Filters Header ===== -->
+        <div class="search-filter-header">
+
+            <!-- Search row (always visible) -->
+            <div class="search-row">
+                <lightning-input class="search-input" type="search" variant="label-hidden"
+                    aria-label="Search publications" placeholder="{labels.searchPlaceholder}" value={searchKey}
+                    onchange={handleSearch}>
+                </lightning-input>
+            </div>
+
+            <!-- Mobile filter toggle -->
+            <div class="mobile-filter-toggle">
+                <button onclick={toggleFilters}>
+                    {labels.filters}
+                </button>
+            </div>
+
+            <!-- Filter row (collapsible on mobile) -->
+            <div class={filterContainerClass}>
+                <div class="filter-left">
+                    <span class="filter-label">Filter by:</span>
+
+                    <lightning-combobox class="filter-dropdown" variant="label-hidden" placeholder="All Applications"
+                        aria-label="Filter by application" value={selectedApplication} options={applicationOptions}
+                        onchange={handleApplicationChange}>
+                    </lightning-combobox>
+                    <lightning-combobox class="filter-dropdown" variant="label-hidden" placeholder="Environments"
+                        aria-label="Filter by Environment" value={selectedEnvironment} options={envOptions}
+                        onchange={handleEnvironmentChange}>
+                    </lightning-combobox>
+                </div>
+
+                <div class="filter-right">
+                    <template if:false={isHideButton}>
+                    <lightning-button-group>
+
+                        <lightning-button label="Manage Application" variant="neutral"
+                            onclick={handleManageApplication}>
+                        </lightning-button>
+
+                        <lightning-button label="Manage Publication" variant="neutral"
+                            onclick={handleManagePublication}>
+                        </lightning-button>
+
+                        <lightning-button label="Create Publication" variant="neutral"
+                            onclick={handleCreatePublication}>
+                        </lightning-button>
+
+                    </lightning-button-group>
+                    </template>
+                    <!-- Keep Clear All separate -->
+                    <lightning-button label={labels.clearAll} variant="base" onclick={handleClearAll}
+                        disabled={disableClearAll} class="slds-m-left_small">
+                    </lightning-button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- ===============================
+                ERROR STATE
+        =============================== -->
+        <template if:true={hasError}>
+            <div class="state-container error">
+                <lightning-icon icon-name="utility:error" size="medium" class="state-icon error-icon">
+                </lightning-icon>
+
+                <div class="state-title">
+                    {labels.errorTitle}
+                </div>
+
+                <div class="state-description">
+                    {labels.errorDesc}
+                </div>
+            </div>
+        </template>
+
+        <!-- ===============================
+                NO FILTERED DATA STATE
+        =============================== -->
+        <template if:true={showNoFilteredData}>
+            <div class="state-container">
+                <lightning-icon icon-name="utility:info" size="medium" class="state-icon">
+                </lightning-icon>
+
+                <div class="state-title">
+                    {labels.noFilteredData}
+                </div>
+
+                <div class="state-description">
+                    {labels.adjustFiltersHelp}
+                </div>
+            </div>
+        </template>
+
+        <!-- ===============================
+                NO BACKEND DATA STATE
+        =============================== -->
+        <template if:true={showNoBackendData}>
+            <div class="state-container">
+                <lightning-icon icon-name="utility:info" size="medium" class="state-icon">
+                </lightning-icon>
+
+                <div class="state-title">
+                    {labels.emptyTitle}
+                </div>
+
+                <div class="state-description">
+                    {labels.emptyDesc}
+                </div>
+            </div>
+        </template>
+
+
+
+        <!-- Cards Grid -->
+        <template if:true={showGrid}>
+            <div class="grid-container">
+                <template for:each={filteredRecords} for:item="rec">
+                    <div key={rec.id} class="card" data-id={rec.id} onclick={handleClick}>
+
+                        <!-- Hover background -->
+                        <div class="hover-bg"></div>
+
+                        <!-- Top strip -->
+                        <div class="top-strip">
+                            <div class="top-title">{rec.publication}</div>
+                            <div class="divider"></div>
+                        </div>
+
+                        <!-- Icon -->
+                        <div class="icon-wrapper icon-color">
+                            <div class="icon-box "><!--ux change - added icon-color-->
+                                <lightning-icon icon-name="action:update_status" size="small" aria-hidden="true">
+                                </lightning-icon>
+                            </div>
+                        </div>
+
+                        <!-- Content -->
+                        <div class="card-content">
+                            <div class="tag">{rec.category}</div>
+
+                            <div class="details">
+                                <div class="detail-item">
+                                    <span class="detail-label">Application:</span>
+                                    <span class="detail-value">{rec.application}</span>
+                                </div>
+
+                                <div class="detail-item">
+                                    <span class="detail-label">Schedule:</span>
+                                    <span class="detail-value">{rec.schedule}</span>
+                                </div>
+
+                                <div class="detail-item muted">
+                                    <span class="detail-label">Last Updated:</span>
+                                    <span class="detail-value">{rec.lastUpdated}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </template>
+            </div>
+        </template>
+
+    </div>
+</template>

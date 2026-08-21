@@ -1,0 +1,300 @@
+<template>
+
+    <template if:true={asset}>
+
+        <c-aehc-approvals record-id={assetId} env={selectedEnvironment}>
+        </c-aehc-approvals>
+
+        <div class="card-row">
+
+            <!-- Application ID -->
+            <div class="header-card">
+                <div class="card-content">
+                    <div class="label">{applicationId}</div>
+                    <div class="value">
+                        {asset.applicationId}
+                    </div>
+                </div>
+
+                <div class="card-icon blue">
+                    <img src={appIcon} alt="Application" />
+                </div>
+            </div>
+
+            <!-- Publication ID -->
+            <div class="header-card">
+                <div class="card-content">
+                    <div class="label">{publicationId}</div>
+                    <div class="value">{asset.publicationId}</div>
+                </div>
+
+                <div class="card-icon purple">
+                    <img src={pubIcon} alt="Publication" />
+                </div>
+            </div>
+
+            <!-- Publication Type -->
+            <div class="header-card">
+                <div class="card-content">
+                    <div class="label">{publicationType}</div>
+                    <div class="value">{asset.publicationType}</div>
+                </div>
+
+                <div class="card-icon green">
+                    <img src={pubTypeIcon} alt="Type" />
+                </div>
+            </div>
+
+            <!-- Schedule -->
+            <div class="header-card">
+                <div class="card-content">
+                    <div class="label">Schedule</div>
+                    <div class="value">{asset.schedule}</div>
+                </div>
+
+                <div class="card-icon orange">
+                    <img src={scheduleIcon} alt="Schedule" />
+                </div>
+            </div>
+
+        </div>
+
+        <div class="second-row">
+            <lightning-input label={publicationDescription} value={asset.publicationDescription}
+                title={asset.publicationDescription} disabled>
+            </lightning-input>
+
+            <lightning-combobox label={environmentLabel} value={selectedEnvironment} options={environmentOptions}
+                onchange={handleEnvironmentChange}>
+            </lightning-combobox>
+
+            <lightning-input label={versionLabel} value={asset.schemaVersion} disabled>
+            </lightning-input>
+        </div>
+
+        <div class="details-toolbar slds-m-top_medium">
+
+    <div class="details-title">
+        Environment Details
+    </div>
+
+    <lightning-button
+        label="Change History"
+        variant="outline-brand"
+        onclick={handleChangeHistory}>
+    </lightning-button>
+
+</div>
+
+<lightning-accordion
+    allow-multiple-sections-open
+    active-section-name="details">
+
+    <lightning-accordion-section
+        name="details"
+        label="Environment Metadata">
+
+        <div class="details-grid">
+
+            <lightning-input
+                label="Schema Name"
+                value={asset.schemaName}
+                disabled>
+            </lightning-input>
+
+            <lightning-input
+                label="Table Name"
+                value={asset.tableName}
+                disabled>
+            </lightning-input>
+
+            <lightning-input
+                label="Submitted By"
+                value={asset.createdByName}
+                disabled>
+            </lightning-input>
+
+            <lightning-input
+                label="Submitted Date"
+                value={asset.createdDateDisplay}
+                disabled>
+            </lightning-input>
+
+            <lightning-input
+                label="Schedule Summary"
+                value={asset.scheduleSummary}
+                disabled>
+            </lightning-input>
+
+            <lightning-input
+                label="Cron Expression"
+                value={asset.cronExpression}
+                disabled>
+            </lightning-input>
+
+            <lightning-input
+                label="DDH Job ID"
+                value={asset.ddhJobId}
+                disabled>
+            </lightning-input>
+
+        </div>
+
+    </lightning-accordion-section>
+
+</lightning-accordion>
+
+            <c-aehc-publication-field-data-table
+                field-data={asset.AEHC_Selected_Fields_JSON}>
+            </c-aehc-publication-field-data-table>
+
+        <!-- ================= TABLE CARD ================= ->
+        <div class="table-card slds-m-top_medium">
+
+            <div class="table-card-header">
+                Schema Fields
+            </div>
+
+            <template if:true={isTableLoading}>
+                <div class="table-card-body slds-text-align_center">
+                    <lightning-spinner size="medium"></lightning-spinner>
+                    <div class="slds-m-top_small">
+                        Loading schema details…
+                    </div>
+                </div>
+            </template>
+
+            <template if:true={hasTableError}>
+                <div class="table-card-body slds-text-align_center slds-text-color_error">
+                    {tableError}
+                </div>
+            </template>
+
+            <template if:true={showNoData}>
+                <div class="table-card-body slds-text-align_center">
+                    No schema data available for this environment.
+                </div>
+            </template>
+
+            <template if:true={showTable}>
+                <div class="table-card-body">
+
+                    <div class="total-records">
+                        Total {totalRecords} Records
+                    </div>
+
+                    <table class="field-table">
+                        <thead>
+
+
+                            <tr>
+                                <th>{fileNameLabel}</th>
+                                <th>{dataTypeLabel}</th>
+                                <th>{descriptionLabel}</th>
+                                <th>{requiredLabel}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template for:each={rows} for:item="row">
+                                <tr key={row.fieldName}>
+                                    <td>{row.fieldName}</td>
+                                    <td class="blue">{row.dataType}</td>
+                                    <td>{row.description}</td>
+                                    <td>{row.required}</td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+
+                    <template if:true={showLoadMore}>
+                        <div class="load-more-container">
+                            <lightning-button label="Load More" onclick={loadMore}></lightning-button>
+                        </div>
+                    </template>
+
+                </div>
+            </template>
+
+        </div>
+        <-- Table End -->
+
+        <!-- ================= CONTACTS ================= -->
+        <div class="publication-contacts-container">
+            <div class="publication-contacts-header">
+                <span class="header-text">Publication Contacts</span>
+            </div>
+
+            <div class="publication-contacts-list">
+                <template for:each={contacts} for:item="c">
+                    <div key={c.email} class="publication-contact-card">
+                        <div class="contact-avatar">{c.initials}</div>
+                        <div class="contact-details">
+
+                            <div class="contact-name">{c.name}</div>
+                            <div class="contact-role">{c.role}</div>
+
+                            <div class="contact-meta">
+                                <span class="meta-label">Email:</span>
+                                <span class="meta-value" title={c.email}>{c.email}</span>
+                            </div>
+
+                            <template if:true={c.phone}>
+                                <div class="contact-meta">
+                                    <span class="meta-label">Phone:</span>
+                                    <span class="meta-value">{c.phone}</span>
+                                </div>
+                            </template>
+
+                        </div>
+
+                    </div>
+                </template>
+            </div>
+        </div>
+
+    </template>
+    <template if:true={isChangeHistory}>
+    <section
+        role="dialog"
+        tabindex="-1"
+        class="slds-modal slds-fade-in-open">
+
+        <div class="slds-modal__container">
+
+            <lightning-button-icon
+                icon-name="utility:close"
+                alternative-text="Close"
+                onclick={closeChangeHistoryModal}
+                class="slds-modal__close">
+            </lightning-button-icon>
+
+            <header class="slds-modal__header">
+                <h2 class="slds-text-heading_medium">
+                    Publication Change History
+                </h2>
+            </header>
+
+            <div class="slds-modal__content slds-p-around_medium">
+
+                <c-aehc-approval-history
+                    record-id={historyRecordId}
+                    selected-environment={selectedEnvironment}
+                    selected-version={asset.schemaVersion}>
+                </c-aehc-approval-history>
+
+            </div>
+
+            <footer class="slds-modal__footer">
+                <lightning-button
+                    label="Close"
+                    onclick={closeChangeHistoryModal}>
+                </lightning-button>
+            </footer>
+
+        </div>
+
+    </section>
+
+    <div class="slds-backdrop slds-backdrop_open"></div>
+</template>
+</template>

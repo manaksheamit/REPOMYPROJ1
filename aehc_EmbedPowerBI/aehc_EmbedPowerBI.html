@@ -1,0 +1,50 @@
+<template> 
+    <template if:true={isLoadingReports}>
+        <div class="slds-align_absolute-center slds-p-vertical_x-large">
+            <lightning-spinner
+                alternative-text="Loading Reports"
+                size="large">
+            </lightning-spinner>
+        </div>
+    </template>
+
+    <template if:false={isLoadingReports}>   
+        <template if:true={showReports}> 
+            <lightning-card>        
+            <div class="slds-m-around_small">                
+                <!-- Error Message -->
+                <template if:true={error}>
+                    <div class="slds-text-color_error slds-m-bottom_medium">{error}</div>
+                </template>
+
+                <!-- Main Layout -->
+                <div class="slds-grid slds-gutters slds-p-around_small" style="border-radius: 0.5rem;">
+                    <!-- Sidebar -->
+                    <div class="sidebar">
+                        <h2 class="sidebar-title">Available Reports</h2>
+                        <h6 class="sidebar-subtitle">Choose the report to run</h6>
+
+                        <template for:each={reports} for:item="report">
+                            <button
+                                key={report.name}
+                                class={report.buttonClass}
+                                data-name={report.name}
+                                onclick={handleReportClick}>
+                                {report.label}
+                            </button>
+                        </template>
+                    </div>
+
+                    <!-- Report Display -->
+                    <div class="slds-col slds-size_4-of-5 slds-p-around_small">
+                        <template if:true={loading}>
+                            <lightning-spinner alternative-text="Loading" size="small"></lightning-spinner>
+                        </template>
+                        <div class="powerbi-container" style="height:600px; width:100%; border-radius:0.5rem;"></div>
+                    </div>
+                </div>
+            </div>        
+        </lightning-card>    
+        </template>
+    </template>
+</template>

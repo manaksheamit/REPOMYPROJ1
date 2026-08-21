@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>66.0</apiVersion>
+        <isExposed>true</isExposed>
+        <targets>
+            <target>lightning__RecordPage</target>
+            <target>lightningCommunity__Page</target>
+            <target>lightningCommunity__Default</target>
+            <target>lightning__FlowScreen</target>
+        </targets>
+        
+    <targetConfigs>
+        <targetConfig targets="lightningCommunity__Default">
+            <property name="recordId" type="String" label="Record ID" description="Record ID" />
+        </targetConfig>
+        <targetConfig targets="lightning__FlowScreen">
+            <property name="recordId" type="String" label="RecordId" description="Pass record Id" role="inputOnly" />
+            <property name="apiName" type="String" label="apiName" description="Pass API Name" role="inputOnly" />
+            <property name="formattedSelection" type="String" label="Ordered Structure Output of fields and objects from Flow" description="Formated fields from the LWC back to the flow." role="outputOnly" />
+            <property name="actualSelection" type="String" label="Actual selected fields Output from Flow" description="Actual fields from the LWC back to the flow." role="outputOnly" />
+            <property name="encryptedText" type="String" label="Encrypted data." description="Encrypted data." role="outputOnly" />
+        </targetConfig>
+        
+    </targetConfigs>
+</LightningComponentBundle>

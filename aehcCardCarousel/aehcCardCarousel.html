@@ -1,0 +1,14 @@
+<template>
+    <div class="card" onclick={handleClick}>
+
+        <img class="card-image" src={imageUrl} alt={safeTitle} />
+
+        <div class="overlay" style={overlayStyle}>
+            <div class="overlay-box">
+                <div class="title">{safeTitle}</div>
+                <div class="subtitle">{desc}</div>
+            </div>
+        </div>
+
+    </div>
+</template>

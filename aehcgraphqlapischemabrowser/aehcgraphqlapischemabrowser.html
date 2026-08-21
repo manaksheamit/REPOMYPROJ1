@@ -1,0 +1,94 @@
+<template>
+    <lightning-card title="Schema Browser">
+
+        <!-- ACTIONS -->
+        <div class="header-actions">
+            <lightning-button label="Expand All" onclick={expandAll}></lightning-button>
+            <lightning-button label="Collapse All" onclick={collapseAll}></lightning-button>
+            <lightning-button label="Clear Fields" onclick={clearAll}></lightning-button>
+        </div>
+
+        <div class="main-container">
+
+            <!-- LEFT -->
+            <div class="left-panel">
+                <template for:each={treeData} for:item="node">
+                    <div key={node.name} class="node">
+
+                        <div class="node-header">
+                            <span class="arrow"
+                                data-name={node.name}
+                                onclick={toggleExpand}>
+                                {node.expanded ? '▼' : '▶'}
+                            </span>
+
+                            <lightning-input
+                                type="checkbox"
+                                checked={node.checked}
+                                data-name={node.name}
+                                onchange={handleCheck}>
+                            </lightning-input>
+
+                            <span class="object-name">{node.label}</span>
+                        </div>
+
+                        <template if:true={node.expanded}>
+                            <div class="children">
+                                <template for:each={node.children} for:item="child">
+                                    <div key={child.name} class="child-row">
+
+                                        <lightning-input
+                                            type="checkbox"
+                                            checked={child.checked}
+                                            data-name={child.name}
+                                            onchange={handleCheck}>
+                                        </lightning-input>
+
+                                        <span class="field-name">{child.label}</span>
+
+                                        <span class="type-pill">
+                                            {child.type}
+                                        </span>
+
+                                    </div>
+                                </template>
+                            </div>
+                        </template>
+
+                    </div>
+                </template>
+            </div>
+
+            <!-- RIGHT -->
+            <div class="right-panel">
+                <div class="section-title">Selected Fields</div>
+
+                <div class="chips-container">
+                    <template for:each={selectedList} for:item="item">
+                        <div key={item.name} class="chip">
+                            {item.name}
+                            <span class="chip-close"
+                                data-name={item.name}
+                                onclick={handleRemove}>×</span>
+                        </div>
+                    </template>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- FOOTER -->
+        <div class="footer">
+            <div class="section-title">Final selected fields</div>
+            <div class="output-box">
+                {formattedSelection}
+            </div>            
+            <template if:true={recordId} >
+                <lightning-button 
+                    label="Update Schema Fields"
+                    onclick={handleUpdate} style="margin-top: 5px;">
+                </lightning-button>
+            </template>
+        </div>
+    </lightning-card>
+</template>

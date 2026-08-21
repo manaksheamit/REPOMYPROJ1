@@ -1,0 +1,394 @@
+<template>
+    <div class="content-container step-content">
+
+        <!-- Destination Type -->
+        <div class="destination-type-field">
+            <lightning-combobox class="destination-type-combobox" label={uiLabels.destinationType}
+                value={destinationType} options={destinationTypeOptions} required
+                onchange={handleDestinationTypeChange} disabled={readOnly}>
+            </lightning-combobox>
+        </div>
+
+        <!-- Database Configuration -->
+        <template if:true={isDatabase}>
+            <div class="database-config destination-section">
+
+                <div class="section-title">
+                    {uiLabels.dbTargetConfig}
+                </div>
+
+                <!-- Database Type -->
+                <div class="database-narrow-field">
+                    <lightning-combobox label={uiLabels.dbType} value={databaseType} options={dbTypeOptions} required
+                        onchange={handleDatabaseTypeChange} disabled={readOnly}>
+                    </lightning-combobox>
+                </div>
+
+                <!-- Connection Fields -->
+                <div class="database-grid-three">
+                    <lightning-input label={uiLabels.hostServer} value={databaseHost} required
+                        onchange={handleDatabaseHostChange} disabled={readOnly}>
+                    </lightning-input>
+
+                    <!-- <lightning-input class="db-port-input" label={uiLabels.port} type="number" step="1" min="1"
+                        max="65535" message-when-bad-input="Enter a valid port number"
+                        message-when-range-underflow="Port must be greater than 0" formatter="none"
+                        message-when-range-overflow="Port must be less than 65535" value={databasePort} required
+                        onchange={handleDatabasePortChange} disabled={readOnly}>
+                    </lightning-input> -->
+                    <lightning-input
+                        class="db-port-input" label={uiLabels.port} type="text" value={databasePort} required
+                        onchange={handleDatabasePortChange} disabled={readOnly}>
+                    </lightning-input>
+
+                    
+
+                    <lightning-input label={uiLabels.otherProps} value={otherProperties} required
+                        onchange={handleOtherPropertiesChange} disabled={readOnly}>
+                    </lightning-input>
+                </div>
+
+                <div class="database-grid-full">
+                    <lightning-input class="jdbc-url-input" label={uiLabels.jdbcUrl} value={jdbcUrl} 
+                        pattern="^jdbc:[a-zA-Z0-9]+:\/\/[a-zA-Z0-9.-]+:\d+\/[a-zA-Z0-9_-]+(\?.*)?$"
+                        onchange={handleJdbcUrlChange} disabled={readOnly}>
+                    </lightning-input>
+
+                    <div class="field-help-text">
+                        {uiLabels.jdbcHelp}
+                    </div>
+                </div>
+
+                <div class="section-title">
+                    {uiLabels.storedProc}
+                </div>
+
+                <div class="database-grid-three">
+                    <lightning-input label={uiLabels.onInit} value={spOnInit} onchange={handleSpOnInitChange} disabled={readOnly}>
+                    </lightning-input>
+
+                    <lightning-input label={uiLabels.onLoad} value={spOnLoad} required onchange={handleSpOnLoadChange} disabled={readOnly}>
+                    </lightning-input>
+
+                    <lightning-input label={uiLabels.onSuccess} value={spOnSuccess} onchange={handleSpOnSuccessChange} disabled={readOnly}>
+                    </lightning-input>
+                </div>
+
+                <div class="database-grid-three section-gap-small">
+                    <lightning-input label={uiLabels.onError} value={spOnError} onchange={handleSpOnErrorChange} disabled={readOnly}>
+                    </lightning-input>
+                </div>
+
+
+
+                <!-- Flags -->
+                <div class="database-toggle-section slds-m-top_medium">
+                    <lightning-input type="toggle" label={uiLabels.muteErrorFlag} checked={muteErrorFlag}
+                        onchange={handleMuteErrorFlagChange} message-toggle-active="" message-toggle-inactive="" disabled={readOnly}>
+                    </lightning-input>
+
+                    <lightning-input type="toggle" label={uiLabels.batchFlag} checked={batchFlag}
+                        onchange={handleBatchFlagChange} message-toggle-active="" message-toggle-inactive="" disabled={readOnly}>
+                    </lightning-input>
+
+                    <template if:true={batchFlag}>
+                        <lightning-input type="number" class="batch-size-input" label={uiLabels.batchSize} required
+                            value={batchSize} onchange={handleBatchSizeChange} disabled={readOnly}>
+                        </lightning-input>
+                    </template>
+                </div>
+
+                <div class="sftp-toggle-section slds-m-top_medium">
+                    <!-- <lightning-input
+                        type="toggle"
+                        label={uiLabels.includeHeader}
+                        checked={includeHeader}
+                        onchange={handleIncludeHeaderChange}
+                        message-toggle-active=""
+                        message-toggle-inactive=""
+                        disabled={readOnly}>
+                    </lightning-input> -->
+
+                    <lightning-input
+                        type="toggle"
+                        label="Alias/Custom Header"
+                        checked={provideCustomHeader}
+                        onchange={handleProvideCustomHeaderChange}
+                        message-toggle-active=""
+                        message-toggle-inactive=""
+                        disabled={readOnly}>
+                    </lightning-input>
+
+                </div>
+
+                <template if:true={showCustomHeaderTable}>
+                    <div class="custom-header-section">
+                        <div class="custom-header-table-wrapper">
+                            <table class="custom-header-table">
+                                <thead>
+                                    <tr>
+                                        <th>{uiLabels.selectedFields}</th>
+                                        <th>Alias/Custom Header</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <template for:each={customHeaderFields} for:item="field">
+                                        <tr key={field.fieldName}>
+                                            <td>{field.fieldName}</td>
+                                            <td>
+                                                <lightning-input
+                                                    variant="label-hidden"
+                                                    value={field.label}
+                                                    data-field-name={field.fieldName}
+                                                    onchange={handleCustomHeaderNameChange}
+                                                    disabled={readOnly}>
+                                                </lightning-input>
+                                            </td>
+                                        </tr>
+                                    </template>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </template>
+
+                <!-- XML Template Preview - Read Only -->
+                <template if:true={batchFlag}>
+                    <div class="xml-template-section">
+                        <div class="section-title">
+                            {uiLabels.xmlTemplate}
+                        </div>
+
+                        <template if:true={hasXmlTemplatePreview}>
+                            <pre class="xml-template-preview">{xmlTemplatePreview}</pre>
+                        </template>
+
+                        <template if:false={hasXmlTemplatePreview}>
+                            <div class="xml-template-empty">
+                                {uiLabels.xmlUnavailable}
+                            </div>
+                        </template>
+                    </div>
+                </template>
+
+            </div>
+        </template>
+
+        <!-- SFTP Configuration -->
+        <template if:true={isSftp}>
+            <div class="sftp-config destination-section">
+
+
+                <div class="section-title">
+                    {uiLabels.sftpConfig}
+                </div>
+
+
+                <!-- Row 1 -->
+                <div class="sftp-grid-two">
+                    <lightning-input label={uiLabels.hostName} value={sftpHostName} required
+                        onchange={handleSftpHostNameChange} disabled={readOnly}>
+                    </lightning-input>
+
+                    <!-- <lightning-input class="sftp-port-input" label={uiLabels.port} type="number" step="1" min="1"
+                        max="65535" message-when-bad-input="Enter a valid port number"
+                        message-when-range-underflow="Port must be greater than 0"
+                        message-when-range-overflow="Port must be less than 65535" value={sftpPort} required
+                        onchange={handleSftpPortChange} disabled={readOnly}>
+                    </lightning-input> -->
+
+                    <lightning-input
+                        class="sftp-port-input" label={uiLabels.port} type="text"
+                        value={sftpPort} required onchange={handleSftpPortChange} disabled={readOnly}>
+                    </lightning-input>
+
+                    
+                </div>
+
+                <!-- Row 2 -->
+                <div class="sftp-grid-two slds-m-top_medium">
+                    <lightning-input label={uiLabels.remotePath} value={sftpRemotePath} required
+                        onchange={handleSftpRemotePathChange} disabled={readOnly}>
+                    </lightning-input>
+
+                    <lightning-input class="sftp-file-name-input" label={uiLabels.fileName} value={sftpFileName}
+                        required onchange={handleSftpFileNameChange} disabled={readOnly}>
+                    </lightning-input>
+                </div>
+
+                <!-- Output Format -->
+                <div class="sftp-narrow-field slds-m-top_medium">
+                    <lightning-combobox label={uiLabels.outputFormat} value={sftpOutputFormat}
+                        options={outputFormatOptions} required onchange={handleSftpOutputFormatChange} disabled={readOnly}>
+                    </lightning-combobox>
+                </div>
+
+                <!-- Header Toggles -->
+                <div class="sftp-toggle-section slds-m-top_medium">
+                    <lightning-input type="toggle" label={uiLabels.includeHeader} checked={includeHeader}
+                        onchange={handleIncludeHeaderChange} message-toggle-active="" message-toggle-inactive="" disabled={readOnly}>
+                    </lightning-input>
+
+                    <lightning-input type="toggle" label={uiLabels.customHeaderFlag} checked={provideCustomHeader}
+                        onchange={handleProvideCustomHeaderChange} message-toggle-active="" message-toggle-inactive="" disabled={readOnly}>
+                    </lightning-input>
+                </div>
+
+                <!-- Custom Header Table -->
+                <template if:true={showCustomHeaderTable}>
+
+                    <div class="custom-header-section">
+                        <div class="custom-header-table-wrapper">
+                            <table class="custom-header-table">
+
+                                <thead>
+                                    <tr>
+                                        <th>{uiLabels.selectedFields}</th>
+                                        <th>{uiLabels.customHeaderName}</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    <template for:each={customHeaderFields} for:item="field">
+                                        <tr key={field.fieldName}>
+                                            <td>{field.fieldName}</td>
+                                            <td>
+                                                <lightning-input variant="label-hidden" value={field.label}
+                                                    data-field-name={field.fieldName}
+                                                    onchange={handleCustomHeaderNameChange} disabled={readOnly}>
+                                                </lightning-input>
+                                            </td>
+                                        </tr>
+                                    </template>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </template>
+
+                <!-- Delimiter -->
+                <template if:true={showDelimiterSection}>
+                <div class="delimiter-section">
+                    <lightning-input class="delimiter-input" label={uiLabels.delimiter} value={delimiter} maxlength="1"
+                        onchange={handleDelimiterChange} disabled={readOnly}>
+                    </lightning-input>
+                </div>
+                </template>
+
+            </div>
+        </template>
+
+        <!-- Blob Configuration -->
+        <template if:true={isBlob}>
+            <div class="blob-config destination-section">
+
+
+                <div class="section-title">
+                    {uiLabels.blobConfig}
+                </div>
+
+
+                <div class="destination-grid-tw">
+                    <div class="slds-col">
+                        <lightning-input class="blob-file-name-input" label={uiLabels.fileName} value={blobFileName}
+                            required onchange={handleBlobFileNameChange} disabled={readOnly}>
+                        </lightning-input>
+                    </div>
+
+                    <div class="slds-col">
+                        <lightning-input label={uiLabels.storageBucket} value={storageAccount} required
+                            onchange={handleStorageAccountChange} disabled={readOnly}>
+                        </lightning-input>
+                    </div>
+
+                    <div class="slds-col">
+                        <lightning-input label={uiLabels.containerPath} value={containerPath} required
+                            onchange={handleContainerPathChange} disabled={readOnly}>
+                        </lightning-input>
+                    </div>
+                </div>
+
+                <div class="slds-m-top_medium">
+                    <lightning-combobox label={uiLabels.outputFormat} value={outputFormat} options={outputFormatOptions}
+                        required onchange={handleOutputFormatChange} disabled={readOnly}>
+                    </lightning-combobox>
+                </div>
+
+                <div class="sftp-toggle-section slds-m-top_medium">
+                    <lightning-input
+                        type="toggle"
+                        label={uiLabels.includeHeader}
+                        checked={includeHeader}
+                        onchange={handleIncludeHeaderChange}
+                        message-toggle-active=""
+                        message-toggle-inactive=""
+                        disabled={readOnly}>
+                    </lightning-input>
+
+                    <lightning-input
+                        type="toggle"
+                        label={uiLabels.customHeaderFlag}
+                        checked={provideCustomHeader}
+                        onchange={handleProvideCustomHeaderChange}
+                        message-toggle-active=""
+                        message-toggle-inactive=""
+                        disabled={readOnly}>
+                    </lightning-input>
+
+                </div>
+
+                <template if:true={showCustomHeaderTable}>
+                    <div class="custom-header-section">
+                        <div class="custom-header-table-wrapper">
+                            <table class="custom-header-table">
+                                <thead>
+                                    <tr>
+                                        <th>{uiLabels.selectedFields}</th>
+                                        <th>{uiLabels.customHeaderName}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <template for:each={customHeaderFields} for:item="field">
+                                        <tr key={field.fieldName}>
+                                            <td>{field.fieldName}</td>
+                                            <td>
+                                                <lightning-input
+                                                    variant="label-hidden"
+                                                    value={field.label}
+                                                    data-field-name={field.fieldName}
+                                                    onchange={handleCustomHeaderNameChange}
+                                                    disabled={readOnly}>
+                                                </lightning-input>
+                                            </td>
+                                        </tr>
+                                    </template>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </template>
+
+            </div>
+             <!-- Delimiter -->
+            <template if:true={showDelimiterSection}>
+            <div class="delimiter-section">
+                <lightning-input class="delimiter-input" label={uiLabels.delimiter} value={delimiter} maxlength="1"
+                    onchange={handleDelimiterChange} disabled={readOnly}>
+                </lightning-input>
+            </div>
+            </template>
+        </template>
+       
+
+        <!-- Footer buttons (UNCHANGED) -->
+    <template if:false={hideFooter}>
+        <div class="footer-actions">
+            <lightning-button label={uiLabels.back} onclick={handleBack}>
+            </lightning-button>
+
+            <lightning-button label={uiLabels.next} variant="brand" onclick={handleNext}>
+            </lightning-button>
+        </div>
+    </template>
+    </div>
+</template>

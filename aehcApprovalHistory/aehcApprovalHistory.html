@@ -1,0 +1,19 @@
+<template>
+    <lightning-card title= {cardTitle}>
+        <template if:true={data}>
+            <div class="slds-box slds-box_xx-small">
+            <lightning-datatable
+                key-field="date"
+                data={data}
+                columns={columns} hide-checkbox-column="true">
+            </lightning-datatable>
+            </div>
+        </template>
+
+        <template if:true={error}>
+            <div class="slds-text-color_error">
+                Error loading approval history
+            </div>
+        </template>
+    </lightning-card>
+</template>

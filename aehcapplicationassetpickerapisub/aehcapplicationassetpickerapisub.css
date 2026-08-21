@@ -1,0 +1,32 @@
+.lookup-wrapper {
+    width: 100%;
+}
+
+.custom-label {
+    display: block;
+    font-size: 0.75rem;
+    color: #181818;
+    margin-bottom: 0.25rem;
+    line-height: 1.5;
+}
+
+.lookup-container {
+    position: relative;
+}
+
+.slds-dropdown {
+    position: absolute;
+    width: 100%;
+    z-index: 9999;
+    max-height: 220px;
+    overflow-y: auto;
+}
+
+.lookup-item {
+    padding: 8px 12px;
+    cursor: pointer;
+}
+
+.lookup-item:hover {
+    background: #f3f3f3;
+}

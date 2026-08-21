@@ -1,0 +1,68 @@
+<template>
+    <div class="lookup-wrapper">
+
+        <label class="custom-label">
+            <abbr class="slds-required">*</abbr>
+            Consuming Application Name
+        </label>
+
+        <div class="lookup-container">
+
+            <lightning-input
+                type="search"
+                variant="label-hidden"
+                value={inputValue}
+                placeholder="Search Application..."
+                onfocus={handleFocus}
+                onkeyup={handleSearch}
+                onchange={handleChange}
+                onblur={handleBlur}>
+            </lightning-input>
+
+            <template if:true={showResults}>
+                <div class="slds-dropdown slds-dropdown_fluid slds-dropdown_length-5 slds-show">
+
+                    <ul
+                        class="slds-listbox slds-listbox_vertical"
+                        role="listbox">
+
+                        <template for:each={filteredOptions} for:item="item">
+                            <li
+                                key={item.value}
+                                class="slds-listbox__item"
+                                role="presentation">
+
+                                <div
+                                    class="lookup-item"
+                                    data-id={item.value}
+                                    data-label={item.label}
+                                    onclick={handleSelect}>
+
+                                    {item.label}
+
+                                </div>
+
+                            </li>
+                        </template>
+
+                        <template if:true={noRecords}>
+                            <li class="slds-p-around_small slds-text-color_weak">
+                                No matching applications found
+                            </li>
+                        </template>
+
+                    </ul>
+
+                </div>
+            </template>
+
+        </div>
+
+        <template if:true={validationError}>
+            <div class="slds-text-color_error slds-m-top_x-small">
+                {validationError}
+            </div>
+        </template>
+
+    </div>
+</template>

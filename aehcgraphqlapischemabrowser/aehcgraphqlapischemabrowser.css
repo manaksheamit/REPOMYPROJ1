@@ -1,0 +1,214 @@
+/* =========================
+   MAIN LAYOUT
+=========================*/
+.main-container {
+    display: flex;
+    height: 420px;                 /* fixed height */
+    border: 1px solid #d8dde6;
+    border-radius: 6px;
+    margin: 10px;
+    background: #f8f9fb;
+
+    overflow: hidden;              /* ✅ prevents full page scroll */
+}
+
+/* =========================
+   LEFT PANEL (SCROLLABLE)
+=========================*/
+.left-panel {
+    width: 55%;
+    padding: 10px;
+    border-right: 1px solid #d8dde6;
+    background: #ffffff;
+
+    overflow-y: auto;              /* ✅ vertical scroll */
+    overflow-x: hidden;
+
+    max-height: 100%;
+}
+
+/* =========================
+   RIGHT PANEL (SCROLLABLE)
+=========================*/
+.right-panel {
+    width: 45%;
+    padding: 10px;
+
+    overflow-y: auto;              /* ✅ vertical scroll */
+    overflow-x: hidden;
+
+    max-height: 100%;
+}
+
+/* smooth scroll (optional nice UX) */
+.left-panel,
+.right-panel {
+    scroll-behavior: smooth;
+}
+
+/* =========================
+   HEADER BUTTONS
+=========================*/
+.header-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    padding: 10px;
+}
+
+/* =========================
+   TREE (LEFT SIDE)
+=========================*/
+.node {
+    margin-bottom: 6px;
+}
+
+.node-header {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* expand/collapse arrow */
+.arrow {
+    cursor: pointer;
+    font-size: 12px;
+    width: 16px;
+}
+
+/* object name (bold) */
+.object-name {
+    font-weight: 600;
+    font-size: 14px;
+}
+
+/* hover effect */
+.node-header:hover {
+    background: #f3f6ff;
+    border-radius: 4px;
+}
+
+/* children */
+.children {
+    margin-left: 25px;
+    margin-top: 6px;
+}
+
+/* row */
+.child-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 4px;
+    border-radius: 4px;
+}
+
+/* hover */
+.child-row:hover {
+    background: #f3f6ff;
+}
+
+/* field name */
+.field-name {
+    font-size: 13px;
+    color: #2c3e50;
+}
+
+/* type badge */
+.type-pill {
+    background-color: #e6ecff;
+    color: #1f4fff;
+    padding: 2px 6px;
+    border-radius: 10px;
+    font-size: 10px;
+    white-space: nowrap;
+}
+
+/* =========================
+   RIGHT PANEL (SELECTED)
+=========================*/
+.section-title {
+    font-weight: 600;
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+/* ✅ vertical + auto width */
+.chips-container {
+    display: flex;
+    flex-direction: column;       /* one per line */
+    align-items: flex-start;      /* ✅ prevents stretch */
+    gap: 8px;
+}
+
+/* ✅ pill */
+.chip {
+    display: inline-flex;
+    align-items: center;
+
+    background-color: #dde7f5;
+    color: #1a4fb5;
+
+    border-radius: 16px;
+    padding: 4px 10px;
+
+    font-size: 12px;
+    line-height: 1.2;
+
+    white-space: nowrap;          /* prevent breaking */
+}
+
+/* ✅ close button */
+.chip-close {
+    margin-left: 6px;
+    width: 16px;
+    height: 16px;
+
+    border-radius: 50%;
+    background-color: #cfd6e4;
+
+    color: #555;
+    font-size: 10px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+}
+
+.chip-close:hover {
+    background-color: #b8c2d4;
+    color: #000;
+}
+
+/* =========================
+   FOOTER
+=========================*/
+.footer {
+    margin: 10px;
+}
+
+.output-box {
+    background: #f3f5f8;
+    padding: 10px;
+    border-radius: 5px;
+    font-family: monospace;
+    font-size: 12px;
+    border: 1px solid #d8dde6;
+    word-break: break-word;
+}
+
+/* =========================
+   SCROLLBAR STYLING
+=========================*/
+.left-panel::-webkit-scrollbar,
+.right-panel::-webkit-scrollbar {
+    width: 6px;
+}
+
+.left-panel::-webkit-scrollbar-thumb,
+.right-panel::-webkit-scrollbar-thumb {
+    background: #c8c8c8;
+    border-radius: 10px;
+}

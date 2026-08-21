@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>API Details</label>
+    <protected>false</protected>
+    <values>
+        <field>Client_Id__c</field>
+        <value xsi:type="xsd:string">a5718dc61290422e8d5733af68760e97</value>
+    </values>
+    <values>
+        <field>Client_Secret__c</field>
+        <value xsi:type="xsd:string">741924D949CF42AA878FD898b6f83DFD</value>
+    </values>
+    <values>
+        <field>Create_Request_Endpoint__c</field>
+        <value xsi:type="xsd:string">https://airapi-dev.us.kpmg.com/lfgair/unity/snow/firewall-req</value>
+    </values>
+    <values>
+        <field>Endpoint_Fields__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>Environment__c</field>
+        <value xsi:type="xsd:string">DEV</value>
+    </values>
+    <values>
+        <field>Grant_Type__c</field>
+        <value xsi:type="xsd:string">password</value>
+    </values>
+    <values>
+        <field>Is_Token_Required__c</field>
+        <value xsi:type="xsd:boolean">false</value>
+    </values>
+    <values>
+        <field>Password__c</field>
+        <value xsi:type="xsd:string">X9u3OJFfN9C!^qnPO:d;{C8[@iQtv@Mi7@w01T@l</value>
+    </values>
+    <values>
+        <field>Token_Endpoint__c</field>
+        <value xsi:type="xsd:string">https://airapi-qa.us.kpmg.com/lfgair/snow/oauth_token.do</value>
+    </values>
+    <values>
+        <field>Username__c</field>
+        <value xsi:type="xsd:string">SN-API-MuleSoft</value>
+    </values>
+</CustomMetadata>

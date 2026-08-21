@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>Graph Data API</label>
+    <protected>false</protected>
+    <values>
+        <field>AEHC_Active__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+    <values>
+        <field>AEHC_Group__c</field>
+        <value xsi:type="xsd:string">API User</value>
+    </values>
+    <values>
+        <field>AEHC_Image__c</field>
+        <value xsi:type="xsd:string">/aeh_carousel/quicklink_2.jpg</value>
+    </values>
+    <values>
+        <field>AEHC_RedirectURL__c</field>
+        <value xsi:type="xsd:string">/asset-catalog?assetType=graphql</value>
+    </values>
+    <values>
+        <field>AEHC_Sort_Order__c</field>
+        <value xsi:type="xsd:double">2.0</value>
+    </values>
+    <values>
+        <field>AEHC_Tile_Description__c</field>
+        <value xsi:type="xsd:string">Click to View</value>
+    </values>
+    <values>
+        <field>AEHC_Tile_Title__c</field>
+        <value xsi:type="xsd:string">Graph Data API</value>
+    </values>
+</CustomMetadata>

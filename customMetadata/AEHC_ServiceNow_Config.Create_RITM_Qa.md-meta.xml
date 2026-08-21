@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>Create RITM Qa</label>
+    <protected>false</protected>
+    <values>
+        <field>Client_Id__c</field>
+        <value xsi:type="xsd:string">771c15cdac830e5004a0bcc2c258ef4e</value>
+    </values>
+    <values>
+        <field>Client_Secret__c</field>
+        <value xsi:type="xsd:string">|?V6ro4qGe</value>
+    </values>
+    <values>
+        <field>Create_Request_Endpoint__c</field>
+        <value xsi:type="xsd:string">https://airapi-qa.us.kpmg.com/lfgair/snow/api/sn_sc/servicecatalog/items/7f950ee6dbd8ab005cd8d3c0cf961964/order_now</value>
+    </values>
+    <values>
+        <field>Endpoint_Fields__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>Environment__c</field>
+        <value xsi:type="xsd:string">QA</value>
+    </values>
+    <values>
+        <field>Grant_Type__c</field>
+        <value xsi:type="xsd:string">password</value>
+    </values>
+    <values>
+        <field>Password__c</field>
+        <value xsi:type="xsd:string">X9u3OJFfN9C!^qnPO:d;{C8[@iQtv@Mi7@w01T@l</value>
+    </values>
+    <values>
+        <field>Token_Endpoint__c</field>
+        <value xsi:type="xsd:string">https://airapi-qa.us.kpmg.com/lfgair/snow/oauth_token.do</value>
+    </values>
+    <values>
+        <field>Username__c</field>
+        <value xsi:type="xsd:string">SN-API-MuleSoft</value>
+    </values>
+</CustomMetadata>

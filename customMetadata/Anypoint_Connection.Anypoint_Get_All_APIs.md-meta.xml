@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>Anypoint Get All APIs</label>
+    <protected>false</protected>
+    <values>
+        <field>OrganizationId__c</field>
+        <value xsi:type="xsd:string">9d1390e4-8f9f-406d-a404-a34085c57f2d</value>
+    </values>
+    <values>
+        <field>OrganizationURL__c</field>
+        <value xsi:type="xsd:string">graph/api/v2/graphql</value>
+    </values>
+</CustomMetadata>

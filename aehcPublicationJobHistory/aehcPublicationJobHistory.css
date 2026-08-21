@@ -1,0 +1,75 @@
+.container {
+    padding: 16px;
+    background: #ffffff;
+}
+
+/* Error */
+.error-box {
+    color: #c23934;
+    background: #fdecea;
+    padding: 12px;
+    border-radius: 6px;
+    margin-bottom: 12px;
+}
+
+/* Controls Row */
+.controls {
+    display: flex;
+    align-items: flex-end;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.field {
+    width: 250px;
+}
+
+.button-container {
+    padding-bottom: 2px;
+}
+
+/* Section Title */
+.section-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 16px 0 10px 0;
+    color: #1f1f1f;
+}
+
+/* Datatable Wrapper */
+.datatable-wrapper {
+    border: 1px solid #e5e5e5;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+/* Action Bar */
+.action-bar {
+    display: flex;
+    justify-content: flex-end;
+    margin: 16px 0;
+}
+
+/* Summary Grid */
+.summary-grid {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.summary-item {
+    flex: 1;
+}
+
+.summary-item label {
+    font-size: 12px;
+    color: #6b6b6b;
+}
+
+.summary-value {
+    margin-top: 4px;
+    padding: 8px;
+    background: #f4f6f9;
+    border-radius: 4px;
+    font-weight: 600;
+}

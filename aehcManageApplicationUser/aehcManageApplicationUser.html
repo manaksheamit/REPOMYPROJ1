@@ -1,0 +1,113 @@
+<template>
+    <div style="position: relative;">
+        <template if:false={isInitialized}>
+            <lightning-spinner alternative-text="Loading" variant="brand" size="medium"></lightning-spinner>
+        </template>
+        <template if:true={isInitialized}>
+            <c-aehc-list-view columns={listView.columns} title={listView.title} actions={listView.actions}
+                onaction={handleListViewAction} onreload={getMembers}></c-aehc-list-view>
+        </template>
+
+        <!-- Detail Modal -->
+        <template if:true={detailModal.isVisible}>
+            <section role="dialog" tabindex="-1" aria-modal="true" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <div style="position: relative;">
+                        <template if:true={detailModal.isLoading}>
+                            <lightning-spinner alternative-text="Loading" variant="brand"
+                                size="medium"></lightning-spinner>
+                        </template>
+
+                        <!-- Header -->
+                        <header class="slds-modal__header">
+                            <h2 class="slds-text-heading_medium">{detailModal.title}</h2>
+                        </header>
+
+                        <!-- Body -->
+                        <div class="slds-modal__content slds-p-around_medium" style="min-height: 20rem;">
+                            <lightning-layout multiple-rows class="slds-m-bottom_medium slds-gutters">
+
+                                <!-- Left side: Lookup -->
+                                <lightning-layout-item size="12" class="slds-p-around_small">
+                                    <c-aehc-reusable-lookup label={userSearchDetail.label}
+                                        object-label={userSearchDetail.objectLabel}
+                                        placeholder={userSearchDetail.placeholder}
+                                        selected-icon-name={userSearchDetail.iconName} value={memberDetail.user}
+                                        onchangevalue={handleUserSearchAction_OnChange}
+                                        required={userSearchDetail.required}
+                                        onvalueselected={handleUserSearchAction_OnSelect}
+                                        onvaluedeselected={handleUserSearchAction_OnDeselect}>
+                                    </c-aehc-reusable-lookup>
+                                </lightning-layout-item>
+
+                                <lightning-layout-item size="12" class="slds-p-around_small">
+                                    <lightning-combobox name="userRole" label="Role" value={memberDetail.userRole}
+                                        placeholder="Select Role" options={memberDetail.userRoles}
+                                        onchange={handleChange_UserRole} required="true"></lightning-combobox>
+                                </lightning-layout-item>
+                            </lightning-layout>
+                        </div>
+
+                        <!-- Footer -->
+                        <footer class="slds-modal__footer">
+                            <lightning-button label="Cancel" data-modal="detailModal"
+                                onclick={handleClose_Modal}></lightning-button>
+                            <lightning-button variant="brand" class="slds-m-left_small" onclick={handleClick_Save}
+                                label="Save"></lightning-button>
+                        </footer>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- Background overlay -->
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </template>
+
+        <!-- Confirm Modal -->
+        <template if:true={confirmModal.isVisible}>
+            <section role="dialog" tabindex="-1" aria-modal="true" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <div style="position: relative;">
+                        <template if:true={confirmModal.isLoading}>
+                            <lightning-spinner alternative-text="Loading" variant="brand"
+                                size="medium"></lightning-spinner>
+                        </template>
+
+                        <!-- Header -->
+                        <header class="slds-modal__header">
+                            <h2 class="slds-text-heading_medium">{confirmModal.title}</h2>
+                        </header>
+
+                        <!-- Body -->
+                        <div class="slds-modal__content slds-p-around_medium">
+                            <p>Are you sure want to revoke membership of this User ?</p>
+                            <template if:true={confirmModal.userName}>
+                                <p>
+                                    </br>
+                                    <strong>User: </strong>{confirmModal.userName}</br>
+                                    <strong>Role: </strong>{confirmModal.userRole}
+                                </p>
+                            </template>
+
+                        </div>
+
+                        <!-- Footer -->
+                        <footer class="slds-modal__footer">
+                            <lightning-button label="Cancel" data-modal="confirmModal"
+                                onclick={handleClose_Modal}></lightning-button>
+                            <lightning-button variant="destructive" class="slds-m-left_small"
+                                data-record-id={confirmModal.recordId} onclick={handleClick_RemoveMember}
+                                label="Confirm"></lightning-button>
+                        </footer>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- Background overlay -->
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </template>
+    </div>
+
+</template>

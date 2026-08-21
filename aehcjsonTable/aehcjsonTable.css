@@ -1,0 +1,50 @@
+.table-container {
+    border: 1px solid #d8dde6;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+/* Header */
+.header-row {
+    display: flex;
+    position: sticky;
+    top: 0;
+    background-color: #f3f3f3;
+    padding: 10px;
+    font-weight: bold;
+    border-bottom: 1px solid #d8dde6;
+    z-index: 1;
+}
+
+/* Rows */
+.data-row {
+    display: flex;
+    padding: 10px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.data-row:hover {
+    background-color: #f3f2f2;
+}
+
+/* Columns */
+.col {
+    flex: 1;
+}
+
+.field-col {
+    flex: 2;
+    color: #1b5297;
+}
+
+.label-col {
+    flex: 2;
+    color: #444;
+}
+
+/* Empty */
+.no-data {
+    padding: 10px;
+    text-align: center;
+    color: #888;
+}

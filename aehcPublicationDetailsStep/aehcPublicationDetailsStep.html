@@ -1,0 +1,175 @@
+<template>
+    <div class="publication-wrapper">
+
+        <!-- APPLICATION SEARCH -->
+        <div class="form-section">
+            <lightning-layout>
+                <lightning-layout-item size="4">
+                    <lightning-input type="search" label={labels.appName} placeholder={labels.searchPlaceholder}
+                        value={searchKey} onchange={handleSearch} disabled={isEditMode}>
+                    </lightning-input>
+                </lightning-layout-item>
+            </lightning-layout>
+
+            <!-- ERROR MESSAGE -->
+            <template if:true={applicationError}>
+                <div class="error-text">{applicationError}</div>
+            </template>
+
+            <!-- RESULTS -->
+            <template if:true={showApplicationResults}>
+                <div class="search-results">
+                    <template for:each={applications} for:item="app">
+                        <div key={app.id} data-id={app.id} onclick={handleSelect} class="search-result-row">
+
+                            <div><strong>{app.name}</strong></div>
+                            <div class="result-sub">{app.ciNumber}</div>
+                        </div>
+                    </template>
+                </div>
+            </template>
+
+            <!-- NO RESULTS -->
+            <template if:false={isEditMode}>
+                <template if:true={showNoResults}>
+                    <div class="no-data-text">{labels.noApplications}</div>
+                </template>
+            </template>
+        </div>
+
+        <!-- MAIN FORM -->
+        <template if:true={isEligible}>
+
+            <!-- APPLICATION SUMMARY -->
+            <div class="selected-application-box">
+                <lightning-layout>
+                    <lightning-layout-item size="6" class="slds-p-right_small">
+                        <lightning-input label="Application Owner" value={applicationOwner} disabled>
+                        </lightning-input>
+                    </lightning-layout-item>
+
+                    <lightning-layout-item size="6" class="slds-p-left_small">
+                        <lightning-input label="Data Classification" value={dataClassification} disabled>
+                        </lightning-input>
+                    </lightning-layout-item>
+                </lightning-layout>
+            </div>
+
+            <!-- PUBLICATION -->
+            <div class="section-title">{labels.pubDetails}</div>
+
+            <lightning-layout>
+
+                <lightning-layout-item size="6" class="slds-p-right_small">
+                    <lightning-input label={labels.pubName} value={pubName} maxlength="80" onchange={handleName}
+                        required>
+                    </lightning-input>
+
+                    <template if:true={publicationValidationError}>
+                        <div class="error-text">{publicationValidationError}</div>
+                    </template>
+                </lightning-layout-item>
+
+                <lightning-layout-item size="6" class="slds-p-left_small">
+                    <lightning-input label={labels.desc} value={pubDesc} maxlength={descLimit.data}
+                        onchange={handleDesc} required>
+                    </lightning-input>
+
+                    <template if:true={publicationDescriptionError}>
+                        <div class="error-text">{publicationDescriptionError}</div>
+                    </template>
+                </lightning-layout-item>
+            </lightning-layout>
+            <lightning-layout>
+
+                <lightning-layout-item size="6" class="slds-p-right_small">
+                    <lightning-combobox label="Publication Type" value={publicationType}
+                        options={publicationTypeOptions} onchange={handlePublicationTypeChange} required disabled={isEditMode}>
+                    </lightning-combobox>
+
+                    <template if:true={publicationTypeError}>
+                        <div class="error-text">{publicationTypeError}</div>
+                    </template>
+                </lightning-layout-item>
+
+            </lightning-layout>
+
+            <!-- SCHEMA -->
+            <div class="section-title">{labels.schemaTable}</div>
+
+            <lightning-layout vertical-align="end" class="schema-table-row">
+                <lightning-layout-item size="4" class="slds-p-right_small schema-field">
+                    <lightning-input label={labels.schemaName} value={schema} onchange={handleSchema} required disabled={isEditMode}>
+                    </lightning-input>
+
+                    <template if:true={schemaError}>
+                        <div class="error-text">{schemaError}</div>
+                    </template>
+                </lightning-layout-item>
+
+                <lightning-layout-item size="4" class="slds-p-left_small schema-field">
+                    <lightning-input label={labels.tableName} value={table} onchange={handleTable} required disabled={isEditMode}>
+                    </lightning-input>
+
+                    <template if:true={tableError}>
+                        <div class="error-text">{tableError}</div>
+                    </template>
+                </lightning-layout-item>
+
+                <template if:true={showValidateButton}>
+                <lightning-layout-item size="2" class="slds-p-left_small schema-button">
+                    <lightning-button label={labels.validate} variant="brand" onclick={handleValidate}>
+                    </lightning-button>
+                </lightning-layout-item>
+                </template>
+            </lightning-layout>
+        
+
+            <template if:true={isSchemaLoading}>
+                <lightning-spinner size="small"></lightning-spinner>
+            </template>
+
+            <!-- FIELDS -->
+            <!-- PUBLICATION FIELD SELECTION -->
+
+            <template if:true={hasVisibleFields}>
+
+                <div class="section-title">
+                    Publication Field Selection
+                </div>
+
+                <c-aehc-publication-field-selection schema-data={fields} wizard-data={wizardData}
+                    onstepdatachange={handleFieldSelectionChange}>
+                </c-aehc-publication-field-selection>
+
+            </template>
+
+            <template if:true={showNoFields}>
+                <div class="no-data-text">
+                    No fields available for selected schema/table
+                </div>
+            </template>
+
+            <!-- SCHEDULE -->
+            <div class="schedule-panel">
+                <div class="section-title">{labels.defineSchedule}</div>
+
+                <c-aehc-schedule-step mode="publication" wizard-data={schedule}
+                    scheduler-mode-options={picklistOptions.schedulerModeOptions}
+                    frequency-options={picklistOptions.frequencyOptions}
+                    weekday-options={picklistOptions.weekdayOptions} week-options={picklistOptions.weekOptions}
+                    month-day-options={picklistOptions.monthDayOptions} onstepdatachange={handleScheduleChange}>
+                </c-aehc-schedule-step>
+            </div>
+
+            <!-- FOOTER -->
+            <div class="footer-actions slds-grid slds-grid_align-end slds-gap_small">
+                <lightning-button label={labels.close} variant="neutral" onclick={handleClose}></lightning-button>
+
+                <lightning-button label={labels.next} variant="brand" onclick={handleNext} disabled={disableNext}>
+                </lightning-button>
+            </div>
+
+        </template>
+    </div>
+</template>

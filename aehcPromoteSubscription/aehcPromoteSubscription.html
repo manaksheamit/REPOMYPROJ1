@@ -1,0 +1,109 @@
+<template>
+        <template if:true={isLoaded}>
+
+        <!--  Eligibility message -->
+           <template if:false={showApprovalScreen}>
+        <template if:false={canPromote}>
+            <div class="slds-notify slds-notify_alert slds-alert_error slds-m-bottom_medium">
+                {eligibilityMessage}
+            </div>
+        </template> 
+        </template>
+
+        <lightning-card class="slds-m-around_medium">
+
+            <!-- ================= HEADER ================= -->
+            <div class="slds-p-around_medium">
+
+                <div class="slds-grid slds-align-center slds-m-bottom_small">
+                    <div style="width:16px;height:16px;background:#ba4a00;border-radius:2px;margin-right:8px;"></div>
+                    <div>
+                        <div class="slds-text-title">Subscription</div>                        
+                        <div class="slds-text-heading_small">{subscription.Name}</div>
+                    </div>
+                </div>
+
+                <!--  HEADER GRID -->
+                <div class="slds-grid slds-wrap slds-gutters slds-m-top_small">
+
+                    <div class="slds-col slds-size_1-of-2">
+                        
+                        <lightning-input
+                         label="Current Environment"
+                         value={subscription.AEHC_Environment__c}
+                         disabled>
+                        </lightning-input>
+                       
+                    </div>
+
+                    <div class="slds-col slds-size_1-of-2">
+                        
+                        <lightning-input
+                         label="Promote to"
+                         value={targetEnvironment}
+                         disabled>
+                        </lightning-input>
+
+                        
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- ================= CONFIGURE ENDPOINTS ================= -->
+            <div class="slds-p-horizontal_medium slds-m-top_medium">
+
+                <h3 class="slds-text-heading_small">Configure Endpoints</h3>
+
+                <lightning-input
+                    class="slds-m-top_small"
+                    type="checkbox"
+                    label="Same as current environment"
+                    checked={sameAsCurrent}
+                    onchange={handleSameAsToggle}
+                    disabled={disableSameAsToggle}>
+                </lightning-input>
+            </div>
+
+            <template if:true={showDestinationComponent}>
+    <div class="slds-p-horizontal_medium slds-m-top_medium">
+
+        <c-aehc-destination-step
+            wizard-data={destinationWizardData}
+            destination-type-options={destinationTypeOptions}
+            db-type-options={databaseTypeOptions}
+            output-format-options={outputFormatOptions}
+            read-only={sameAsCurrent}
+            hide-footer=true
+            onstepdatachange={handleDestinationDataChange}>
+        </c-aehc-destination-step>
+
+    </div>
+</template>
+            
+
+            <!-- ================= ACTION BUTTONS ================= -->
+            <div class="slds-p-around_medium slds-grid slds-grid_align-end">
+
+                <template if:true={showPromoteButton}>
+                    <lightning-button
+                        variant="brand"
+                        label="Promote"
+                        onclick={handlePromote}
+                        disabled={promoteDisable}>
+                    </lightning-button>
+                </template>
+
+                <template if:true={showSubmitButton}>
+                    <lightning-button
+                        variant="brand"
+                        label="Submit"
+                        onclick={handleSubmit}>
+                    </lightning-button>
+                </template>
+
+            </div>
+
+        </lightning-card>
+    </template>
+</template>

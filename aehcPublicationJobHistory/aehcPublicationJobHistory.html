@@ -1,0 +1,91 @@
+<template>
+<div class="container">
+
+                        <!-- FILTER SECTION -->
+                        <template if:false={showAudit}>
+                            <div class="controls">
+                                <div class="field">
+                                    <lightning-combobox
+                                        label="Environment"
+                                        value={selectedEnv}
+                                        options={envOptions}
+                                        onchange={handleChange}>
+                                    </lightning-combobox>
+                                </div>
+
+                                <!-- <lightning-button
+                                    label="Run Now"
+                                    variant="brand"
+                                    onclick={handleRun}>
+                                </lightning-button> -->
+                            </div>
+                        </template>
+
+                        <!-- ERROR -->
+                        <template if:true={errorMessage}>
+                            <div class="error-box">
+                                {errorMessage}
+                            </div>
+                        </template>
+
+                        <!-- TABLE -->
+                        <template if:true={showTable}>
+                            <h3 class="section-title">Historical Job Run</h3>
+
+                            <lightning-datatable
+                                key-field="runId"
+                                data={runData}
+                                columns={columns}
+                                hide-checkbox-column
+                                onrowaction={handleRowAction}>
+                            </lightning-datatable>
+                        </template>
+
+                        <!-- AUDIT DETAILS -->
+                        <template if:true={showAudit}>
+
+                            <div class="action-bar">
+                                <lightning-button
+                                    label="Back"
+                                    onclick={handleBack}>
+                                </lightning-button>
+                            </div>
+
+                            <h3 class="section-title">Summary</h3>
+
+                            <div class="summary-grid">
+
+                                <div class="summary-item">
+                                    <label>Run ID</label>
+                                    <div class="summary-value">{selectedRunId}</div>
+                                </div>
+
+                                <div class="summary-item">
+                                    <label>Execution Status</label>
+                                    <div class="summary-value">{executionStatus}</div>
+                                </div>
+
+                                <div class="summary-item">
+                                    <label>Run Completion Time</label>
+                                    <div class="summary-value">{runCompletionTime}</div>
+                                </div>
+
+                                <div class="summary-item">
+                                    <label>Records Processed</label>
+                                    <div class="summary-value">{runRecordCount}</div>
+                                </div>
+
+                            </div>
+
+                            <lightning-datatable
+                                key-field="stage"
+                                data={auditData}
+                                columns={auditColumns}
+                                hide-checkbox-column>
+                            </lightning-datatable>
+
+                        </template>
+
+                    </div>
+
+</template>

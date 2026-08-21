@@ -1,0 +1,219 @@
+<template>
+    
+    <template if:true={isLoading}>
+      <lightning-spinner alternative-text="Loading" size="small"></lightning-spinner>
+    </template>
+<template if:false={isLoading}>
+    <div class="schema-tree">
+        <div class="header">
+            <h2 class="title">Schema Browser</h2>
+            <div class="controls">
+                <lightning-button-group>
+                    <lightning-button label="Expand All" onclick={expandAll}></lightning-button>
+                    <lightning-button label="Collapse All" onclick={collapseAll}></lightning-button>
+                    <lightning-button label="Clear Fields" onclick={clearSelections}></lightning-button>
+                </lightning-button-group>
+            </div>
+        </div>
+    <div style="display: flex; gap: 1rem; height: 500px;">
+        
+        <!-- LEFT COLUMN -->
+        <div style="flex: 1; overflow: auto; border: 1px solid #d8dde6; padding: 10px; border-radius: 4px;">
+        <!-- ROOT TYPES -->
+        <ul class="tree-root">
+            <template if:true={filteredRootNodes}>
+                <template for:each={filteredRootNodes} for:item="node">
+                    <li key={node.id} class="tree-node">
+
+                        <!-- ROOT ROW -->
+                        <div class="row">
+                            <button class={node.caretClass}
+                                    onclick={toggleNode}
+                                    data-node-id={node.id}>
+                            </button>
+
+                            <input type="checkbox"
+                                   class="checkbox"
+                                   checked={node.selected}
+                                   data-indeterminate={node.indeterminate}
+                                   data-node-id={node.id}
+                                   onchange={handleNodeCheck} />
+
+                            <span class="label type">{node.label}</span>
+                        </div>
+
+                        <!-- LEVEL 1 FIELDS -->
+                        <template if:true={node.expanded}>
+                            <ul class="children">
+                                <template for:each={node.children} for:item="child">
+                                    <li key={child.id} class="tree-node">
+
+                                        <div class="row">
+                                            <template if:true={child.hasChildren}>
+                                                <button class={child.caretClass}
+                                                        onclick={toggleNode}
+                                                        data-node-id={child.id}>
+                                                </button>
+                                            </template>
+                                            <template if:false={child.hasChildren}>
+                                                <span class="no-caret"></span>
+                                            </template>
+
+                                            <input type="checkbox"
+                                                   class="checkbox"
+                                                   checked={child.selected}
+                                                   data-indeterminate={child.indeterminate}
+                                                   data-node-id={child.id}
+                                                   onchange={handleNodeCheck} />
+
+                                            <span class="label field" title={child.tooltip}>
+                                                {child.label}
+                                                <template if:true={child.typeInfo}>
+                                                    <span class="type-badge">{child.typeInfo}</span>
+                                                </template>
+                                            </span>
+                                        </div>
+
+                                        <!-- LEVEL 2 -->
+                                        <template if:true={child.expanded}>
+                                            <ul class="children">
+                                                <template for:each={child.children} for:item="gchild">
+                                                    <li key={gchild.id} class="tree-node">
+
+                                                        <div class="row">
+                                                            <template if:true={gchild.hasChildren}>
+                                                                <button class={gchild.caretClass}
+                                                                        onclick={toggleNode}
+                                                                        data-node-id={gchild.id}>
+                                                                </button>
+                                                            </template>
+                                                            <template if:false={gchild.hasChildren}>
+                                                                <span class="no-caret"></span>
+                                                            </template>
+
+                                                            <input type="checkbox"
+                                                                   class="checkbox"
+                                                                   checked={gchild.selected}
+                                                                   data-indeterminate={gchild.indeterminate}
+                                                                   data-node-id={gchild.id}
+                                                                   onchange={handleNodeCheck} />
+
+                                                            <span class="label field" title={gchild.tooltip}>
+                                                                {gchild.label}
+                                                                <template if:true={gchild.typeInfo}>
+                                                                    <span class="type-badge">{gchild.typeInfo}</span>
+                                                                </template>
+                                                            </span>
+                                                        </div>
+
+                                                        <!-- LEVEL 3 -->
+                                                        <template if:true={gchild.expanded}>
+                                                            <ul class="children">
+                                                                <template for:each={gchild.children} for:item="ggchild">
+                                                                    <li key={ggchild.id} class="tree-node">
+
+                                                                        <div class="row">
+                                                                            <template if:true={ggchild.hasChildren}>
+                                                                                <button class={ggchild.caretClass}
+                                                                                        onclick={toggleNode}
+                                                                                        data-node-id={ggchild.id}>
+                                                                                </button>
+                                                                            </template>
+                                                                            <template if:false={ggchild.hasChildren}>
+                                                                                <span class="no-caret"></span>
+                                                                            </template>
+
+                                                                            <input type="checkbox"
+                                                                                   class="checkbox"
+                                                                                   checked={ggchild.selected}
+                                                                                   data-indeterminate={ggchild.indeterminate}
+                                                                                   data-node-id={ggchild.id}
+                                                                                   onchange={handleNodeCheck} />
+
+                                                                            <span class="label field" title={ggchild.tooltip}>
+                                                                                {ggchild.label}
+                                                                                <template if:true={ggchild.typeInfo}>
+                                                                                    <span class="type-badge">{ggchild.typeInfo}</span>
+                                                                                </template>
+                                                                            </span>
+                                                                        </div>
+
+                                                                    </li>
+                                                                </template>
+                                                            </ul>
+                                                        </template>
+
+                                                    </li>
+                                                </template>
+                                            </ul>
+                                        </template>
+
+                                    </li>
+                                </template>
+                            </ul>
+                        </template>
+
+                    </li>
+                </template>
+            </template>
+        </ul>
+        </div>
+        <!-- RIGHT COLUMN -->
+        <div style="flex: 1; overflow: auto; border: 1px solid #d8dde6; padding: 10px; border-radius: 4px;">
+            
+        <!-- SELECTED LIST -->
+        <div class="selected-panel">
+            <h3 class="subtitle">Selected Fields</h3>
+
+            <template if:true={selectedArray}>
+                <ul class="selected-list">
+                    <template for:each={selectedArray} for:item="sel">
+                        <li key={sel} class="selected-item">
+                            <span class="pill">{sel}</span>
+                            <button class="pill-remove"
+                                    data-path={sel}
+                                    onclick={removeSelected}>×</button>
+                        </li>
+                    </template>
+                </ul>
+            </template>
+
+            <template if:false={selectedArray}>
+                <div class="empty">No selections yet.</div>
+            </template>
+        </div>
+        </div>
+    </div>
+
+
+
+
+        <!-- COMBINED GENERATED QUERY -->
+        <div class="queries-panel">
+            <div class="queries-header">
+                <h3 class="subtitle">Final selected fields</h3>
+                
+                <!--<lightning-button-group>
+                    <lightning-button label="Copy Combined Query" onclick={copyCombinedQuery}></lightning-button>
+                </lightning-button-group>-->
+            </div>
+
+            <template if:true={flatSortedSelectionUpperText}>
+                
+                <pre class="code"><code>{flatSortedSelectionUpperText}</code></pre>
+                <!--<pre class="code"><code>{combinedQueryText}</code></pre>
+                <pre class="code"><code>{selectedFieldsActual}</code></pre>
+                <div class="query-card">
+                                <lightning-button label="Fetch Values"  onclick={fetchValuesGQuery}></lightning-button>
+                                <p class="code" style="overflow-wrap: break-word;"><code>{serverResponse}</code></p>
+                                </div>-->
+            </template>
+            <template if:false={flatSortedSelectionUpperText}>
+                <div class="empty">Select fields from one or more objects.</div>
+            </template>
+        </div>
+
+
+    </div>
+</template>
+</template>

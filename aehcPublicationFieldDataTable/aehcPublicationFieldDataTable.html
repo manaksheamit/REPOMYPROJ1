@@ -1,0 +1,69 @@
+<template>
+
+    <lightning-accordion
+        allow-multiple-sections-open
+        active-section-name="schemaFields">
+
+        <lightning-accordion-section
+            name="schemaFields"
+            label={accordionLabel}>
+
+            <template if:true={hasFields}>
+
+                <div class="table-container">
+
+                    <div class="record-count">
+                        Total {totalRecords} Records
+                    </div>
+
+                    <div class="datatable-wrapper">
+
+                        <lightning-datatable
+                            key-field="id"
+                            data={displayRows}
+                            columns={datatableColumns}
+                            hide-checkbox-column
+                            show-row-number-column
+                            wrap-text-max-lines="10">
+                        </lightning-datatable>
+
+                    </div>
+
+                    <template if:true={showLoadMore}>
+                        <div class="load-more-container">
+
+                            <lightning-button
+                                label={loadMoreLabel}
+                                variant="brand"
+                                onclick={loadMore}>
+                            </lightning-button>
+
+                        </div>
+                    </template>
+
+                </div>
+
+            </template>
+
+            <template if:false={hasFields}>
+
+                <div class="empty-state">
+
+                    <lightning-icon
+                        icon-name="utility:table"
+                        size="small">
+                    </lightning-icon>
+
+                    <div class="empty-text">
+                        {emptyMessage}
+                    </div>
+
+                </div>
+
+            </template>
+
+        </lightning-accordion-section>
+
+    </lightning-accordion>
+
+</template>

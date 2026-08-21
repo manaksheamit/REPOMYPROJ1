@@ -1,0 +1,59 @@
+<template>
+    <lightning-card>
+
+        <div class="card-header">
+            <lightning-combobox
+                name="pendingView"
+                label="Pending Approvals View"
+                options={comboboxOptions}
+                value={selectedLabel}
+                placeholder="Select view"
+                onchange={handleLabelChange}>
+            </lightning-combobox>
+        </div>
+
+        <br>
+
+        <template if:false={isDataProduct}>
+
+            <lightning-datatable
+                key-field="Id"
+                data={displayData}
+                columns={columns}
+                sorted-by={sortedBy}
+                sorted-direction={sortedDirection}
+                onsort={handleSort}
+                hide-checkbox-column>
+            </lightning-datatable>
+
+            <div class="footer">
+                <div class="left-text">
+                    Showing {showingFrom} - {showingTo} of {totalRecords} requests
+                </div>
+
+                <div class="right-buttons">
+
+                    <lightning-button
+                        variant="neutral"
+                        label="Previous"
+                        onclick={handlePrevious}
+                        disabled="{page===1}">
+                    </lightning-button>
+
+                    <lightning-button
+                        variant="neutral"
+                        label="Next"
+                        onclick={handleNext}
+                        disabled="{page===totalPages}">
+                    </lightning-button>
+
+                </div>
+            </div>
+        </template>
+
+        <template if:true={isDataProduct}>
+            <c-aehcpendingapprovalsbo></c-aehcpendingapprovalsbo>
+        </template>
+
+    </lightning-card>
+</template>

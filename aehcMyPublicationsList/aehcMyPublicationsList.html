@@ -1,0 +1,24 @@
+<template>
+    <lightning-card title="My Publications">
+        <div class="slds-var-m-around_medium">
+            
+            <template if:true={publications.length}>
+                <lightning-datatable
+                    key-field="Id"
+                    data={publications}
+                    columns={columns}
+                    hide-checkbox-column="true"
+                    sorted-by={sortedBy}
+                    sorted-direction={sortedDirection}
+                    onsort={handleSort}>
+                </lightning-datatable>
+            </template>
+
+            <template if:false={publications.length}>
+                <div class="slds-align_absolute-center slds-var-p-around_large slds-text-heading_small slds-text-color_weak">
+                    No records to display.
+                </div>
+            </template>
+        </div>
+    </lightning-card>
+</template>

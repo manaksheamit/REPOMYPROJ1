@@ -1,0 +1,77 @@
+:host {
+    display: block;
+}
+
+/* Main Container */
+.table-container {
+    background: #ffffff;
+    width: 100%;
+}
+
+/* Record Count */
+.record-count {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #706e6b;
+    margin-bottom: 0.75rem;
+    padding-left: 0.25rem;
+}
+
+/* Datatable Scroll */
+.datatable-wrapper {
+    overflow-x: auto;
+    overflow-y: hidden;
+    width: 100%;
+}
+
+/* Force horizontal scrolling when needed */
+.datatable-wrapper lightning-datatable {
+    min-width: 1500px;
+}
+
+/* Empty State */
+.empty-state {
+    padding: 2rem;
+    text-align: center;
+}
+
+.empty-text {
+    margin-top: 0.75rem;
+    color: #706e6b;
+    font-weight: 600;
+    font-size: 0.875rem;
+}
+
+/* Load More */
+.load-more-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1rem;
+    padding-bottom: 0.5rem;
+}
+
+/* Salesforce Blue Theme */
+lightning-datatable {
+    --slds-c-table-color-border: #d8dde6;
+    --slds-c-table-heading-color-background: #eef4ff;
+    --slds-c-table-heading-text-color: #16325c;
+    --slds-c-table-heading-font-weight: 700;
+}
+
+/* Accordion Header */
+lightning-accordion-section {
+    --slds-c-accordion-summary-color-background: #eef4ff;
+}
+
+/* Mobile */
+@media screen and (max-width: 768px) {
+
+    .record-count {
+        text-align: center;
+    }
+
+    .load-more-container {
+        width: 100%;
+    }
+}

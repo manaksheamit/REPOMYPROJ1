@@ -1,0 +1,46 @@
+<template>
+
+    <lightning-card title={cardTitle}>
+
+        <div class="slds-p-around_medium">
+
+            <!-- STEP 1 : Application + Publication + Schema -->
+            <template if:true={isStepOne}>
+                <c-aehc-publication-details-step wizard-data={wizardData} onstepdatachange={handleStepDataChange} publication-id={publicationId} 
+                is-edit-mode={isEditMode} is-returning={isReturningToStepOne} onnext={goToStepThree} ondatarestored={handleDataRestored}>
+                </c-aehc-publication-details-step>
+            </template>
+
+            <!-- STEP 3 : Review -->
+            <template if:true={isStepThree}>
+                <c-aehc-review-submit-step wizard-data={finalData} mode="publication" is-submitting={isSubmitting}
+                    onback={goToPreviousStep}  onsubmit={handleSubmit}>
+                </c-aehc-review-submit-step>
+            </template>
+
+            <!-- STEP 4 : SUCCESS -->
+            <template if:true={isStepFour}>
+
+                <!-- ONLY SUCCESS SCREEN -->
+                <div class="submission-success-card">
+
+                    <div class="slds-text-heading_medium slds-m-bottom_small">
+                         {successMessage} {submittedPublicationId}
+                    </div>
+
+                    <div class="slds-m-bottom_small">
+                        <b>Publication:  </b>
+                        <a href={submittedPublicationUrl}>
+                            {submittedPublicationName}
+                        </a>
+                    </div>
+                </div>
+
+            </template>
+
+
+        </div>
+
+    </lightning-card>
+
+</template>

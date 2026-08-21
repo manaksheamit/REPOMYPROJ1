@@ -1,0 +1,101 @@
+<template>
+
+    <template if:true={showApprovalScreen}>
+    <lightning-card class="slds-m-around_medium">
+
+        <div class="slds-p-around_medium">
+
+            <div class="slds-text-heading_small slds-m-bottom_medium">
+                Promotion Approval
+            </div>
+
+            <lightning-radio-group
+                options={approvalOptions}
+                value={approvalAction}
+                onchange={handleApprovalChange}>
+            </lightning-radio-group>
+
+            <lightning-textarea
+                class="slds-m-top_medium"
+                label="Comments"
+                value={approvalComments}
+                onchange={handleCommentsChange}>
+            </lightning-textarea>
+
+            <div class="slds-m-top_medium slds-align_absolute-center">
+                <lightning-button                
+                    disabled={isLoading}
+                    onclick={handleClose}
+                    label="Back"
+                    title="Back">
+                    </lightning-button>
+                <lightning-button
+                    variant="brand"
+                    label="Submit"
+                    onclick={handleApprovalSubmit}>
+                </lightning-button>
+            </div>
+
+        </div>
+
+    </lightning-card>
+</template>
+<template if:false={showApprovalScreen}>
+
+   
+    <lightning-card title="Publication Promotion">
+
+        
+
+        <div class="slds-p-around_medium">
+
+            <div class="slds-grid slds-gutters">
+                <div class="slds-col slds-size_1-of-2">
+                    <lightning-input
+                        label="Current Environment"
+                        value={sourceEnv}
+                        disabled>
+                    </lightning-input>
+                </div>
+
+                <div class="slds-col slds-size_1-of-2">
+                    <lightning-input
+                        label="Promote To"
+                        value={destinationEnv}
+                        disabled>
+                    </lightning-input>
+                </div>
+            </div>
+
+            <template if:true={message}>
+                <div class="slds-m-top_large slds-align_absolute-center slds-text-align_center">
+                    <p class="slds-text-color_error slds-text-heading_medium slds-text-title_bold">
+                        {message}
+                    </p>
+                </div>
+            </template>
+             
+       
+            
+                <div class="slds-m-top_medium slds-text-align_right">
+                    <lightning-button                
+                    disabled={isLoading}
+                    onclick={handleClose}
+                    label="Back"
+                    title="Back">
+                    </lightning-button>
+                    <template if:false={message}>
+                    <lightning-button
+                        label="Promote"
+                        variant="brand"
+                        onclick={handlePromote}
+                        disabled={isLoading}>
+                    </lightning-button>
+                    </template>
+                </div>
+            
+
+        </div>
+    </lightning-card>
+    </template> 
+</template>

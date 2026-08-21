@@ -1,0 +1,12 @@
+.button-box {
+	margin-bottom: 2px;
+}
+
+.search-btn-box {
+	position: relative;
+}
+
+.spinner-inside {
+    display: inline-block;
+    vertical-align: middle;
+}
